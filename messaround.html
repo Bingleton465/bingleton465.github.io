@@ -59,17 +59,17 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     // Nebula class for purple and blue nebulas
     class Nebula {
-      constructor(x, y, color) {
+      constructor(x, y, color, maxRadius) {
         this.x = x;
         this.y = y;
         this.vx = (Math.random() - 0.5) * 0.2;
         this.vy = (Math.random() - 0.5) * 0.2;
-        this.radius = Math.random() * 100 + 50;
+        this.radius = Math.random() * (maxRadius - 100) + 100; // Larger radius
         this.color = color;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.opacity = Math.random() * 0.5 + 0.3; // Ensure it's visible
       }
       update() {
         this.x += this.vx;
@@ -90,7 +90,7 @@
         ctx.fill();
       }
     }
-    
+
     // Star class for constellation effect
     class Star {
       constructor(x, y, r) {
@@ -113,10 +113,10 @@
         ctx.fill();
       }
     }
-    
+
     const stars = [];
     const nebulas = [];
-    
+
     // Initialize stars
     const MAX_STARS = 80;
     const LINE_DIST = 100;
@@ -126,7 +126,7 @@
       let r = Math.random() * 2 + 1;
       stars.push(new Star(x, y, r));
     }
-    
+
     // Initialize nebulas
     const MAX_NEBULAS = 2;
     const colors = ['rgba(128,0,128,', 'rgba(0,0,255,'];
@@ -134,9 +134,9 @@
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
       const color = colors[i % colors.length];
-      nebulas.push(new Nebula(x, y, color));
+      nebulas.push(new Nebula(x, y, color, 300));
     }
-    
+
     // Animation loop
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -172,9 +172,9 @@
 
       requestAnimationFrame(draw);
     }
-    
+
     draw();
-    
+
     // Handle canvas resizing
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
