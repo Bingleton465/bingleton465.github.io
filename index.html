@@ -3,12 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <title>Velora Background</title>
-  <link rel="stylesheet" href="velora.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #1a1f36, #0b0c17);
+      overflow: hidden;
+    }
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
-  <!-- Your site content goes here -->
-  
-  <!-- Canvas & script -->
-  <script src="velora.js"></script>
+  <script>
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    document.body.appendChild(canvas);
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+
+    const stars = Array.from({length: 100}, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.5 + 0.5,
+      dx: (Math.random()-0.5)*0.2,
+      dy: (Math.random()-0.5)*0.2,
+      alpha: Math.random()*0.5 + 0.3,
+      dAlpha: Math.random()*0.005 + 0.002
+    }));
+
+    function draw() {
+      ctx.fillStyle = 'rgba(10,10,20,0.2)';
+      ctx.fillRect(0, 0, W, H);
+
+      stars.forEach(s => {
+        s.x += s.dx; s.y += s.dy;
+        if (s.x<0) s.x=W; if (s.x>W) s.x=0;
+        if (s.y<0) s.y=H; if (s.y>H) s.y=0;
+        s.alpha += s.dAlpha;
+        if (s.alpha<=0.3 || s.alpha>=0.8) s.dAlpha *= -1;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', () => {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    });
+
+    draw();
+  </script>
 </body>
 </html>
