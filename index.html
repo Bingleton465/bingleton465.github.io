@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Moving Interactive Constellations</title>
+  <title>Interactive Constellations with Burst</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -30,16 +30,34 @@
         this.x = x;
         this.y = y;
         this.r = r;
-        // random small velocity
-        this.vx = (Math.random() - 0.5) * 0.2;
-        this.vy = (Math.random() - 0.5) * 0.2;
+        // increased velocity for faster movement
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;  // Time until the star bursts
+        this.age = 0; // Track the age of the star
       }
       update() {
         this.x += this.vx;
         this.y += this.vy;
+        this.age++;
+        
+        // Burst after some random time
+        if (this.age > this.timeToBurst) {
+          this.burst();
+        }
+        
         // bounce off edges
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      burst() {
+        // Reset to a new random position after burst
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;  // Set a new burst time
+        this.age = 0;
       }
       draw() {
         ctx.beginPath();
@@ -50,7 +68,7 @@
     }
     
     const stars = [];
-    const MAX_STARS = 150;
+    const MAX_STARS = 80;  // fewer stars
     const LINE_DIST = 100;
     
     // initialize stars
