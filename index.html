@@ -2,65 +2,108 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Velora Background</title>
+  <title>Velora All-in-One</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     html, body {
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at 30% 30%, #1a1f36, #0b0c17);
       overflow: hidden;
+      background: radial-gradient(circle at center, #0b0c17, #000);
+      cursor: crosshair;
     }
-    canvas {
-      position: fixed;
-      top: 0; left: 0;
+    canvas#velora-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
       z-index: -1;
     }
   </style>
 </head>
 <body>
+  <canvas id="velora-bg"></canvas>
+
   <script>
-    const canvas = document.createElement('canvas');
+    const canvas = document.getElementById('velora-bg');
     const ctx = canvas.getContext('2d');
-    document.body.appendChild(canvas);
-    let W = canvas.width = window.innerWidth;
-    let H = canvas.height = window.innerHeight;
+    let stars = [];
+    let W, H;
 
-    const stars = Array.from({length: 100}, () => ({
-      x: Math.random()*W, y: Math.random()*H,
-      r: Math.random()*1.5 + 0.5,
-      dx: (Math.random()-0.5)*0.2,
-      dy: (Math.random()-0.5)*0.2,
-      alpha: Math.random()*0.5 + 0.3,
-      dAlpha: Math.random()*0.005 + 0.002
-    }));
-
-    function draw() {
-      ctx.fillStyle = 'rgba(10,10,20,0.2)';
-      ctx.fillRect(0, 0, W, H);
-
-      stars.forEach(s => {
-        s.x += s.dx; s.y += s.dy;
-        if (s.x<0) s.x=W; if (s.x>W) s.x=0;
-        if (s.y<0) s.y=H; if (s.y>H) s.y=0;
-        s.alpha += s.dAlpha;
-        if (s.alpha<=0.3 || s.alpha>=0.8) s.dAlpha *= -1;
-
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-        ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
-        ctx.fill();
-      });
-
-      requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', () => {
+    function resizeCanvas() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
-    });
+      createStars(120);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-    draw();
+    function createStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.5 + 0.5,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          alpha: Math.random() * 0.6 + 0.2,
+          sparkle: Math.random() * 1
+        });
+      }
+    }
+
+    function drawConstellations() {
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${0.1 + (100 - dist) / 100 * 0.2})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (let star of stars) {
+        // move & bounce
+        star.x += star.vx;
+        star.y += star.vy;
+        if (star.x < 0 || star.x > W) star.vx *= -1;
+        if (star.y < 0 || star.y > H) star.vy *= -1;
+
+        // sparkle
+        star.sparkle += 0.02;
+        const shine = star.alpha + Math.sin(star.sparkle) * 0.1;
+
+        ctx.save();
+        ctx.shadowColor = '#fff';
+        ctx.shadowBlur = 4;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${shine})`;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      drawConstellations();
+      requestAnimationFrame(drawStars);
+    }
+
+    drawStars();
   </script>
 </body>
 </html>
