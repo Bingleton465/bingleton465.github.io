@@ -3,126 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora–🏠</title>
+  <title>Velora–🎮</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
       background: black;
-      width: 100%; height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      width: 100%;
+      height: 100%;
     }
+
     canvas {
       display: block;
       position: absolute;
-      top: 0; left: 0;
-    }
-    .url-container {
-      position: relative;
-      z-index: 1;
-      margin-top: 20px;
-    }
-    .url-input, .url-button {
-      font-size: 24px;
-      padding: 10px 25px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      outline: none;
-    }
-    .url-input {
-      width: 250px;
-      margin-right: 10px;
-    }
-    .url-button {
-      cursor: pointer;
-    }
-    .url-button:hover {
-      background: white;
-      color: black;
-    }
-    .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      width: 90%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-    .top-bar .title {
-      color: white;
-      font-size: 24px;
-      font-family: Arial, sans-serif;
-    }
-    .top-bar .buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .top-bar .button {
-      font-size: 18px;
-      padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .top-bar .button::after {
-      content: '';
-      position: absolute;
       top: 0;
-      left: -100%;
+      left: 0;
+    }
+
+    /* New styles for images */
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .image-grid img {
       width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
+      height: auto;
+      border-radius: 8px;
     }
-    .top-bar .button:hover::after {
-      left: 100%;
+
+    /* New styles for buttons */
+    button {
+      background-color: #444;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .top-bar .button:hover {
-      background: white;
-      color: black;
+
+    button:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 0, 0.8);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
-  <div class="top-bar">
-<div class="title">
-  <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
-</div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='games.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
-    </div>
+
+  <!-- New Image Section -->
+  <div class="image-grid">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 1">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 2">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 3">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 4">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 5">
+    <img src="images/cover-1585728351086.jpeg" alt="Icon 6">
   </div>
-  <div class="url-container">
-    <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
-    <button id="urlButton" class="url-button">Search or Enter URL</button>
+
+  <!-- New Buttons -->
+  <div style="text-align: center; margin-top: 20px;">
+    <button>Click Me 1</button>
+    <button>Click Me 2</button>
+    <button>Click Me 3</button>
   </div>
+
   <script>
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     class Star {
       constructor(x, y, r) {
         this.x = x;
@@ -156,7 +112,7 @@
         ctx.fill();
       }
     }
-    
+
     const stars = [];
     const MAX_STARS = 80;
     const LINE_DIST = 100;
@@ -166,13 +122,13 @@
       let r = Math.random() * 2 + 1;
       stars.push(new Star(x, y, r));
     }
-    
+
     canvas.addEventListener('click', e => {
       let r = Math.random() * 2 + 1;
       let s = new Star(e.clientX, e.clientY, r);
       stars.push(s);
     });
-    
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let star of stars) {
@@ -184,11 +140,11 @@
           let a = stars[i], b = stars[j];
           let dx = a.x - b.x, dy = a.y - b.y;
           let dist = Math.hypot(dx, dy);
-          if (dist < LINE_DIST) {
+          if (dist < 100) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -196,31 +152,12 @@
       }
       requestAnimationFrame(draw);
     }
-    
+
     draw();
-    
+
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-    });
-    
-    const urlInput = document.getElementById('urlInput');
-    const urlButton = document.getElementById('urlButton');
-    urlButton.addEventListener('click', () => {
-      let url = urlInput.value.trim();
-      if (!url) {
-        alert('Type in a valid URL');
-        return;
-      }
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
-      }
-      try {
-        new URL(url);
-        window.location.href = '/proxy?url=' + encodeURIComponent(url);
-      } catch (e) {
-        alert('Type in a valid URL');
-      }
     });
   </script>
 </body>
