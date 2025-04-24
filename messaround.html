@@ -12,10 +12,6 @@
       background: black;
       width: 100%;
       height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
     }
     canvas {
       display: block;
@@ -23,39 +19,63 @@
       top: 0;
       left: 0;
     }
-    .button-container {
+    .container {
       position: relative;
       z-index: 10;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;
-      margin-bottom: 20px;
+      padding: 20px;
     }
-    .image-button {
-      display: block;
-      width: 30%; /* Big enough to fit three buttons centered */
-      max-width: 150px;
-      aspect-ratio: 1; /* Ensures the image remains square */
+    .game-item {
+      position: relative;
+      width: 150px; /* Controls button size */
+      height: 150px;
+      border: 2px solid white;
+      border-radius: 10px; /* Rounded corners */
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       cursor: pointer;
-      border: none;
-      background: transparent;
     }
-   .image-button img {
-  width: 50%; /* Reduce the width to 50% of its container */
-  height: auto; /* Maintain aspect ratio */
-  object-fit: cover;
-}
+    .game-item:hover {
+      transform: scale(1.1); /* Slightly bigger */
+      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8); /* Glowing effect */
     }
   </style>
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
+  
+  <div class="container">
+    <div class="game-item">
+      <img src="F49C3BC3-4B45-44B7-BE3A-5692B4F7A9D7.png" alt="1v1.lol shooter game fortnite" onclick="openFullscreenGame('1v1.html')">
+    </div>
+    <div class="game-item">
+      <img src="justfall-lol-juego-multijugador-con-pinguinos.png" alt="justfall.lol fall guys" onclick="openFullscreenGame('justfall.html')">
+    </div>
+    <div class="game-item">
+      <img src="Untitled design.png" alt="Eaglercraft minecraft mojang" onclick="openFullscreenGame('EaglercraftL_1.9_v0_7_0_Offline_Signed.html')">
+    </div>
+    <div class="game-item">
+      <img src="EF24F77D-B550-4F41-ABEC-B92F19657EEA.jpeg" alt="RL rocket league car" onclick="openFullscreenGame('rl.html')">
+    </div>
+    <div class="game-item">
+      <img src="poki-ragdoll-hit-icon-filled-256.png" alt="ragdoll hit battle 2d" onclick="openFullscreenGame('ragdollhit.html')">
+    </div>
+    <div class="game-item">
+      <img src="C88FB025-E58E-4A20-BD77-A443C7D1ACB0_4_5005_c.jpeg" alt="Soccer random" onclick="openFullscreenGame('soccerrandom.html')">
+    </div>
+    <div class="game-item">
+      <img src="A6F610FE-A6C8-45E0-A22D-BF6448A31E84.png" alt="Boxing random" onclick="openFullscreenGame('boxingrandom.html')">
+    </div>
+  </div>
 
-  <!-- Button container -->
-<a href="1v1.html">
-  <img src="images/cover-1585728351086.jpeg" alt="1v1.lol action shooter" />
-</a>
   <script>
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
@@ -98,7 +118,6 @@
 
     const stars = [];
     const MAX_STARS = 80;
-    const LINE_DIST = 100;
     for (let i = 0; i < MAX_STARS; i++) {
       let x = Math.random() * canvas.width;
       let y = Math.random() * canvas.height;
@@ -106,32 +125,11 @@
       stars.push(new Star(x, y, r));
     }
 
-    canvas.addEventListener('click', e => {
-      let r = Math.random() * 2 + 1;
-      let s = new Star(e.clientX, e.clientY, r);
-      stars.push(s);
-    });
-
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let star of stars) {
         star.update();
         star.draw();
-      }
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          let a = stars[i], b = stars[j];
-          let dx = a.x - b.x, dy = a.y - b.y;
-          let dist = Math.hypot(dx, dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
       }
       requestAnimationFrame(draw);
     }
@@ -143,36 +141,36 @@
       canvas.height = window.innerHeight;
     });
 
-      function openFullscreenGame(url) {
-    const newWindow = window.open(url, '_blank');
-    if (newWindow) {
+    function openFullscreenGame(url) {
+      const newWindow = window.open(url, '_blank');
+      if (newWindow) {
         newWindow.document.write(`
-            <html>
-                <head>
-                    <style>
-                        html, body {
-                            margin: 0;
-                            width: 100%;
-                            height: 100%;
-                            overflow: hidden;
-                        }
-                        iframe {
-                            width: 100%;
-                            height: 100%;
-                            border: none;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
-                </body>
-            </html>
+          <html>
+            <head>
+              <style>
+                html, body {
+                  margin: 0;
+                  width: 100%;
+                  height: 100%;
+                  overflow: hidden;
+                }
+                iframe {
+                  width: 100%;
+                  height: 100%;
+                  border: none;
+                }
+              </style>
+            </head>
+            <body>
+              <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
+            </body>
+          </html>
         `);
         newWindow.document.close();
-    } else {
+      } else {
         alert("Failed to open the fullscreen game. Please check your browser settings.");
+      }
     }
-}
   </script>
 </body>
 </html>
