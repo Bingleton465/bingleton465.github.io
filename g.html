@@ -19,97 +19,78 @@
       top: 0;
       left: 0;
     }
+    #openGameButton {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: url('cover-1585728351086.jpeg') no-repeat center center;
+      background-size: cover;
+      width: 100px;
+      height: 100px;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <canvas id="constellationCanvas"></canvas>
-
+  <button id="openGameButton"></button>
+  <div class="webgl-content" style="display: none;">
+    <div id="gameContainer" style="width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);">
+      <canvas id="#canvas" style="width: 100%; height: 100%; cursor: default;" width="1018" height="926"></canvas>
+      <div class="logo Dark" style="display: none;"></div>
+      <div class="progress Dark" style="display: none;">
+        <div class="empty" style="width: 0%;"></div>
+        <div class="full" style="width: 100%;"></div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
   <script>
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    let gameInstance;
 
-    class Star {
-      constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
+    function initializeFireBase() {
+      console.log("Firebase initialized");
     }
 
-    const stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 100;
-    for (let i = 0; i < MAX_STARS; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
-    }
+    window.onload = function () {
+      initializeFireBase();
+    };
 
-    canvas.addEventListener('click', e => {
-      let r = Math.random() * 2 + 1;
-      let s = new Star(e.clientX, e.clientY, r);
-      stars.push(s);
+    document.getElementById('openGameButton').addEventListener('click', function () {
+      document.querySelector('.webgl-content').style.display = 'block';
+      gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json", {
+        onProgress: UnityProgress,
+        Module: {
+          onRuntimeInitialized: function () {
+            UnityProgress(gameInstance, "complete");
+          },
+        },
+      });
     });
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          let a = stars[i], b = stars[j];
-          let dx = a.x - b.x, dy = a.y - b.y;
-          let dist = Math.hypot(dx, dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(draw);
+    function showAds() {
+      console.log("show ads");
     }
 
-    draw();
+    function requestNewAd() {
+      // Show video ad
+      unityAdFinishedCallback();
+    }
 
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    function unityAdFinishedCallback() {
+      try {
+        if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   </script>
 </body>
 </html>
