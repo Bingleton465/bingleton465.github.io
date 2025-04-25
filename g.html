@@ -12,38 +12,92 @@
       overflow-y: auto;
       background: black;
     }
+
     canvas {
       display: block;
       position: absolute;
       top: 0;
       left: 0;
     }
-    .container {
+
+    .top-bar {
       position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background: rgba(0, 0, 0, 0.7);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 999;
     }
-    .game-item {
-      width: 150px;
-      height: 150px;
-      border: 2px solid white;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
+
+    .title img {
+      height: 40px;
     }
+
+    .buttons {
+       
+      
+      
+      
+      margin-right: 40px;  /* Increase the margin to move it to the left */
+
+
+      
+      display: flex;
+      gap: 10px;
+    }
+
+    .buttons .button {
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .buttons .button:hover {
+      background-color: #ddd;
+    }
+
+   .container {
+  position: relative;
+  top: 120px;        /* raised by 100px */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.game-item {
+  width: 150px;
+  height: 150px;
+  border: 2px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 0;     /* removed the big gap */
+}
+
     .game-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       cursor: pointer;
     }
+
     .game-item:hover {
       transform: scale(1.1);
       box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
@@ -51,32 +105,49 @@
   </style>
 </head>
 <body>
+
+  <div class="top-bar">
+    <div class="title">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="window.location.href='index.html'">Home</button>
+      <button class="button" onclick="window.location.href='g.html'">Games</button>
+      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="https://cooltext.com">
+      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
+    </a>
+  </div>
+
   <canvas id="constellationCanvas"></canvas>
-<div class="container">
-  <div class="game-item">
-    <img
-      src="images/icons/1v1.png"
-      alt="1v1.lol shooter fortnite adventure action"
-      onclick="openFullscreenGame('games/1v1.html')"
-    >
-  </div>
-<!-- ------------------------------- -->             <!-- IT RIGHT HERE TIS WHERE GAME CODE IS -->
-  <div class="game-item">
-    <img
-      src="images/icons/rl.webp"
-      alt="rocket league rl sports action"
-      onclick="openFullscreenGame('games/rl.html')"
-    >
-  </div>
-   <!-- ------------------------------- -->
-  <div class="game-item">
-    <img
-      src="images/icons/er2.jpg"
-      alt="escape road action cars gta crime"
-      onclick="openFullscreenGame('games/er2.html')"
-    >
-  </div>
-    <!-- more .game-item blocks here -->
+
+  <div class="container">
+    <div class="game-item">
+      <img
+        src="images/icons/1v1.png"
+        alt="1v1.lol shooter fortnite adventure action"
+        onclick="openFullscreenGame('games/1v1.html')"
+      >
+    </div>
+    <div class="game-item">
+      <img
+        src="images/icons/rl.webp"
+        alt="rocket league rl sports action"
+        onclick="openFullscreenGame('games/rl.html')"
+      >
+    </div>
+    <div class="game-item">
+      <img
+        src="images/icons/er2.jpg"
+        alt="escape road action cars gta crime"
+        onclick="openFullscreenGame('games/er2.html')"
+      >
+    </div>
+    <!-- Add more game-item blocks here -->
   </div>
 
   <script>
@@ -84,15 +155,13 @@
     const ctx    = canvas.getContext('2d');
     let stars = [];
     const MAX_STARS = 80;
-    const LINE_DIST = 120; // max distance to draw a connecting line
+    const LINE_DIST = 120;
 
-    // Utility to resize to full document
     function resizeCanvas() {
       canvas.width  = window.innerWidth;
       canvas.height = document.documentElement.scrollHeight;
     }
 
-    // Make body tall enough to scroll past the fixed container
     function ensureScrollArea() {
       const bottom = document.querySelector('.container')
                         .getBoundingClientRect().bottom;
@@ -100,7 +169,6 @@
       resizeCanvas();
     }
 
-    // Star class unchanged
     class Star {
       constructor(x, y, r) {
         this.x = x; this.y = y; this.r = r;
@@ -133,7 +201,6 @@
       }
     }
 
-    // Create stars spread over full scroll area
     function initStars() {
       stars = [];
       for (let i = 0; i < MAX_STARS; i++) {
@@ -145,7 +212,6 @@
       }
     }
 
-    // Draw connecting lines between close stars
     function drawConstellations() {
       for (let i = 0; i < stars.length; i++) {
         for (let j = i + 1; j < stars.length; j++) {
@@ -165,7 +231,6 @@
       }
     }
 
-    // Main draw loop
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawConstellations();
@@ -176,7 +241,6 @@
       requestAnimationFrame(draw);
     }
 
-    // Fullscreen game opener
     function openFullscreenGame(url) {
       const newWindow = window.open('', '_blank');
       if (newWindow) {
@@ -193,12 +257,12 @@
       }
     }
 
-    // Initialize everything
     window.addEventListener('load', () => {
       ensureScrollArea();
       initStars();
       draw();
     });
+
     window.addEventListener('resize', () => {
       ensureScrollArea();
       initStars();
