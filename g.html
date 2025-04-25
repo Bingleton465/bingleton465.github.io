@@ -241,21 +241,14 @@
       requestAnimationFrame(draw);
     }
 
-    function openFullscreenGame(url) {
-      const newWindow = window.open('', '_blank');
-      if (newWindow) {
-        newWindow.document.write(`
-          <html><head>
-            <style>html,body{margin:0;width:100%;height:100%;overflow:hidden}
-                   iframe{width:100%;height:100%;border:none}</style>
-          </head>
-          <body><iframe src="${url}" allowfullscreen></iframe></body></html>
-        `);
-        newWindow.document.close();
-      } else {
-        alert("Please enable popups to play fullscreen.");
-      }
-    }
+   function openFullscreenGame(url) {
+  const newWindow = window.open(url, '_blank');
+  if (newWindow) {
+    newWindow.focus(); 
+  } else {
+    alert("please enable popups to play the game -marshall");
+  }
+}
 
     window.addEventListener('load', () => {
       ensureScrollArea();
