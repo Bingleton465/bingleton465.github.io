@@ -8,10 +8,9 @@
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       background: black;
-      width: 100%;
-      height: 100%;
     }
     canvas {
       display: block;
@@ -20,7 +19,10 @@
       left: 0;
     }
     .container {
-      position: relative;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 10;
       display: flex;
       justify-content: center;
@@ -29,11 +31,10 @@
       padding: 20px;
     }
     .game-item {
-      position: relative;
-      width: 150px; /* Controls button size */
+      width: 150px;
       height: 150px;
       border: 2px solid white;
-      border-radius: 10px; /* Rounded corners */
+      border-radius: 10px;
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
@@ -44,31 +45,57 @@
       cursor: pointer;
     }
     .game-item:hover {
-      transform: scale(1.1); /* Slightly bigger */
-      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8); /* Glowing effect */
+      transform: scale(1.1);
+      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
     }
   </style>
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
-  
-  <div class="container">
-    <div class="game-item">
-      <img src="images/icons/1v1.png" alt="1v1.lol shooter fortnite adventure action" onclick="openFullscreenGame('games/1v1.html')">
-    </div>
+<div class="container">
+  <div class="game-item">
+    <img
+      src="images/icons/1v1.png"
+      alt="1v1.lol shooter fortnite adventure action"
+      onclick="openFullscreenGame('games/1v1.html')"
+    >
+  </div>
+<!-- ------------------------------- -->
+  <div class="game-item">
+    <img
+      src="images/icons/rl.webp"
+      alt="rocket league rl sports action"
+      onclick="openFullscreenGame('games/rl.html')"
+    >
+  </div>
+    <!-- more .game-item blocks here -->
   </div>
 
   <script>
     const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const ctx    = canvas.getContext('2d');
+    let stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 120; // max distance to draw a connecting line
 
+    // Utility to resize to full document
+    function resizeCanvas() {
+      canvas.width  = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    }
+
+    // Make body tall enough to scroll past the fixed container
+    function ensureScrollArea() {
+      const bottom = document.querySelector('.container')
+                        .getBoundingClientRect().bottom;
+      document.body.style.minHeight = (bottom + 20) + 'px';
+      resizeCanvas();
+    }
+
+    // Star class unchanged
     class Star {
       constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+        this.x = x; this.y = y; this.r = r;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
         this.timeToBurst = Math.random() * 1000 + 3000;
@@ -79,7 +106,7 @@
         this.y += this.vy;
         this.age++;
         if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
       burst() {
@@ -98,17 +125,42 @@
       }
     }
 
-    const stars = [];
-    const MAX_STARS = 80;
-    for (let i = 0; i < MAX_STARS; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
+    // Create stars spread over full scroll area
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < MAX_STARS; i++) {
+        stars.push(new Star(
+          Math.random() * window.innerWidth,
+          Math.random() * document.documentElement.scrollHeight,
+          Math.random() * 2 + 1
+        ));
+      }
     }
 
+    // Draw connecting lines between close stars
+    function drawConstellations() {
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < LINE_DIST) {
+            const alpha = 1 - dist / LINE_DIST;
+            ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.5})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // Main draw loop
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawConstellations();
       for (let star of stars) {
         star.update();
         star.draw();
@@ -116,43 +168,33 @@
       requestAnimationFrame(draw);
     }
 
-    draw();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-
+    // Fullscreen game opener
     function openFullscreenGame(url) {
-      const newWindow = window.open(url, '_blank');
+      const newWindow = window.open('', '_blank');
       if (newWindow) {
         newWindow.document.write(`
-          <html>
-            <head>
-              <style>
-                html, body {
-                  margin: 0;
-                  width: 100%;
-                  height: 100%;
-                  overflow: hidden;
-                }
-                iframe {
-                  width: 100%;
-                  height: 100%;
-                  border: none;
-                }
-              </style>
-            </head>
-            <body>
-              <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
-            </body>
-          </html>
+          <html><head>
+            <style>html,body{margin:0;width:100%;height:100%;overflow:hidden}
+                   iframe{width:100%;height:100%;border:none}</style>
+          </head>
+          <body><iframe src="${url}" allowfullscreen></iframe></body></html>
         `);
         newWindow.document.close();
       } else {
-        alert("Failed to open the fullscreen game. Please check your browser settings and enable popups for this site.");
+        alert("Please enable popups to play fullscreen.");
       }
     }
+
+    // Initialize everything
+    window.addEventListener('load', () => {
+      ensureScrollArea();
+      initStars();
+      draw();
+    });
+    window.addEventListener('resize', () => {
+      ensureScrollArea();
+      initStars();
+    });
   </script>
 </body>
 </html>
