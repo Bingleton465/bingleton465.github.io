@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Velora–🎮</title>
   <style>
     html, body {
@@ -31,7 +31,7 @@
       flex-wrap: wrap; /* Ensure items wrap onto the next line */
       gap: 20px; /* Space between buttons */
       padding: 20px;
-      margin-top: 20px; /* Avoid overlapping canvas */
+      margin-top: 20px; /* Add margin to avoid overlapping with fixed canvas */
     }
 
     .game-item {
@@ -59,8 +59,9 @@
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
-
+  
   <div class="container">
+    <!-- Game items go here -->
     <div class="game-item">
       <img src="images/icons/1v1.png" alt="1v1.lol shooter fortnite adventure action" onclick="openFullscreenGame('games/1v1.html')">
     </div>
