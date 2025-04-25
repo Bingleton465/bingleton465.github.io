@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora–🎮</title>
   <style>
     html, body {
@@ -16,10 +16,10 @@
 
     canvas {
       display: block;
-      position: fixed; /* Keep canvas fixed */
+      position: fixed; /* Keeps canvas in the background */
       top: 0;
       left: 0;
-      z-index: -1; /* Send canvas to the background */
+      z-index: -1; /* Ensure it's behind other content */
       width: 100%;
       height: 100%;
     }
@@ -28,27 +28,29 @@
       position: relative;
       z-index: 10; /* Place content above the canvas */
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+      flex-wrap: wrap; /* Ensure items wrap onto the next line */
+      gap: 20px; /* Space between buttons */
       padding: 20px;
-      margin-top: 20px; /* Ensure content starts below */
+      margin-top: 20px; /* Avoid overlapping canvas */
     }
 
     .game-item {
       position: relative;
-      width: 150px; /* Controls button size */
+      width: 150px; /* Button size */
       height: 150px;
       border: 2px solid white;
-      border-radius: 10px; /* Rounded corners */
+      border-radius: 10px;
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .game-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       cursor: pointer;
     }
+
     .game-item:hover {
       transform: scale(1.1); /* Slightly bigger */
       box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8); /* Glowing effect */
@@ -57,16 +59,29 @@
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
-  
+
   <div class="container">
-    <!-- Game items go here -->
     <div class="game-item">
       <img src="images/icons/1v1.png" alt="1v1.lol shooter fortnite adventure action" onclick="openFullscreenGame('games/1v1.html')">
     </div>
     <div class="game-item">
       <img src="justfall-lol-juego-multijugador-con-pinguinos.png" alt="justfall.lol fall guys" onclick="openFullscreenGame('justfall.html')">
     </div>
-    <!-- Add more game items as needed -->
+    <div class="game-item">
+      <img src="Untitled design.png" alt="Eaglercraft minecraft mojang" onclick="openFullscreenGame('EaglercraftL_1.9_v0_7_0_Offline_Signed.html')">
+    </div>
+    <div class="game-item">
+      <img src="EF24F77D-B550-4F41-ABEC-B92F19657EEA.jpeg" alt="RL rocket league car" onclick="openFullscreenGame('rl.html')">
+    </div>
+    <div class="game-item">
+      <img src="poki-ragdoll-hit-icon-filled-256.png" alt="ragdoll hit battle 2d" onclick="openFullscreenGame('ragdollhit.html')">
+    </div>
+    <div class="game-item">
+      <img src="C88FB025-E58E-4A20-BD77-A443C7D1ACB0_4_5005_c.jpeg" alt="Soccer random" onclick="openFullscreenGame('soccerrandom.html')">
+    </div>
+    <div class="game-item">
+      <img src="A6F610FE-A6C8-45E0-A22D-BF6448A31E84.png" alt="Boxing random" onclick="openFullscreenGame('boxingrandom.html')">
+    </div>
   </div>
 
   <script>
