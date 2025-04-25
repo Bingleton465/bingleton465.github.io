@@ -60,28 +60,28 @@
       background-color: #ddd;
     }
 
-    .container {
-      position: relative;
-      top: 220px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-    }
+   .container {
+  position: relative;
+  top: 120px;        /* raised by 100px */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
 
-    .game-item {
-      width: 150px;
-      height: 150px;
-      border: 2px solid white;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 100px;
-    }
+.game-item {
+  width: 150px;
+  height: 150px;
+  border: 2px solid white;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 0;     /* removed the big gap */
+}
 
     .game-item img {
       width: 100%;
