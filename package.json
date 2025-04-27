@@ -1,0 +1,16 @@
+{
+  "name": "velora-v2",
+  "version": "1.0.0",
+  "description": "I present... (almost) VELORA! its a big upcoming project, and it will be AWESOME, so buckle up",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5"
+  }
+}
