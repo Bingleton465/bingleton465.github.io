@@ -2,113 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora–🎮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velora–🏠</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
+      margin: 0; padding: 0;
+      overflow: hidden;
       background: black;
+      width: 100%; height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
-
     canvas {
       display: block;
       position: absolute;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
     }
-
+    .url-container {
+      position: relative;
+      z-index: 1;
+      margin-top: 20px;
+    }
+    .url-input, .url-button {
+      font-size: 24px;
+      padding: 10px 25px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-family: Arial, sans-serif;
+      outline: none;
+    }
+    .url-input {
+      width: 250px;
+      margin-right: 10px;
+    }
+    .url-button {
+      cursor: pointer;
+    }
+    .url-button:hover {
+      background: white;
+      color: black;
+    }
     .top-bar {
-      position: fixed;
-      top: 0;
+      position: absolute;
+      top: 30px;
       left: 0;
-      width: 100%;
-      height: 80px;
+      width: 90%;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 30px;
-      background: rgba(0, 0, 0, 0.7);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(5px);
-      z-index: 999;
+      padding: 10px 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      z-index: 2;
     }
-
-    .title img {
-      height: 40px;
+    .top-bar .title {
+      color: white;
+      font-size: 24px;
+      font-family: Arial, sans-serif;
     }
-
-    .buttons {
-       
-      
-      
-      
-      margin-right: 40px;  /* Increase the margin to move it to the left */
-
-
-      
+    .top-bar .buttons {
       display: flex;
       gap: 10px;
     }
-
-    .buttons .button {
-      background-color: white;
-      color: black;
-      border: none;
-      border-radius: 5px;
+    .top-bar .button {
+      font-size: 18px;
       padding: 10px 20px;
-      font-weight: bold;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-family: Arial, sans-serif;
       cursor: pointer;
-      transition: background-color 0.2s;
+      position: relative;
+      overflow: hidden;
     }
-
-    .buttons .button:hover {
-      background-color: #ddd;
-    }
-
-   .container {
-  position: relative;
-  top: 120px;        /* raised by 100px */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
-}
-
-.game-item {
-  width: 150px;
-  height: 150px;
-  border: 2px solid white;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 0;     /* removed the big gap */
-}
-
-    .game-item img {
+    .top-bar .button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      cursor: pointer;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s;
+      z-index: 1;
     }
-
-    .game-item:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
+    .top-bar .button:hover::after {
+      left: 100%;
+    }
+    .top-bar .button:hover {
+      background: white;
+      color: black;
     }
   </style>
 </head>
 <body>
-
+  <canvas id="constellationCanvas"></canvas>
   <div class="top-bar">
     <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
     </div>
     <div class="buttons">
       <button class="button" onclick="window.location.href='index.html'">Home</button>
@@ -116,136 +113,16 @@
       <button class="button" onclick="window.location.href='settings.html'">Settings</button>
     </div>
   </div>
-
-  <div style="text-align: center;">
-    <a href="https://cooltext.com">
-      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
-    </a>
+  <div class="url-container">
+    <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
+    <button id="urlButton" class="url-button">Search or Enter URL</button>
   </div>
-
-  <canvas id="constellationCanvas"></canvas>
-
-  <div class="container">
-    <div class="game-item">
-      <img
-        src="images/icons/1v1.png"
-        alt="1v1.lol shooter fortnite adventure action"
-        onclick="openFullscreenGame('games/1v1.html')"
-      >
-    </div>
-    <div class="game-item">
-      <img
-        src="images/icons/rl.webp"
-        alt="rocket league rl sports action"
-        onclick="openFullscreenGame('games/rl.html')"
-      >
-    </div>
-    <div class="game-item">
-      <img
-        src="images/icons/er2.jpg"
-        alt="escape road action cars gta crime"
-        onclick="openFullscreenGame('games/er2.html')"
-      >
-    </div>
-    <div class="game-item">
-      <img
-        src="images/icons/kong.png"
-        alt="kong minigame funny"
-        onclick="openFullscreenGame('games/kong.html')"
-      >
-    </div>
-    <div class="game-item">
-      <img
-        src="images/icons/bitlife.png"
-        alt="bitlife simulator life"
-        onclick="openFullscreenGame('games/bitlife.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/geometry.svg.png"
-        alt="bitlife simulator life"
-        onclick="openFullscreenGame('games/geometry.html')"
-      >
-    </div>
-    <div class="game-item">
-      <img
-        src="images/icons/craft.png"
-        alt="minecraft eaglercraft block"
-        onclick="openFullscreenGame('games/EaglercraftX 1.8.8(u29).html')"
-      >
-    </div>
-      <div class="game-item">
-      <img
-        src="images/icons/skibidi.avif"
-        alt="skibidi backrooms "
-        onclick="openFullscreenGame('games/skibidi.html')"
-      >
-    </div> 
-    <div class="game-item">
-      <img
-        src="images/icons/boxels.webp"
-        alt="sandboxels sandbox simulator"
-        onclick="openFullscreenGame('games/clsandboxels.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/slope.png"
-        alt="slope mimigame"
-        onclick="openFullscreenGame('games/slope.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/happy.jpeg"
-        alt="happy wheels action"
-        onclick="openFullscreenGame('games/happy.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/tiny.avif"
-        alt="tiny fishing"
-        onclick="openFullscreenGame('games/tiny.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/rhit.avif"
-        alt="tiny fishing"
-        onclick="openFullscreenGame('games/rhit.html')"
-      >
-    </div>
-     <div class="game-item">
-      <img
-        src="images/icons/ra.webp"
-        alt="tiny fishing"
-        onclick="openFullscreenGame('games/ra.html')"
-      >
-    </div>
-    <!-- Add more game-item blocks here -->
-  </div>
-
   <script>
+    // Starfield animation (same as before)
     const canvas = document.getElementById('constellationCanvas');
-    const ctx    = canvas.getContext('2d');
-    let stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 120;
-
-    function resizeCanvas() {
-      canvas.width  = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
-    }
-
-    function ensureScrollArea() {
-      const bottom = document.querySelector('.container')
-                        .getBoundingClientRect().bottom;
-      document.body.style.minHeight = (bottom + 20) + 'px';
-      resizeCanvas();
-    }
-
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     class Star {
       constructor(x, y, r) {
         this.x = x; this.y = y; this.r = r;
@@ -255,11 +132,9 @@
         this.age = 0;
       }
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
+        this.x += this.vx; this.y += this.vy; this.age++;
         if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
       burst() {
@@ -277,65 +152,60 @@
         ctx.fill();
       }
     }
-
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < MAX_STARS; i++) {
-        stars.push(new Star(
-          Math.random() * window.innerWidth,
-          Math.random() * document.documentElement.scrollHeight,
-          Math.random() * 2 + 1
-        ));
-      }
+    const stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 100;
+    for (let i = 0; i < MAX_STARS; i++) {
+      stars.push(new Star(
+        Math.random() * canvas.width,
+        Math.random() * canvas.height,
+        Math.random() * 2 + 1
+      ));
     }
-
-    function drawConstellations() {
+    canvas.addEventListener('click', e => {
+      stars.push(new Star(e.clientX, e.clientY, Math.random() * 2 + 1));
+    });
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
       for (let i = 0; i < stars.length; i++) {
         for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
+          const a = stars[i], b = stars[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
           const dist = Math.hypot(dx, dy);
           if (dist < LINE_DIST) {
-            const alpha = 1 - dist / LINE_DIST;
-            ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.5})`;
-            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
       }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawConstellations();
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
       requestAnimationFrame(draw);
     }
-
-   function openFullscreenGame(url) {
-  const newWindow = window.open(url, '_blank');
-  if (newWindow) {
-    newWindow.focus(); 
-  } else {
-    alert("please enable popups to play the game -marshall");
-  }
-}
-
-    window.addEventListener('load', () => {
-      ensureScrollArea();
-      initStars();
-      draw();
+    draw();
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     });
 
-    window.addEventListener('resize', () => {
-      ensureScrollArea();
-      initStars();
+    // Redirect to load.html with the URL param
+    const urlInput = document.getElementById('urlInput');
+    const urlButton = document.getElementById('urlButton');
+    urlButton.addEventListener('click', () => {
+      let url = urlInput.value.trim();
+      if (!url) { alert('Type in a valid URL'); return; }
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      try {
+        new URL(url);
+        window.location.href = 'load.html?url=' + encodeURIComponent(url);
+      } catch (e) {
+        alert('Type in a valid URL');
+      }
     });
   </script>
 </body>
