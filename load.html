@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velora–Loading</title>
+  <style>
+    /* Same styles as index.html for full-screen effect */
+    html, body { margin:0; padding:0; overflow:hidden; background:black; width:100%; height:100%; }
+    canvas { position:absolute; top:0; left:0; display:block; }
+    .url-container { display:flex; align-items:center; justify-content:center; height:100%; color:white; font-family:Arial,sans-serif; font-size:24px; z-index:1; position:relative; }
+  </style>
+</head>
+<body>
+  <canvas id="constellationCanvas"></canvas>
+  <div class="url-container">Loading…</div>
+  <script>
+    // Starfield animation (copy from index.html)
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    class Star { /* same as above */ constructor(x,y,r){this.x=x;this.y=y;this.r=r;this.vx=(Math.random()-0.5)*0.5;this.vy=(Math.random()-0.5)*0.5;this.timeToBurst=Math.random()*1000+3000;this.age=0;}update(){this.x+=this.vx;this.y+=this.vy;this.age++;if(this.age>this.timeToBurst)this.burst();if(this.x<0||this.x>canvas.width)this.vx*=-1;if(this.y<0||this.y>canvas.height)this.vy*=-1;}burst(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.vx=(Math.random()-0.5)*0.5;this.vy=(Math.random()-0.5)*0.5;this.timeToBurst=Math.random()*1000+3000;this.age=0;}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();}};
+    const stars = Array.from({length:80},() => new Star(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2+1));
+    canvas.addEventListener('click', e => stars.push(new Star(e.clientX,e.clientY,Math.random()*2+1)));
+    function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{s.update();s.draw()});for(let i=0;i<stars.length;i++)for(let j=i+1;j<stars.length;j++){const a=stars[i],b=stars[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);if(dist<100){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(255,255,255,${1-dist/100})`;ctx.lineWidth=0.5;ctx.stroke();}}requestAnimationFrame(draw);}draw();window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+    // Proxy redirect
+    const params = new URLSearchParams(window.location.search);
+    let url = params.get('url');
+    if (!url) {
+      document.querySelector('.url-container').textContent = 'No URL provided.';
+    } else {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+      // direct proxy endpoint
+      window.location.href = '/proxy?url=' + encodeURIComponent(url);
+    }
+  </script>
+</body>
+</html>
