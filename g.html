@@ -21,19 +21,19 @@
     }
 
     .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      width: 90%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
+  position: fixed; /* <-- changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100%; /* <- changed to 100% so it stretches fully across */
+  height: 60px; /* maybe a little taller */
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* big z-index so it stays above everything */
+}
     .top-bar .title {
       color: white;
       font-size: 24px;
