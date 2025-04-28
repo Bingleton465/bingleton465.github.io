@@ -99,25 +99,54 @@
       background: white;
       color: black;
     }
+
+    /* ADDED: Style for the toggle music button */
+    .music-toggle {
+      font-size: 24px;
+      padding: 10px 25px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      margin-top: 20px;
+      z-index: 1;
+    }
+    .music-toggle:hover {
+      background: white;
+      color: black;
+    }
   </style>
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
+  
   <div class="top-bar">
-<div class="title">
-  <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
-</div>
+    <div class="title">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
+    </div>
     <div class="buttons">
       <button class="button" onclick="window.location.href='index.html'">Home</button>
       <button class="button" onclick="window.location.href='g.html'">Games</button>
       <button class="button" onclick="window.location.href='settings.html'">Settings</button>
     </div>
   </div>
+
+  <!-- ADDED: Toggle Music Button -->
+  <button class="music-toggle" id="musicToggle">Toggle Music</button>
+
   <div class="url-container">
     <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
- <button id="urlButton" class="url-button" onclick="window.location.href='sorry.html'">Search or Enter URL</button>
-
+    <button id="urlButton" class="url-button">Search or Enter URL</button>
   </div>
+
+  <!-- ADDED: Audio Element (hidden) -->
+  <audio id="backgroundMusic" loop>
+    <source src="444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
   <script>
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
@@ -204,7 +233,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
-    
+
     const urlInput = document.getElementById('urlInput');
     const urlButton = document.getElementById('urlButton');
     urlButton.addEventListener('click', () => {
@@ -222,6 +251,21 @@
       } catch (e) {
         alert('Type in a valid URL');
       }
+    });
+
+    // ADDED: Music toggle logic
+    const music = document.getElementById('backgroundMusic');
+    const toggleButton = document.getElementById('musicToggle');
+
+    let isPlaying = false;
+
+    toggleButton.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+      } else {
+        music.play();
+      }
+      isPlaying = !isPlaying;
     });
   </script>
 </body>
