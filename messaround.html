@@ -47,18 +47,18 @@
       color: black;
     }
     .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      width: 90%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
+  position: fixed; /* <-- changed from absolute to fixed */
+  top: 0;
+  left: 0;
+  width: 100%; /* <- changed to 100% so it stretches fully across */
+  height: 60px; /* maybe a little taller */
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* big z-index so it stays above everything */
     }
     .top-bar .title {
       color: white;
@@ -104,9 +104,9 @@
 <body>
   <canvas id="constellationCanvas"></canvas>
   <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
-    </div>
+<div class="title">
+  <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
+</div>
     <div class="buttons">
       <button class="button" onclick="window.location.href='index.html'">Home</button>
       <button class="button" onclick="window.location.href='g.html'">Games</button>
@@ -115,9 +115,96 @@
   </div>
   <div class="url-container">
     <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
-    <button id="urlButton" class="url-button">Search or Enter URL</button>
+ <button id="urlButton" class="url-button" onclick="window.location.href='sorry.html'">Search or Enter URL</button>
+
   </div>
   <script>
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    class Star {
+      constructor(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;
+        this.age = 0;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.age++;
+        if (this.age > this.timeToBurst) this.burst();
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      burst() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;
+        this.age = 0;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+    }
+    
+    const stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 100;
+    for (let i = 0; i < MAX_STARS; i++) {
+      let x = Math.random() * canvas.width;
+      let y = Math.random() * canvas.height;
+      let r = Math.random() * 2 + 1;
+      stars.push(new Star(x, y, r));
+    }
+    
+    canvas.addEventListener('click', e => {
+      let r = Math.random() * 2 + 1;
+      let s = new Star(e.clientX, e.clientY, r);
+      stars.push(s);
+    });
+    
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let star of stars) {
+        star.update();
+        star.draw();
+      }
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          let a = stars[i], b = stars[j];
+          let dx = a.x - b.x, dy = a.y - b.y;
+          let dist = Math.hypot(dx, dy);
+          if (dist < LINE_DIST) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    
+    draw();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    
     const urlInput = document.getElementById('urlInput');
     const urlButton = document.getElementById('urlButton');
     urlButton.addEventListener('click', () => {
@@ -131,7 +218,7 @@
       }
       try {
         new URL(url);
-        window.location.href = '/proxy?url=' + encodeURIComponent(url); // This sends request to backend
+        window.location.href = '/proxy?url=' + encodeURIComponent(url);
       } catch (e) {
         alert('Type in a valid URL');
       }
