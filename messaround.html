@@ -3,130 +3,190 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Car Crash Physics Demo</title>
+  <title>3D Car Crash Physics</title>
   <style>
     body { margin: 0; overflow: hidden; }
-    canvas { display: block; background: #fafafa; }
+    canvas { display: block; }
   </style>
+
+  <!-- Three.js (r176) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.176.0/build/three.min.js"></script>
+  <!-- cannon-es UMD build (v0.20.0) -->
+  <script src="https://cdn.jsdelivr.net/gh/KLA6/cannon-es-umd@v0.20.0/cannon-es.umd.js"></script>
 </head>
 <body>
-  <!-- Matter.js Physics Engine -->
-  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
-  <script>
-    // module aliases
-    const { Engine, Render, Runner, World, Bodies, Body, Constraint, Events } = Matter;
+<script>
+  // ----- THREE.JS SETUP -----
+  const scene    = new THREE.Scene();
+  const camera   = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+  camera.position.set(0, 5, 15);
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(innerWidth, innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-    // create engine and world
-    const engine = Engine.create();
-    const world = engine.world;
+  // Lighting
+  const light = new THREE.DirectionalLight(0xffffff, 1.0);
+  light.position.set(10, 10, 5);
+  scene.add(light);
 
-    // create renderer
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    const render = Render.create({
-      element: document.body,
-      engine: engine,
-      options: {
-        width: width,
-        height: height,
-        wireframes: false,
-        background: '#ffffff'
+  // ----- CANNON-ES PHYSICS -----
+  const world = new CANNON.World();
+  world.gravity.set(0, -9.82, 0);
+
+  // Materials
+  const groundMat = new CANNON.Material();
+  const wheelMat  = new CANNON.Material();
+  const wheelGroundContact = new CANNON.ContactMaterial(wheelMat, groundMat, {
+    friction: 0.6,
+    restitution: 0.1
+  });
+  world.addContactMaterial(wheelGroundContact);
+
+  // ----- GROUND -----
+  // Physics body
+  const groundBody = new CANNON.Body({
+    mass: 0,
+    shape: new CANNON.Plane(),
+    material: groundMat
+  });
+  groundBody.quaternion.setFromEuler(-Math.PI/2, 0, 0);
+  world.addBody(groundBody);
+  // Three mesh
+  const groundMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(50, 50),
+    new THREE.MeshStandardMaterial({ color: 0x777777 })
+  );
+  groundMesh.rotation.x = -Math.PI/2;
+  scene.add(groundMesh);
+
+  // ----- CAR CHASSIS -----
+  const chassisShape = new CANNON.Box(new CANNON.Vec3(1.2, 0.3, 2));
+  const chassisBody  = new CANNON.Body({ mass: 150 });
+  chassisBody.addShape(chassisShape);
+  chassisBody.position.set(0, 2, 0);
+  world.addBody(chassisBody);
+  const chassisMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(2.4, 0.6, 4),
+    new THREE.MeshStandardMaterial({ color: 0xff0000 })
+  );
+  scene.add(chassisMesh);
+
+  // ----- WHEELS -----
+  const wheelBodies = [];
+  const wheelMeshes = [];
+  const wheelRadius = 0.5;
+  const wheelGeo     = new THREE.SphereGeometry(wheelRadius, 16, 16);
+  const wheelMat3    = new THREE.MeshStandardMaterial({ color: 0x000000 });
+
+  // Positions relative to chassis
+  const wheelOffsets = [
+    new CANNON.Vec3(-1, -0.7,  1.5),
+    new CANNON.Vec3( 1, -0.7,  1.5),
+    new CANNON.Vec3(-1, -0.7, -1.5),
+    new CANNON.Vec3( 1, -0.7, -1.5)
+  ];
+
+  wheelOffsets.forEach(offset => {
+    // Physics body
+    const body = new CANNON.Body({
+      mass: 20,
+      shape: new CANNON.Sphere(wheelRadius),
+      material: wheelMat
+    });
+    body.position.copy(chassisBody.position.vadd(offset));
+    world.addBody(body);
+    wheelBodies.push(body);
+
+    // Three mesh
+    const mesh = new THREE.Mesh(wheelGeo, wheelMat3);
+    scene.add(mesh);
+    wheelMeshes.push(mesh);
+
+    // Connect by point-to-point constraint (basic axle)
+    const axle = new CANNON.PointToPointConstraint(
+      chassisBody, offset,
+      body, new CANNON.Vec3(0, 0, 0),
+      0.5
+    );
+    world.addConstraint(axle);
+  });
+
+  // ----- SIMPLE OBSTACLES -----
+  for (let i=0; i<5; i++) {
+    const boxBody = new CANNON.Body({
+      mass: 5,
+      shape: new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5))
+    });
+    boxBody.position.set(5 + i*2, 0.5, -5);
+    world.addBody(boxBody);
+    const boxMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1,1,1),
+      new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+    );
+    scene.add(boxMesh);
+
+    // Link for sync
+    boxBody.threeMesh = boxMesh;
+  }
+
+  // ----- KEY CONTROLS -----
+  const keyState = { forward: false, backward: false };
+  window.addEventListener('keydown', e => {
+    if (e.code === 'ArrowUp')   keyState.forward = true;
+    if (e.code === 'ArrowDown') keyState.backward = true;
+  });
+  window.addEventListener('keyup', e => {
+    if (e.code === 'ArrowUp')   keyState.forward = false;
+    if (e.code === 'ArrowDown') keyState.backward = false;
+  });
+
+  // ----- ANIMATION LOOP -----
+  const timeStep = 1/60;
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Drive force
+    const forceMagnitude = 150;
+    wheelBodies.forEach((wb, i) => {
+      const direction = keyState.forward ? -1 : keyState.backward ? 1 : 0;
+      if (direction) {
+        // apply local forward/backward force
+        const worldPoint = wb.position.clone();
+        wb.applyForce(
+          chassisBody.quaternion.vmult(new CANNON.Vec3(direction*forceMagnitude, 0, 0)),
+          worldPoint
+        );
       }
     });
-    Render.run(render);
-    Runner.run(Runner.create(), engine);
 
-    // ground
-    const ground = Bodies.rectangle(width / 2, height - 50, width, 100, {
-      isStatic: true,
-      render: { fillStyle: '#060a19' }
-    });
-    World.add(world, ground);
+    // Step physics
+    world.step(timeStep);
 
-    // ramp
-    const ramp = Bodies.rectangle(600, height - 150, 300, 20, {
-      isStatic: true,
-      angle: -0.3,
-      render: { fillStyle: '#4a4a4a' }
+    // Sync Three meshes
+    chassisMesh.position.copy(chassisBody.position);
+    chassisMesh.quaternion.copy(chassisBody.quaternion);
+    wheelBodies.forEach((wb, i) => {
+      wheelMeshes[i].position.copy(wb.position);
+      wheelMeshes[i].quaternion.copy(wb.quaternion);
     });
-    World.add(world, ramp);
-
-    // obstacle stack
-    const stack = [];
-    for (let i = 0; i < 5; i++) {
-      stack.push(
-        Bodies.rectangle(1100, height - 70 - i * 40, 50, 50, {
-          restitution: 0.4,
-          friction: 0.8
-        })
-      );
-    }
-    World.add(world, stack);
-
-    // car chassis
-    const carWidth = 120;
-    const carHeight = 30;
-    const car = Bodies.rectangle(200, height - 100, carWidth, carHeight, {
-      density: 0.0002,
-      friction: 0.1,
-      restitution: 0.1,
-      render: { fillStyle: '#ff0000' }
-    });
-
-    // wheels
-    const wheel1 = Bodies.circle(160, height - 70, 20, {
-      density: 0.0005,
-      friction: 0.8,
-      restitution: 0.1,
-      render: { fillStyle: '#000000' }
-    });
-    const wheel2 = Bodies.circle(240, height - 70, 20, {
-      density: 0.0005,
-      friction: 0.8,
-      restitution: 0.1,
-      render: { fillStyle: '#000000' }
-    });
-
-    // constraints (axles)
-    const axle1 = Constraint.create({
-      bodyA: car,
-      pointA: { x: -40, y: 15 },
-      bodyB: wheel1,
-      stiffness: 0.5,
-      length: 0
-    });
-    const axle2 = Constraint.create({
-      bodyA: car,
-      pointA: { x: 40, y: 15 },
-      bodyB: wheel2,
-      stiffness: 0.5,
-      length: 0
-    });
-
-    World.add(world, [car, wheel1, wheel2, axle1, axle2]);
-
-    // controls
-    const keys = { left: false, right: false };
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight') keys.right = true;
-      if (e.key === 'ArrowLeft') keys.left = true;
-    });
-    document.addEventListener('keyup', e => {
-      if (e.key === 'ArrowRight') keys.right = false;
-      if (e.key === 'ArrowLeft') keys.left = false;
-    });
-
-    // apply forces for movement
-    Events.on(engine, 'beforeUpdate', () => {
-      if (keys.right) {
-        Body.applyForce(wheel1, wheel1.position, { x: 0.03, y: 0 });
-        Body.applyForce(wheel2, wheel2.position, { x: 0.03, y: 0 });
-      }
-      if (keys.left) {
-        Body.applyForce(wheel1, wheel1.position, { x: -0.03, y: 0 });
-        Body.applyForce(wheel2, wheel2.position, { x: -0.03, y: 0 });
+    // Sync obstacles
+    world.bodies.forEach(body => {
+      if (body.threeMesh) {
+        body.threeMesh.position.copy(body.position);
+        body.threeMesh.quaternion.copy(body.quaternion);
       }
     });
-  </script>
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+</script>
 </body>
 </html>
