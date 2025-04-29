@@ -148,6 +148,14 @@
   </audio>
 
   <script>
+  function isMobileOrTablet() {
+    const ua = navigator.userAgent.toLowerCase();
+    return /iphone|ipod|android.*mobile|windows phone|blackberry|iemobile|opera mini|ipad|android(?!.*mobile)/.test(ua);
+  }
+
+  if (isMobileOrTablet() && !window.location.href.includes("formobile.html")) {
+    window.location.href = "formobile.html";
+  }
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
