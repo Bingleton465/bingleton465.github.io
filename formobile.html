@@ -1,1 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Velora–🎮</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background: black;
+    }
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+    .top-bar .title {
+      color: white;
+      font-size: 24px;
+      font-family: Arial, sans-serif;
+    }
+    .top-bar .button {
+      font-size: 18px;
+      padding: 10px 20px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .top-bar .button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s;
+      z-index: 1;
+    }
+    .top-bar .button:hover::after {
+      left: 100%;
+    }
+    .top-bar .button:hover {
+      background: white;
+      color: black;
+    }
+    .title img {
+      height: 40px;
+    }
+    .buttons {
+      margin-right: 40px;
+      display: flex;
+      gap: 10px;
+    }
+    .buttons .button {
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .buttons .button:hover {
+      background-color: #ddd;
+    }
+    .container {
+      position: relative;
+      top: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+    .game-item {
+      width: 150px;
+      height: 150px;
+      border: 2px solid white;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+    .game-item:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="title">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="window.location.href='index.html'">Home</button>
+      <button class="button" onclick="window.location.href='g.html'">Games</button>
+      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+    </div>
+  </div>
+
+  <div style="text-align: center;">
+    <a href="https://cooltext.com">
+      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
+    </a>
+  </div>
+
+  <canvas id="constellationCanvas"></canvas>
+
+  <div class="container">
+    <!-- Game items here (your existing list) -->
+    <!-- No need to copy that entire list again for now -->
+  </div>
+
+  <script>
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 120;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.documentElement.scrollHeight;
+    }
+
+    function ensureScrollArea() {
+      const bottom = document.querySelector('.container').getBoundingClientRect().bottom;
+      document.body.style.minHeight = (bottom + 20) + 'px';
+      resizeCanvas();
+    }
+
+    class Star {
+      constructor(x, y, r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;
+        this.age = 0;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.age++;
+        if (this.age > this.timeToBurst) this.burst();
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      burst() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.age = 0;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      }
+    }
+
+    function connectStars() {
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < LINE_DIST) {
+            ctx.beginPath();
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let star of stars) {
+        star.update();
+        star.draw();
+      }
+      connectStars();
+      requestAnimationFrame(animate);
+    }
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < MAX_STARS; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const r = Math.random() * 1.5 + 0.5;
+        stars.push(new Star(x, y, r));
+      }
+    }
+
+    function openFullscreenGame(url) {
+      const win = window.open(url, '_blank');
+      win.focus();
+    }
+
+    window.addEventListener('resize', () => {
+      ensureScrollArea();
+      initStars();
+    });
+
+    ensureScrollArea();
+    initStars();
+    animate();
+  </script>
+
+</body>
+</html>
 
