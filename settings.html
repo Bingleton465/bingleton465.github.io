@@ -1,219 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora – ⚙️</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: black;
-      width: 100%;
-      height: 100%;
-    }
-
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .coming-soon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      text-align: center;
-      font-family: sans-serif;
-      z-index: 1;
-    }
-
-    .coming-soon h1 {
-      font-size: 4rem;
-      margin: 0;
-    }
-
-    .coming-soon p {
-      font-size: 1.5rem;
-      margin-top: 0.5rem;
-      opacity: 0.7;
-    }
-
-    .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-
-    .top-bar .title {
-      color: white;
-      font-size: 24px;
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-    }
-
-    .top-bar .buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .top-bar .button {
-      font-size: 18px;
-      padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      z-index: 2;
-    }
-
-    .top-bar .button::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
-    }
-
-    .top-bar .button:hover::after {
-      left: 100%;
-    }
-
-    .top-bar .button:hover {
-      background: white;
-      color: black;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velora - ⚙️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link id="favicon" rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="settingss.css">
+  <link rel="icon" type="image/x-icon" href="/imgs/PUMNAS.ico">
 </head>
 <body>
-  <canvas id="constellationCanvas"></canvas>
 
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 0;">
-    </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
-    </div>
+<div class="top-bar">
+  <a href="/index.html"><button class="nav-button home">home</button></a>
+  <div class="nav-buttons-container">
+    <a href="/game/game.html"><button class="nav-button">games</button></a>
+    <a href="/apps/apps.html"><button class="nav-button">apps</button></a>
+    <a href="/proxy/proxy.html"><button class="nav-button">proxy</button></a>
+    <a href="/bookmarklets/bookmarklets.html"><button class="nav-button">bookmarklets</button></a>
+    <a href="/setttings/settings.html"><button class="nav-button">settings</button></a>
+    <a href="/credits/credits.html"><button class="nav-button">credits</button></a>
+  </div>
+</div>
+
+<div class="settings-container">
+  <h2>Settings</h2>
+  
+  <div class="setting-item">
+    <label for="title-input">Change Tab Title:</label>
+    <input type="text" id="title-input" placeholder="Enter new title">
   </div>
 
-  <div class="coming-soon">
-    <h1>COMING SOON (maybe)</h1>
-    <p>—marshall</p>
+  <div class="setting-item">
+    <label for="favicon-input">Change Favicon:</label>
+    <input type="file" id="favicon-input" accept="image/x-icon, image/png">
   </div>
 
-  <script>
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  <div class="setting-item">
+    <label for="premadecloaks">Select Tab Cloak:</label>
+    <select id="premadecloaks">
+      <option value="defaultsettings">Default Settings</option>
+      <option value="search">Google</option>
+      <option value="drive">Google Drive</option>
+      <option value="classroom">Google Classroom</option>
+      <option value="gmail">Gmail</option>
+      <option value="word">Microsoft Word</option>
+      <option value="powerpoint">Microsoft PowerPoint</option>
+      <option value="youtube">YouTube</option>
+      <option value="calendar">Google Calendar</option>
+      <option value="meets">Google Meet</option>
+      <option value="canvas">Canvas</option>
+      <option value="zoom">Zoom</option>
+      <option value="khan">Khan Academy</option>
+      <option value="fakesearch">Google Search</option>
+    </select>
+    <button id="cloak-btn">Set Cloak</button>
+  </div>
 
-    class Star {
-      constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-    }
+  <div class="setting-item">
+    <button id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
+  </div>
 
-    const stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 100;
-    for (let i = 0; i < MAX_STARS; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
-    }
+  <div class="setting-item">
+    <button id="reset-settings-btn">Reset Favicon and Title</button>
+  </div>
+</div>
 
-    canvas.addEventListener('click', e => {
-      let r = Math.random() * 2 + 1;
-      let s = new Star(e.clientX, e.clientY, r);
-      stars.push(s);
-    });
+<a href="https://discord.gg/R9xCcQFBhf" target="_blank" class="discord-link">
+    <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-7-1.png" alt="Discord Logo" class="discord-logo">
+  </a>
 
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          let a = stars[i], b = stars[j];
-          let dx = a.x - b.x, dy = a.y - b.y;
-          let dist = Math.hypot(dx, dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
+<script src="settings.js"></script>
+<script src="js/script.js"></script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
 </body>
 </html>
-
