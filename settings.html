@@ -206,6 +206,191 @@
 
 <script src="settings.js"></script>
 <script src="js/script.js"></script>
-<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script><script>window.onload = function() {
+    const savedTitle = localStorage.getItem('customTitle');
+    const savedFavicon = localStorage.getItem('customFavicon');
+    
+    if (savedTitle) {
+      document.title = savedTitle;
+      document.getElementById("title-input").value = savedTitle;
+    }
+  
+    if (savedFavicon) {
+      document.getElementById("favicon").href = savedFavicon;
+    }
+  };
+  
+  document.getElementById("title-input").addEventListener("input", function() {
+    const newTitle = this.value;
+    document.title = newTitle;
+    localStorage.setItem('customTitle', newTitle);
+  });
+  
+  document.getElementById("favicon-input").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    
+    reader.onloadend = function() {
+      const favicon = document.getElementById("favicon");
+      favicon.href = reader.result;
+      localStorage.setItem('customFavicon', reader.result);
+    }
+    
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById("cloak-btn").addEventListener("click", function() {
+    setCloak();
+  });
+  
+  function setCloak() {
+    var cloak = document.getElementById("premadecloaks").value;
+    switch (cloak) {
+      case "defaultsettings":
+        setTitle("PUMNAS");
+        setFavicon("/imgs/PUMNAS.ico");
+        localStorage.setItem("tab", JSON.stringify({}));
+        location.reload();
+        break;
+      case "search":
+        setTitle("Google");
+        setFavicon("/imgs/google.ico");
+        location.reload();
+        break;
+      case "drive":
+        setTitle("My Drive - Google Drive");
+        setFavicon("/imgs/google-drive-ico.ico");
+        location.reload();
+        break;
+      case "classroom":
+        setTitle("Google Classroom");
+        setFavicon("/imgs/google-classroom.ico");
+        location.reload();
+        break;
+      case "gmail":
+        setTitle("Gmail");
+        setFavicon("/imgs/gmail.ico");
+        location.reload();
+        break;
+      case "word":
+        setTitle("Document.docx");
+        setFavicon("/imgs/word.ico");
+        location.reload();
+        break;
+      case "powerpoint":
+        setTitle("Presentation.pptx");
+        setFavicon("/imgs/powerpoint.ico");
+        location.reload();
+        break;
+      case "youtube": 
+        setTitle("YouTube");
+        setFavicon("/imgs/youtube.ico");
+        location.reload();
+        break;
+      case "calendar":
+        setTitle("Google Calendar");
+        setFavicon("/imgs/google-calender.ico");
+        location.reload();
+        break;
+      case "meets":
+        setTitle("Google Meet");
+        setFavicon("/imgs/google-meet.ico");
+        location.reload();
+        break;
+      case "canvas":
+        setTitle("Canvas");
+        setFavicon("/imgs/canvas.ico");
+        location.reload();
+        break;
+      case "zoom":
+        setTitle("Zoom");
+        setFavicon("/imgs/zoom.ico");
+        location.reload();
+        break;
+      case "khan":
+        setTitle("Khan Academy"); 
+        setFavicon("/imgs/khan-academy.ico");
+        location.reload();
+        break;
+      case "fakesearch":
+        setTitle("calculator - Google Search"); 
+        setFavicon("/imgs/google.ico");
+        location.reload();
+        break;
+    }
+  }
+  
+  function setTitle(newTitle) {
+    document.title = newTitle;
+    localStorage.setItem('customTitle', newTitle);
+  }
+  
+  function setFavicon(url) {
+    var favicon = document.getElementById("favicon");
+    favicon.href = url;
+    localStorage.setItem('customFavicon', url);
+  }
+  
+
+  document.getElementById("reset-settings-btn").addEventListener("click", function() {
+    localStorage.removeItem('customTitle');
+    localStorage.removeItem('customFavicon');
+  
+    document.title = 'Settings - PUMNAS';
+    document.getElementById("favicon").href = 'favicon.ico';
+  
+    document.getElementById("title-input").value = '';
+    document.getElementById("favicon-input").value = '';
+  });
+  
+  function aboutBlank(){
+    var urlObj = new window.URL(window.location.href);
+      var url = window.location;
+
+      if (url) {
+          var win;
+
+          document.querySelector('#cloaker').onclick = function() {
+              if (win) {
+                  win.focus();
+              } else {
+                  win = window.open();
+                  win.document.body.style.margin = '0';
+                  var originalTitle = document.title;
+              var faviconElement = document.querySelector('link[rel="icon"]');
+              var faviconURL = faviconElement ? faviconElement.href : '';
+              win.document.title = originalTitle;
+              if (faviconURL) {
+                  var favicon = win.document.createElement('link');
+                  favicon.rel = 'icon';
+                  favicon.href = faviconURL;
+                  win.document.head.appendChild(favicon);
+              }
+                  var iframe = win.document.createElement('iframe');
+                  iframe.style.border = 'none';
+                  iframe.style.width = '100%';
+                  iframe.style.height = '100%';
+                  iframe.style.margin = '0';
+                  iframe.style.overflow = 'hidden';
+                  iframe.src = url;
+                  win.document.body.appendChild(iframe);
+                  window.location.replace("https://ixl.com");
+
+                  var interval = setInterval(function() {
+                      if (win.closed) {
+                          clearInterval(interval);
+                          win = undefined;
+
+                      }
+                  }, 500);
+
+
+              }
+          };
+      }
+        }
+  </script>
 </body>
 </html>
