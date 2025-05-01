@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <script>
+<script>
+  (function () {
 
-  const savedTitle = localStorage.getItem('customTitle') || document.cookie.replace(/(?:(?:^|.*;\s*)customTitle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  const savedFavicon = localStorage.getItem('customFavicon') || document.cookie.replace(/(?:(?:^|.*;\s*)customFavicon\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+    const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+    const defaultFavicon = 'images/icons/logo.png';
 
-  
-  if (savedTitle) {
-    document.title = savedTitle;
-  }
+    if (savedTitle) document.title = savedTitle;
 
-  const faviconURL = savedFavicon || 'images/icons/logo.png';
-  const link = document.querySelector('link[rel="icon"]') || document.createElement('link');
-  link.rel = 'icon';
-  link.href = faviconURL;
-  link.id = 'favicon';
-  document.head.appendChild(link);
 
- 
-  if (!savedFavicon) {
-    localStorage.setItem('customFavicon', faviconURL);
-    document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
-  }
+    const favicon = savedFavicon || defaultFavicon;
+    setFavicon(favicon);
 
- 
-  function setCustomCloak(title, faviconURL) {
-    if (title) {
-      document.title = title;
-      localStorage.setItem('customTitle', title);
-      document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+    
+    if (!savedFavicon) {
+      localStorage.setItem('customFavicon', favicon);
+      document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
     }
 
-    if (faviconURL) {
-      const link = document.querySelector('link[rel="icon"]') || document.createElement('link');
-      link.rel = 'icon';
-      link.href = faviconURL;
-      link.id = 'favicon';
-      document.head.appendChild(link);
 
-      localStorage.setItem('customFavicon', faviconURL);
-      document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+    function setFavicon(url) {
+      let link = document.querySelector('link[rel="icon"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.href = url;
     }
-  }
+
+   
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    window.setCustomCloak = function(title, faviconURL) {
+      if (title) {
+        document.title = title;
+        localStorage.setItem('customTitle', title);
+        document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+      }
+      if (faviconURL) {
+        setFavicon(faviconURL);
+        localStorage.setItem('customFavicon', faviconURL);
+        document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+      }
+    };
+  })();
 </script>
+
 
 
   <meta charset="UTF-8" />
