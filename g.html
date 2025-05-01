@@ -220,119 +220,99 @@
   </div>
 
   <script>   // canvas + context
-     // canvas + context
-  const canvas = document.getElementById('constellationCanvas');
-  const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx    = canvas.getContext('2d');
 
-  // star class
-  class Star {
-    constructor(x, y, r) {
-      this.x = x;
-      this.y = y;
-      this.r = r;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.timeToBurst = Math.random() * 1000 + 3000;
-      this.age = 0;
-    }
-
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      this.age++;
-      if (this.age > this.timeToBurst) this.burst();
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-    }
-
-    burst() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.timeToBurst = Math.random() * 1000 + 3000;
-      this.age = 0;
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-    }
-  }
-
-  // globals
-  let stars = [];
-  const MAX_STARS = 80;
-  const LINE_DIST = 100;
-
-  // populate stars
-  function initStars() {
-    stars = [];
-    for (let i = 0; i < MAX_STARS; i++) {
-      stars.push(new Star(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height,
-        Math.random() * 2 + 1
-      ));
-    }
-  }
-
-  // resize canvas & re-init stars
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initStars();
-  }
-
-  // draw loop
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let star of stars) {
-      star.update();
-      star.draw();
-    }
-
-    for (let i = 0; i < stars.length; i++) {
-      for (let j = i + 1; j < stars.length; j++) {
-        const a = stars[i], b = stars[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < LINE_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
+    // star class
+    class Star {
+      constructor(x,y,r){
+        this.x = x; this.y = y; this.r = r;
+        this.vx = (Math.random()-0.5)*0.5;
+        this.vy = (Math.random()-0.5)*0.5;
+        this.timeToBurst = Math.random()*1000 + 3000;
+        this.age = 0;
+      }
+      update(){
+        this.x += this.vx;
+        this.y += this.vy;
+        this.age++;
+        if(this.age > this.timeToBurst) this.burst();
+        if(this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+        if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+      burst(){
+        this.x = Math.random()*canvas.width;
+        this.y = Math.random()*canvas.height;
+        this.vx = (Math.random()-0.5)*0.5;
+        this.vy = (Math.random()-0.5)*0.5;
+        this.timeToBurst = Math.random()*1000 + 3000;
+        this.age = 0;
+      }
+      draw(){
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
       }
     }
 
-    requestAnimationFrame(draw);
-  }
+    // globals
+    let stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 100;
 
-  // add star on click
-  canvas.addEventListener('click', e => {
-    stars.push(new Star(e.clientX, e.clientY, Math.random() * 2 + 1));
-  });
+    // populate stars
+    function initStars(){
+      stars = [];
+      for(let i=0; i<MAX_STARS; i++){
+        stars.push(new Star(
+          Math.random()*canvas.width,
+          Math.random()*canvas.height,
+          Math.random()*2 + 1
+        ));
+      }
+    }
 
-  // open game in new tab
-  function openFullscreenGame(url) {
-    const win = window.open(url, '_blank');
-    if (win) win.focus();
-    else alert("Please enable popups to play the game – Marshall");
-  }
+    // resize canvas & re-init stars
+    function resizeCanvas(){
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initStars();
+    }
 
-  // initialize on load
-  window.addEventListener('load', () => {
-    resizeCanvas();
-    draw();
-  });
+    // draw loop
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  window.addEventListener('resize', resizeCanvas);
+      for(let star of stars){
+        star.update();
+        star.draw();
+      }
+
+      for(let i=0; i<stars.length; i++){
+        for(let j=i+1; j<stars.length; j++){
+          const a = stars[i], b = stars[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if(dist < LINE_DIST){
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist/LINE_DIST})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    // add star on click
+    canvas.addEventListener('click', e => {
+      stars.push(new Star(e.clientX, e.clientY, Math.random()*2+1));
+    });
+
     // open game in new tab
     function openFullscreenGame(url){
       const win = window.open(url, '_blank');
