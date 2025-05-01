@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
   <script>
-  const savedTitle = localStorage.getItem('customTitle');
-  const savedFavicon = localStorage.getItem('customFavicon');
+  const savedTitle = localStorage.getItem('customTitle') || document.cookie.replace(/(?:(?:^|.*;\s*)customTitle\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  const savedFavicon = localStorage.getItem('customFavicon') || document.cookie.replace(/(?:(?:^|.*;\s*)customFavicon\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
-  if (savedTitle) {
-    document.title = savedTitle;
-  }
+  if (savedTitle) document.title = savedTitle;
 
   if (savedFavicon) {
     const link = document.querySelector('link[rel="icon"]') || document.createElement('link');
@@ -17,6 +15,7 @@
     document.head.appendChild(link);
   }
 </script>
+
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
