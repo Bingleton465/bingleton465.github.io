@@ -525,11 +525,7 @@
             ctx.moveTo(stars[i].x, stars[i].y);
             ctx.lineTo(stars[j].x, stars[j].y);
             ctx.stroke();
-          }
-        }
-      }
-    }
-
+      
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawConstellations();
@@ -539,7 +535,7 @@
       }
       requestAnimationFrame(draw);
     }
-
+ ));
    function openFullscreenGame(url) {
   const newWindow = window.open(url, '_blank');
   if (newWindow) {
