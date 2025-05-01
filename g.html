@@ -503,7 +503,7 @@
       let r = Math.random() * 2 + 1;
       let s = new Star(e.clientX, e.clientY, r);
       stars.push(s);
-    });
+    }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -524,8 +524,6 @@
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
-        }
-      }
       requestAnimationFrame(draw);
     }
 
@@ -534,8 +532,7 @@
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-    });
- ));
+    }
    function openFullscreenGame(url) {
   const newWindow = window.open(url, '_blank');
   if (newWindow) {
@@ -543,9 +540,7 @@
   } else {
     alert("please enable popups to play the game -marshall");
   }
-}
-
-    window.addEventListener('load', () => {
+ window.addEventListener('load', () => {
       ensureScrollArea();
       initStars();
       draw();
