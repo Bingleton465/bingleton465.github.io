@@ -278,7 +278,23 @@
     });
 
     window.addEventListener('resize', resizeCanvas);
+ }
+    window.onload = function () {
+    const savedTitle = localStorage.getItem('customTitle');
+    const savedFavicon = localStorage.getItem('customFavicon');
 
+    if (savedTitle) {
+      document.title = savedTitle;
+    }
+
+    if (savedFavicon) {
+      const link = document.querySelector('link[rel="icon"]') || document.createElement('link');
+      link.rel = 'icon';
+      link.href = savedFavicon;
+      link.id = 'favicon';
+      document.head.appendChild(link);
+    }
+  };
   </script>
 
 </body>
