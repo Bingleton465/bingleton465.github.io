@@ -452,6 +452,21 @@
   </div>
 
   <script>
+   const music = document.getElementById('backgroundMusic');
+  const toggleButton = document.getElementById('musicToggle');
+
+  let isPlaying = false;
+
+  toggleButton.addEventListener('click', () => {
+    if (isPlaying) {
+      music.pause();
+      toggleButton.textContent = 'toggle music'; // Optional: change text
+    } else {
+      music.play().catch(e => console.log("Autoplay blocked:", e));
+      toggleButton.textContent = 'toggle music'; // Optional: change text
+    }
+    isPlaying = !isPlaying;
+  });
     const canvas = document.getElementById('constellationCanvas');
     const ctx    = canvas.getContext('2d');
     let stars = [];
@@ -561,20 +576,7 @@
       ensureScrollArea();
       initStars();
     });
-     // ADDED: Music toggle logic
-    const music = document.getElementById('backgroundMusic');
-    const toggleButton = document.getElementById('musicToggle');
 
-    let isPlaying = false;
-
-    toggleButton.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-      } else {
-        music.play();
-      }
-      isPlaying = !isPlaying;
-    });
   </script>
 </body>
 </html>
