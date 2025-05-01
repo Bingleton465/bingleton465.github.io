@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora–🎮</title>
+  <title>Velora — ⚙️</title>
+  <link id="favicon" rel="icon" href="favicon.ico">
   <style>
     html, body {
       margin: 0;
@@ -11,6 +12,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       background: black;
+      font-family: Arial, sans-serif;
     }
 
     canvas {
@@ -35,31 +37,34 @@
       z-index: 1000;
     }
 
-    .top-bar .title {
+    .title {
       color: white;
       font-size: 24px;
-      font-family: Arial, sans-serif;
     }
 
-    .top-bar .buttons {
+    .title img {
+      height: 40px;
+    }
+
+    .buttons {
       display: flex;
       gap: 10px;
     }
 
-    .top-bar .button {
-      font-size: 18px;
+    .button {
+      font-size: 16px;
       padding: 10px 20px;
       border: 2px solid white;
       border-radius: 5px;
       background: transparent;
       color: white;
-      font-family: Arial, sans-serif;
       cursor: pointer;
       position: relative;
       overflow: hidden;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    .top-bar .button::after {
+    .button::after {
       content: '';
       position: absolute;
       top: 0;
@@ -71,98 +76,50 @@
       z-index: 1;
     }
 
-    .top-bar .button:hover::after {
+    .button:hover::after {
       left: 100%;
     }
 
-    .top-bar .button:hover {
+    .button:hover {
       background: white;
       color: black;
     }
 
-    .title img {
-      height: 40px;
+    .settings-container {
+      max-width: 800px;
+      margin: 120px auto 40px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: white;
     }
 
-    .buttons {
-      margin-right: 40px;
+    .setting-item {
       display: flex;
+      flex-direction: column;
       gap: 10px;
     }
 
-    .buttons .button {
-      background-color: white;
-      color: black;
-      border: none;
+    input[type="text"], input[type="file"], select {
+      padding: 8px;
       border-radius: 5px;
-      padding: 10px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s;
+      border: none;
+      font-size: 16px;
     }
 
-    .buttons .button:hover {
-      background-color: #ddd;
+    .discord-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
     }
 
-    .container {
-      position: relative;
-      top: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .game-item {
-      width: 150px;
-      height: 150px;
-      border: 2px solid white;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      margin-top: 0;
-    }
-
-    .game-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: pointer;
-    }
-
-    .game-item:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
-    }
-
-    /* Styling for the music toggle button */
-    #musicToggle {
-      position: absolute;
-      top: 250px;  /* Position it just under the "cool text" */
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #444;
-      color: white;
-      padding: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      transition: background-color 0.2s;
-    }
-
-    #musicToggle:hover {
-      background-color: #666;
+    .discord-logo {
+      height: 40px;
     }
   </style>
 </head>
 <body>
-
   <div class="top-bar">
     <div class="title">
       <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
@@ -174,111 +131,201 @@
     </div>
   </div>
 
-  <div style="text-align: center;">
-    <a href="https://cooltext.com">
-      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
-    </a>
+  <div class="settings-container">
+    <h2>Settings</h2>
+
+    <div class="setting-item">
+      <label for="title-input">Change Tab Title:</label>
+      <input type="text" id="title-input" placeholder="Enter new title">
+    </div>
+
+    <div class="setting-item">
+      <label for="favicon-input">Change Favicon:</label>
+      <input type="file" id="favicon-input" accept="image/x-icon, image/png">
+    </div>
+
+    <div class="setting-item">
+      <label for="premadecloaks">Select Tab Cloak:</label>
+      <select id="premadecloaks">
+        <option value="defaultsettings">Default Settings</option>
+        <option value="search">Google</option>
+        <option value="drive">Google Drive</option>
+        <option value="classroom">Google Classroom</option>
+        <option value="gmail">Gmail</option>
+        <option value="word">Microsoft Word</option>
+        <option value="powerpoint">Microsoft PowerPoint</option>
+        <option value="youtube">YouTube</option>
+        <option value="calendar">Google Calendar</option>
+        <option value="meets">Google Meet</option>
+        <option value="canvas">Canvas</option>
+        <option value="zoom">Zoom</option>
+        <option value="khan">Khan Academy</option>
+        <option value="fakesearch">Google Search</option>
+      </select>
+      <button class="button" id="cloak-btn">Set Cloak</button>
+    </div>
+
+    <div class="setting-item">
+      <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
+    </div>
+
+    <div class="setting-item">
+      <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
+    </div>
   </div>
 
-  <!-- Audio element -->
-  <audio id="backgroundMusic" loop>
-    <source src="audio/444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
-    Your browser does not support the audio element.
-  </audio>
+  <a href="https://discord.gg/R9xCcQFBhf" target="_blank" class="discord-link">
+    <img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-7-1.png" alt="Discord Logo" class="discord-logo">
+  </a>
 
-  <!-- Music Toggle Button -->
-  <button id="musicToggle">Toggle Music</button>
-
-  <canvas id="constellationCanvas"></canvas>
-
-  <div class="container">
-    <!-- Game items go here -->
-  </div>
+  <script src="settings.js"></script>
+  <script src="js/script.js"></script>
+  <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool'></script>
 
   <script>
-    const music = document.getElementById('backgroundMusic');
-    const toggleButton = document.getElementById('musicToggle');
+    window.onload = function () {
+      const savedTitle = getCookie('customTitle');
+      const savedFavicon = getCookie('customFavicon');
 
-    let isPlaying = false;
-
-    toggleButton.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        toggleButton.textContent = 'Toggle Music'; // Optional: change text
-      } else {
-        music.play().catch(e => console.log("Autoplay blocked:", e));
-        toggleButton.textContent = 'Toggle Music'; // Optional: change text
+      if (savedTitle) {
+        document.title = savedTitle;
+        document.getElementById("title-input").value = savedTitle;
       }
-      isPlaying = !isPlaying;
+
+      if (savedFavicon) {
+        document.getElementById("favicon").href = savedFavicon;
+      }
+    };
+
+    document.getElementById("title-input").addEventListener("input", function () {
+      const newTitle = this.value;
+      document.title = newTitle;
+      setCookie('customTitle', newTitle, 30); // 30 days expiry
     });
 
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx    = canvas.getContext('2d');
-    let stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 120;
+    document.getElementById("favicon-input").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
 
-    function resizeCanvas() {
-      canvas.width  = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
+      reader.onloadend = function () {
+        const favicon = document.getElementById("favicon");
+        favicon.href = reader.result;
+        setCookie('customFavicon', reader.result, 30); // 30 days expiry
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById("cloak-btn").addEventListener("click", function () {
+      setCloak();
+    });
+
+    function setCloak() {
+      const cloak = document.getElementById("premadecloaks").value;
+      const titles = {
+        defaultsettings: "Velora",
+        search: "Google",
+        drive: "My Drive - Google Drive",
+        classroom: "Google Classroom",
+        gmail: "Gmail",
+        word: "Document.docx",
+        powerpoint: "Presentation.pptx",
+        youtube: "YouTube",
+        calendar: "Google Calendar",
+        meets: "Google Meet",
+        canvas: "Canvas",
+        zoom: "Zoom",
+        khan: "Khan Academy",
+        fakesearch: "calculator - Google Search"
+      };
+      const favicons = {
+        defaultsettings: "/imgs/PUMNAS.ico",
+        search: "/imgs/google.ico",
+        drive: "/imgs/google-drive-ico.ico",
+        classroom: "/imgs/google-classroom.ico",
+        gmail: "/imgs/gmail.ico",
+        word: "/imgs/word.ico",
+        powerpoint: "/imgs/powerpoint.ico",
+        youtube: "/imgs/youtube.ico",
+        calendar: "/imgs/google-calender.ico",
+        meets: "/imgs/google-meet.ico",
+        canvas: "/imgs/canvas.ico",
+        zoom: "/imgs/zoom.ico",
+        khan: "/imgs/khan-academy.ico",
+        fakesearch: "/imgs/google.ico"
+      };
+
+      setTitle(titles[cloak]);
+      setFavicon(favicons[cloak]);
+      location.reload();
     }
 
-    function ensureScrollArea() {
-      const bottom = document.querySelector('.container')
-                        .getBoundingClientRect().bottom;
-      document.body.style.minHeight = (bottom + 20) + 'px';
-      resizeCanvas();
+    function setTitle(newTitle) {
+      document.title = newTitle;
+      setCookie('customTitle', newTitle, 30);
     }
 
-    class Star {
-      constructor(x, y, r) {
-        this.x = x; this.y = y; this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
+    function setFavicon(url) {
+      const favicon = document.getElementById("favicon");
+      favicon.href = url;
+      setCookie('customFavicon', url, 30);
     }
 
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < MAX_STARS; i++) {
-        stars.push(new Star(
-          Math.random() * window.innerWidth,
-          Math.random() * document.documentElement.scrollHeight,
-          Math.random() * 2 + 1
-        ));
-      }
+    document.getElementById("reset-settings-btn").addEventListener("click", function () {
+      eraseCookie('customTitle');
+      eraseCookie('customFavicon');
+
+      document.title = 'Velora';
+      document.getElementById("favicon").href = 'favicon.ico';
+
+      document.getElementById("title-input").value = '';
+      document.getElementById("favicon-input").value = '';
+    });
+
+    function aboutBlank() {
+      var url = window.location.href;
+      var win;
+
+      document.querySelector('#cloaker').onclick = function () {
+        if (win) {
+          win.focus();
+        } else {
+          win = window.open();
+          win.document.body.style.margin = '0';
+          win.document.title = document.title;
+
+          var faviconElement = document.querySelector('link[rel="icon"]');
+          if (faviconElement) {
+            var favicon = win.document.createElement('link');
+            favicon.rel = 'icon';
+            favicon.href = faviconElement.href;
+            win.document.head.appendChild(favicon);
+          }
+
+          var iframe = win.document.createElement('iframe');
+          iframe.style.border = 'none';
+          iframe.style.width = '100%';
+          iframe.style.height = '100%';
+          iframe.src = url;
+          win.document.body.appendChild(iframe);
+
+          window.location.replace("https://ixl.com");
+
+          var interval = setInterval(function () {
+            if (win.closed) {
+              clearInterval(interval);
+              win = undefined;
+            }
+          }, 500);
+        }
+      };
     }
 
-    function drawConstellations() {
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < LINE_DIST) {
-            ctx.beginPath();
-           
+    // Cookie functions
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      let expires = "expires=" + d.toUTCString();
+      document.cookie = name
