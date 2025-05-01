@@ -450,27 +450,16 @@
     }
     isPlaying = !isPlaying;
   });
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx    = canvas.getContext('2d');
-    let stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 120;
-
-    function resizeCanvas() {
-      canvas.width  = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
-    }
-
-    function ensureScrollArea() {
-      const bottom = document.querySelector('.container')
-                        .getBoundingClientRect().bottom;
-      document.body.style.minHeight = (bottom + 20) + 'px';
-      resizeCanvas();
-    }
+       const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
     class Star {
       constructor(x, y, r) {
-        this.x = x; this.y = y; this.r = r;
+        this.x = x;
+        this.y = y;
+        this.r = r;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
         this.timeToBurst = Math.random() * 1000 + 3000;
@@ -481,7 +470,7 @@
         this.y += this.vy;
         this.age++;
         if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
       burst() {
@@ -500,41 +489,52 @@
       }
     }
 
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < MAX_STARS; i++) {
-        stars.push(new Star(
-          Math.random() * window.innerWidth,
-          Math.random() * document.documentElement.scrollHeight,
-          Math.random() * 2 + 1
-        ));
-      }
+    const stars = [];
+    const MAX_STARS = 80;
+    const LINE_DIST = 100;
+    for (let i = 0; i < MAX_STARS; i++) {
+      let x = Math.random() * canvas.width;
+      let y = Math.random() * canvas.height;
+      let r = Math.random() * 2 + 1;
+      stars.push(new Star(x, y, r));
     }
 
-    function drawConstellations() {
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < LINE_DIST) {
-            const alpha = 1 - dist / LINE_DIST;
-            ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.5})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.stroke();
-      
+    canvas.addEventListener('click', e => {
+      let r = Math.random() * 2 + 1;
+      let s = new Star(e.clientX, e.clientY, r);
+      stars.push(s);
+    });
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawConstellations();
       for (let star of stars) {
         star.update();
         star.draw();
       }
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          let a = stars[i], b = stars[j];
+          let dx = a.x - b.x, dy = a.y - b.y;
+          let dist = Math.hypot(dx, dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
       requestAnimationFrame(draw);
     }
+
+    draw();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
  ));
    function openFullscreenGame(url) {
   const newWindow = window.open(url, '_blank');
