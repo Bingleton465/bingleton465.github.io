@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora - ⚙️</title>
+  <title>Velora – ⚙️</title>
   <link id="favicon" rel="icon" href="favicon.ico">
   <style>
     html, body {
@@ -15,16 +15,163 @@
       font-family: Arial, sans-serif;
     }
 
-    /* ... rest of your existing CSS ... */
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .title {
+      color: white;
+      font-size: 24px;
+    }
+
+    .title img {
+      height: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s;
+      z-index: 1;
+    }
+
+    .button:hover::after {
+      left: 100%;
+    }
+
+    .button:hover {
+      background: white;
+      color: black;
+    }
+
+    .settings-container {
+      max-width: 800px;
+      margin: 120px auto 40px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      color: white;
+    }
+
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    input[type="text"], input[type="file"], select {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+
+    .discord-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .discord-logo {
+      height: 40px;
+    }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <!-- your top-bar markup -->
+    <div class="title">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="window.location.href='index.html'">Home</button>
+      <button class="button" onclick="window.location.href='g.html'">Games</button>
+      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+    </div>
   </div>
 
   <div class="settings-container">
-    <!-- your settings markup -->
+    <h2>Settings</h2>
+
+    <div class="setting-item">
+      <label for="title-input">Change Tab Title:</label>
+      <input type="text" id="title-input" placeholder="Enter new title">
+    </div>
+
+    <div class="setting-item">
+      <label for="favicon-input">Change Favicon:</label>
+      <input type="file" id="favicon-input" accept="image/x-icon, image/png">
+    </div>
+
+    <div class="setting-item">
+      <label for="premadecloaks">Select Tab Cloak:</label>
+      <select id="premadecloaks">
+        <option value="defaultsettings">Default Settings</option>
+        <option value="search">Google</option>
+        <option value="drive">Google Drive</option>
+        <option value="classroom">Google Classroom</option>
+        <option value="gmail">Gmail</option>
+        <option value="word">Microsoft Word</option>
+        <option value="powerpoint">Microsoft PowerPoint</option>
+        <option value="youtube">YouTube</option>
+        <option value="calendar">Google Calendar</option>
+        <option value="meets">Google Meet</option>
+        <option value="canvas">Canvas</option>
+        <option value="zoom">Zoom</option>
+        <option value="khan">Khan Academy</option>
+        <option value="fakesearch">Google Search</option>
+      </select>
+      <button class="button" id="cloak-btn">Set Cloak</button>
+    </div>
+
+    <div class="setting-item">
+      <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
+    </div>
+
+    <div class="setting-item">
+      <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
+    </div>
   </div>
 
   <a href="https://discord.gg/R9xCcQFBhf" target="_blank" class="discord-link">
@@ -45,14 +192,10 @@
       }, '');
     }
 
-    // Load on page open
+    // Load settings on page open
     window.addEventListener('DOMContentLoaded', () => {
-      // 1. localStorage
-      let title = localStorage.getItem('customTitle');
-      let icon  = localStorage.getItem('customFavicon');
-      // 2. fallback to cookies if localStorage empty
-      if (!title) title = getCookie('customTitle');
-      if (!icon)  icon  = getCookie('customFavicon');
+      let title = localStorage.getItem('customTitle') || getCookie('customTitle');
+      let icon  = localStorage.getItem('customFavicon') || getCookie('customFavicon');
 
       if (title) {
         document.title = title;
@@ -85,13 +228,42 @@
       if (file) reader.readAsDataURL(file);
     });
 
-    // Cloak button
-    document.getElementById('cloak-btn').addEventListener('click', () => setCloak());
-
+    // Cloak button logic
+    document.getElementById('cloak-btn').addEventListener('click', setCloak);
     function setCloak() {
       const cloak = document.getElementById('premadecloaks').value;
-      const titles = { /* your titles map */ };
-      const favicons = { /* your favicons map */ };
+      const titles = {
+        defaultsettings: 'Velora',
+        search: 'Google',
+        drive: 'My Drive - Google Drive',
+        classroom: 'Google Classroom',
+        gmail: 'Gmail',
+        word: 'Document.docx',
+        powerpoint: 'Presentation.pptx',
+        youtube: 'YouTube',
+        calendar: 'Google Calendar',
+        meets: 'Google Meet',
+        canvas: 'Canvas',
+        zoom: 'Zoom',
+        khan: 'Khan Academy',
+        fakesearch: 'calculator - Google Search'
+      };
+      const favicons = {
+        defaultsettings: '/images/icons/logo.png',
+        search: '/images/icons/google.ico',
+        drive: '/images/icons/google-drive-ico.ico',
+        classroom: '/images/icons/google-classroom.ico',
+        gmail: '/images/icons/gmail.ico',
+        word: '/images/icons/word.ico',
+        powerpoint: '/images/icons/powerpoint.ico',
+        youtube: '/images/icons/youtube.ico',
+        calendar: '/images/icons/google-calender.ico',
+        meets: '/images/icons/google-meet.ico',
+        canvas: '/images/icons/canvas.ico',
+        zoom: '/images/icons/zoom.ico',
+        khan: '/images/icons/khan-academy.ico',
+        fakesearch: '/images/icons/google.ico'
+      };
       const newTitle = titles[cloak];
       const newIcon  = favicons[cloak];
       document.title = newTitle;
@@ -103,26 +275,55 @@
       location.reload();
     }
 
-    // Reset button
+    // Reset settings
     document.getElementById('reset-settings-btn').addEventListener('click', () => {
       localStorage.removeItem('customTitle');
       localStorage.removeItem('customFavicon');
       setCookie('customTitle', '', -1);
       setCookie('customFavicon', '', -1);
-
       document.title = 'Velora';
       document.getElementById('favicon').href = 'favicon.ico';
       document.getElementById('title-input').value = '';
       document.getElementById('favicon-input').value = '';
     });
 
-    // Optional: listen for storage changes in other tabs
+    // Sync across tabs
     window.addEventListener('storage', (e) => {
       if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
       if (e.key === 'customFavicon') document.getElementById('favicon').href = e.newValue || 'favicon.ico';
     });
 
-    // aboutBlank function remains unchanged
+    // about:blank cloaker
+    function aboutBlank() {
+      const url = window.location.href;
+      let win;
+      document.querySelector('#cloaker').onclick = function () {
+        if (win) {
+          win.focus();
+        } else {
+          win = window.open();
+          win.document.body.style.margin = '0';
+          win.document.title = document.title;
+          const fav = document.querySelector('link[rel="icon"]');
+          if (fav) {
+            const link = win.document.createElement('link');
+            link.rel = 'icon';
+            link.href = fav.href;
+            win.document.head.appendChild(link);
+          }
+          const iframe = win.document.createElement('iframe');
+          iframe.style.border = 'none'; iframe.style.width = '100%'; iframe.style.height = '100%'; iframe.src = url;
+          win.document.body.appendChild(iframe);
+          window.location.replace('https://ixl.com');
+          const iv = setInterval(() => {
+            if (win.closed) {
+              clearInterval(iv);
+              win = null;
+            }
+          }, 500);
+        }
+      };
+    }
   </script>
 </body>
 </html>
