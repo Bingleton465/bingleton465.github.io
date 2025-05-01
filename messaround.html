@@ -1,5 +1,3 @@
-<!-- 1 out of 7 in a row games rn -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +11,6 @@
       overflow-x: hidden;
       overflow-y: auto;
       background: black;
-      color: white;
-      font-family: Arial, sans-serif;
     }
 
     canvas {
@@ -38,13 +34,18 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
       z-index: 1000;
     }
-    .top-bar .title img {
-      height: 40px;
+
+    .top-bar .title {
+      color: white;
+      font-size: 24px;
+      font-family: Arial, sans-serif;
     }
+
     .top-bar .buttons {
       display: flex;
       gap: 10px;
     }
+
     .top-bar .button {
       font-size: 18px;
       padding: 10px 20px;
@@ -52,10 +53,12 @@
       border-radius: 5px;
       background: transparent;
       color: white;
+      font-family: Arial, sans-serif;
       cursor: pointer;
       position: relative;
       overflow: hidden;
     }
+
     .top-bar .button::after {
       content: '';
       position: absolute;
@@ -67,46 +70,39 @@
       transition: left 0.5s;
       z-index: 1;
     }
+
     .top-bar .button:hover::after {
       left: 100%;
     }
+
     .top-bar .button:hover {
       background: white;
       color: black;
     }
 
-    /* Centered Toggle Music Button */
-    .music-toggle {
-      display: block;
-      margin: 160px auto 20px; /* pushes it below the main header image */
-      font-size: 20px;
-      padding: 12px 30px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      z-index: 10;
+    .title img {
+      height: 40px;
     }
-    .music-toggle::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
+
+    .buttons {
+      margin-right: 40px;
+      display: flex;
+      gap: 10px;
     }
-    .music-toggle:hover::after {
-      left: 100%;
-    }
-    .music-toggle:hover {
-      background: white;
+
+    .buttons .button {
+      background-color: white;
       color: black;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .buttons .button:hover {
+      background-color: #ddd;
     }
 
     .container {
@@ -129,20 +125,44 @@
       border-radius: 10px;
       overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 0;
     }
+
     .game-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       cursor: pointer;
     }
+
     .game-item:hover {
       transform: scale(1.1);
       box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
     }
+
+    /* Styling for the music toggle button */
+    #musicToggle {
+      position: absolute;
+      top: 250px;  /* Position it just under the "cool text" */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #444;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+
+    #musicToggle:hover {
+      background-color: #666;
+    }
   </style>
 </head>
 <body>
+
   <div class="top-bar">
     <div class="title">
       <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
@@ -156,49 +176,42 @@
 
   <div style="text-align: center;">
     <a href="https://cooltext.com">
-      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 100px;" />
+      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
     </a>
   </div>
 
-  <!-- Music Toggle Button -->
-  <button class="music-toggle" id="musicToggle">Play Music</button>
-  <!-- Hidden Audio Element -->
+  <!-- Audio element -->
   <audio id="backgroundMusic" loop>
     <source src="audio/444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
     Your browser does not support the audio element.
   </audio>
 
+  <!-- Music Toggle Button -->
+  <button id="musicToggle">Toggle Music</button>
+
   <canvas id="constellationCanvas"></canvas>
 
   <div class="container">
-    <!-- your .game-item blocks go here… -->
-    <!-- example: -->
-    <div class="game-item">
-      <img src="images/icons/1v1.png"
-           alt="1v1.lol"
-           onclick="openFullscreenGame('games/1v1.html')">
-    </div>
-    <!-- …and so on -->
+    <!-- Game items go here -->
   </div>
 
   <script>
-    // Music toggle logic
     const music = document.getElementById('backgroundMusic');
-    const toggleBtn = document.getElementById('musicToggle');
+    const toggleButton = document.getElementById('musicToggle');
+
     let isPlaying = false;
 
-    toggleBtn.addEventListener('click', () => {
+    toggleButton.addEventListener('click', () => {
       if (isPlaying) {
         music.pause();
-        toggleBtn.textContent = 'Play Music';
+        toggleButton.textContent = 'Toggle Music'; // Optional: change text
       } else {
-        music.play().catch(e => console.log('Playback error:', e));
-        toggleBtn.textContent = 'Pause Music';
+        music.play().catch(e => console.log("Autoplay blocked:", e));
+        toggleButton.textContent = 'Toggle Music'; // Optional: change text
       }
       isPlaying = !isPlaying;
     });
 
-    // Constellation canvas logic
     const canvas = document.getElementById('constellationCanvas');
     const ctx    = canvas.getContext('2d');
     let stars = [];
@@ -211,7 +224,8 @@
     }
 
     function ensureScrollArea() {
-      const bottom = document.querySelector('.container').getBoundingClientRect().bottom;
+      const bottom = document.querySelector('.container')
+                        .getBoundingClientRect().bottom;
       document.body.style.minHeight = (bottom + 20) + 'px';
       resizeCanvas();
     }
@@ -225,7 +239,9 @@
         this.age = 0;
       }
       update() {
-        this.x += this.vx; this.y += this.vy; this.age++;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.age++;
         if (this.age > this.timeToBurst) this.burst();
         if (this.x < 0 || this.x > canvas.width)  this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
@@ -264,40 +280,5 @@
           const dy = stars[i].y - stars[j].y;
           const dist = Math.hypot(dx, dy);
           if (dist < LINE_DIST) {
-            const alpha = 1 - dist / LINE_DIST;
-            ctx.strokeStyle = `rgba(255,255,255,${alpha * 0.5})`;
-            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawConstellations();
-      stars.forEach(star => { star.update(); star.draw(); });
-      requestAnimationFrame(draw);
-    }
-
-    function openFullscreenGame(url) {
-      const newWin = window.open(url, '_blank');
-      if (newWin) newWin.focus();
-      else alert("Please enable popups to play the game - Marshall");
-    }
-
-    window.addEventListener('load', () => {
-      ensureScrollArea();
-      initStars();
-      draw();
-    });
-    window.addEventListener('resize', () => {
-      ensureScrollArea();
-      initStars();
-    });
-  </script>
-</body>
-</html>
+           
