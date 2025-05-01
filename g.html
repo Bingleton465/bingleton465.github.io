@@ -14,6 +14,19 @@
     link.id = 'favicon';
     document.head.appendChild(link);
   }
+    }
+
+  if (faviconURL) {
+    let link = document.querySelector('link[rel="icon"]') || document.createElement('link');
+    link.rel = 'icon';
+    link.href = faviconURL;
+    link.id = 'favicon';
+    document.head.appendChild(link);
+
+    localStorage.setItem('customFavicon', faviconURL);
+    document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+  }
+}
 </script>
 
 
