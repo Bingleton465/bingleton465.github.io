@@ -4,116 +4,125 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Velora – ⚙️</title>
- <link rel="icon" href="images/icons/google.ico" type="image/ico">
+  <link id="favicon" rel="icon" href="images/icons/google.ico" type="image/ico">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      overflow-y: auto;
-      background: black;
-      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
     }
-
     canvas {
       display: block;
       position: absolute;
       top: 0;
       left: 0;
     }
-
     .top-bar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 60px;
-      background: rgba(0, 0, 0, 0.8);
+      background: #111;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
       z-index: 1000;
     }
-
     .title {
-      color: white;
-      font-size: 24px;
+      display: flex;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
     }
-
     .title img {
       height: 40px;
+      margin-right: 10px;
     }
-
     .buttons {
       display: flex;
       gap: 10px;
     }
-
     .button {
-      font-size: 16px;
-      padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
+      font-size: 15px;
+      padding: 8px 18px;
+      border: 2px solid #fff;
+      border-radius: 6px;
       background: transparent;
-      color: white;
+      color: #fff;
       cursor: pointer;
       position: relative;
-      overflow: hidden;
-      transition: background-color 0.3s, color 0.3s;
+      transition: all 0.3s ease;
     }
-
     .button::after {
       content: '';
       position: absolute;
       top: 0;
-      left: -100%;
-      width: 100%;
+      left: 0;
+      width: 0%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
+      background: rgba(255, 255, 255, 0.2);
+      transition: width 0.4s;
+      border-radius: 6px;
     }
-
     .button:hover::after {
-      left: 100%;
+      width: 100%;
     }
-
     .button:hover {
-      background: white;
-      color: black;
+      color: #000;
+      background: #fff;
     }
-
     .settings-container {
-      max-width: 800px;
-      margin: 120px auto 40px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      color: white;
+      max-width: 600px;
+      margin: 100px auto 50px;
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
     }
-
+    .settings-container h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      text-align: center;
+      border-bottom: 2px solid #444;
+      padding-bottom: 10px;
+    }
     .setting-item {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      margin-bottom: 20px;
     }
-
-    input[type="text"], input[type="file"], select {
-      padding: 8px;
-      border-radius: 5px;
-      border: none;
+    .setting-item label {
+      margin-bottom: 8px;
       font-size: 16px;
+      color: #ccc;
     }
-
+    input[type="text"], input[type="file"], select {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
+      background: #2a2a2a;
+      color: #fff;
+      outline: none;
+    }
+    select {
+      appearance: none;
+    }
+    .setting-item .button {
+      align-self: flex-start;
+      margin-top: 10px;
+    }
     .discord-link {
       position: fixed;
       bottom: 20px;
       right: 20px;
     }
-
     .discord-logo {
       height: 40px;
     }
@@ -123,6 +132,7 @@
   <div class="top-bar">
     <div class="title">
       <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+      Velora
     </div>
     <div class="buttons">
       <button class="button" onclick="window.location.href='index.html'">Home</button>
@@ -130,22 +140,18 @@
       <button class="button" onclick="window.location.href='settings.html'">Settings</button>
     </div>
   </div>
-
   <div class="settings-container">
     <h2>Settings</h2>
-
     <div class="setting-item">
-      <label for="title-input">Change Tab Title:</label>
+      <label for="title-input">Change Tab Title</label>
       <input type="text" id="title-input" placeholder="Enter new title">
     </div>
-
     <div class="setting-item">
-      <label for="favicon-input">Change Favicon:</label>
+      <label for="favicon-input">Change Favicon</label>
       <input type="file" id="favicon-input" accept="image/x-icon, image/png">
     </div>
-
     <div class="setting-item">
-      <label for="premadecloaks">Select Tab Cloak: (WORK IN PROGRESS)</label>
+      <label for="premadecloaks">Select Tab Cloak (Work In Progress)</label>
       <select id="premadecloaks">
         <option value="defaultsettings">Default Settings</option>
         <option value="search">Google</option>
@@ -164,35 +170,27 @@
       </select>
       <button class="button" id="cloak-btn">Set Cloak</button>
     </div>
-
     <div class="setting-item">
       <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
     </div>
-
     <div class="setting-item">
       <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
     </div>
   </div>
-
   <script>
-    // Cookie helpers
     function setCookie(name, value, days = 30) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; expires=' + expires;
     }
-
     function getCookie(name) {
       return document.cookie.split('; ').reduce((r, v) => {
         const parts = v.split('=');
         return parts[0] === name ? decodeURIComponent(parts[1]) : r
       }, '');
     }
-
-    // Load settings on page open
     window.addEventListener('DOMContentLoaded', () => {
       let title = localStorage.getItem('customTitle') || getCookie('customTitle');
-      let icon  = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-
+      let icon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
       if (title) {
         document.title = title;
         document.getElementById('title-input').value = title;
@@ -201,8 +199,6 @@
         document.getElementById('favicon').href = icon;
       }
     });
-
-    // Title input listener
     const titleInput = document.getElementById('title-input');
     titleInput.addEventListener('input', () => {
       const val = titleInput.value;
@@ -210,8 +206,6 @@
       localStorage.setItem('customTitle', val);
       setCookie('customTitle', val);
     });
-
-    // Favicon file change
     document.getElementById('favicon-input').addEventListener('change', (e) => {
       const file = e.target.files[0];
       const reader = new FileReader();
@@ -223,8 +217,6 @@
       };
       if (file) reader.readAsDataURL(file);
     });
-
-    // Cloak button logic
     document.getElementById('cloak-btn').addEventListener('click', setCloak);
     function setCloak() {
       const cloak = document.getElementById('premadecloaks').value;
@@ -261,7 +253,7 @@
         fakesearch: '/images/icons/google.ico'
       };
       const newTitle = titles[cloak];
-      const newIcon  = favicons[cloak];
+      const newIcon = favicons[cloak];
       document.title = newTitle;
       document.getElementById('favicon').href = newIcon;
       localStorage.setItem('customTitle', newTitle);
@@ -270,8 +262,6 @@
       setCookie('customFavicon', newIcon);
       location.reload();
     }
-
-    // Reset settings
     document.getElementById('reset-settings-btn').addEventListener('click', () => {
       localStorage.removeItem('customTitle');
       localStorage.removeItem('customFavicon');
@@ -282,14 +272,10 @@
       document.getElementById('title-input').value = '';
       document.getElementById('favicon-input').value = '';
     });
-
-    // Sync across tabs
     window.addEventListener('storage', (e) => {
       if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
       if (e.key === 'customFavicon') document.getElementById('favicon').href = e.newValue || 'favicon.ico';
     });
-
-    // about:blank cloaker
     function aboutBlank() {
       const url = window.location.href;
       let win;
