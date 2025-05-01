@@ -561,6 +561,20 @@
       ensureScrollArea();
       initStars();
     });
+     // ADDED: Music toggle logic
+    const music = document.getElementById('backgroundMusic');
+    const toggleButton = document.getElementById('musicToggle');
+
+    let isPlaying = false;
+
+    toggleButton.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+      } else {
+        music.play();
+      }
+      isPlaying = !isPlaying;
+    });
   </script>
 </body>
 </html>
