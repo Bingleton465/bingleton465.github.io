@@ -329,7 +329,7 @@
       }
     });
 
-    // ADDED: Music toggle logic
+    // music toggle logic
     const music = document.getElementById('backgroundMusic');
     const toggleButton = document.getElementById('musicToggle');
 
@@ -343,6 +343,11 @@
       }
       isPlaying = !isPlaying;
     });
+     // mobile button stuff
+const mobileButton = document.getElementById('mobilebutton');
+mobileButton.addEventListener('click', () => {
+  window.location.href = 'formobile.html';
+});
   </script>
 </body>
 </html>
