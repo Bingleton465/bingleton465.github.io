@@ -1,58 +1,92 @@
-
-<!-- Ultimate Game Stash file--> 
+<!-- Ultimate Game Stash file -->
 <!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
 
-
-</style></head><title>Velora – 1v1.LOL</title><body dir="ltr"><script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script><script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script><script type="text/javascript">
-      var gameInstance;
-<link rel="icon" href="images/icons/logo.png" type="image/png">
-      window.onload = function () {
-        gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json", {
-          onProgress: UnityProgress,
-          Module: {
-            onRuntimeInitialized: function () {
-              UnityProgress(gameInstance, "complete");
-            },
-          },
-        });
-      };
-    </script>
-    <div class="webgl-content">
-      <div id="gameContainer" style="width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; position: relative; background: rgb(0, 0, 0);"><canvas id="#canvas" style="width: 100%; height: 100%; cursor: default;" width="1018" height="926"></canvas><div class="logo Dark" style="display: none;"></div><div class="progress Dark" style="display: none;"><div class="empty" style="width: 0%;"></div><div class="full" style="width: 100%;"></div></div></div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
-
-    <!-- Add Firebase products that you want to use -->
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
-    <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
-
-    <script>
-      initializeFireBase();
-
-      function showAds() {
-        console.log("show ads");
-      }
-      function requestNewAd() {
-        // Show video ad
-        unityAdFinishedCallback();
-      }
-      function unityAdFinishedCallback() {
-        try {
-          if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback");
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <script> (function () { const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle'); const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon'); const defaultFavicon = 'images/icons/logo.png'; if (savedTitle) document.title = savedTitle; const favicon = savedFavicon || defaultFavicon; setFavicon(favicon); if (!savedFavicon) { localStorage.setItem('customFavicon', favicon); document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`; } function setFavicon(url) { let link = document.querySelector('link[rel="icon"]'); if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); } link.href = url; } function getCookie(name) { const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)')); return match ? decodeURIComponent(match[2]) : null; } window.setCustomCloak = function(title, faviconURL) { if (title) { document.title = title; localStorage.setItem('customTitle', title); document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`; } if (faviconURL) { setFavicon(faviconURL); localStorage.setItem('customFavicon', faviconURL); document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`; } }; })(); </script>
+      <meta charset="UTF-8" />
+  <title>Velora – 1v1.LOL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="images/icons/logo.png" type="image/png" />
   
+  <!-- Game Scripts -->
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/UnityProgress.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.js"></script>
 
+  <!-- Firebase Scripts -->
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-auth.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase-firestore.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firebase.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1login.js?v=2"></script>
+  <script src="https://cdn.jsdelivr.net/gh/n-101-1/1@main/1firestore.js"></script>
 
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+    }
+    #gameContainer {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
 
+<body dir="ltr">
+  <div class="webgl-content">
+    <div id="gameContainer">
+      <canvas id="canvas"></canvas>
+      <div class="logo Dark" style="display: none;"></div>
+      <div class="progress Dark" style="display: none;">
+        <div class="empty" style="width: 0%;"></div>
+        <div class="full" style="width: 100%;"></div>
+      </div>
+    </div>
+  </div>
 
+  <script>
+    var gameInstance;
 
+    window.onload = function () {
+      gameInstance = UnityLoader.instantiate("gameContainer", "https://cdn.jsdelivr.net/gh/n-101-1/1@main/2.7.json", {
+        onProgress: UnityProgress,
+        Module: {
+          onRuntimeInitialized: function () {
+            UnityProgress(gameInstance, "complete");
+          },
+        },
+      });
+    };
 
-</script><script src="blob:https://gotlgsogl-opensocial.googleusercontent.com/43fddd1c-53cc-4d6d-88c5-93762d972e03" id="a96bf7f9ec45ce9224c9b5b9b42b17b2"></script></body></html>
+    initializeFireBase();
+
+    function showAds() {
+      console.log("show ads");
+    }
+
+    function requestNewAd() {
+      // Simulate ad finished
+      unityAdFinishedCallback();
+    }
+
+    function unityAdFinishedCallback() {
+      try {
+        if (gameInstance) gameInstance.SendMessage("AdsManager", "OnWebCallback");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  </script>
+</body>
+</html>
+
