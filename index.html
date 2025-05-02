@@ -164,6 +164,23 @@
     .music-toggle:hover {
       background: white;
       color: black;
+    } 
+     /* click if on mobile button */
+     .mobile-button {
+      font-size: 24px;
+      padding: 10px 25px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: transparent;
+      color: white;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      margin-top: 20px;
+      z-index: 1;
+    }
+    .mobile-button:hover {
+      background: white;
+      color: black;
     }
   </style>
 </head>
@@ -183,6 +200,9 @@
 
   <!-- ADDED: Toggle Music Button -->
   <button class="music-toggle" id="musicToggle">toggle music</button>
+
+
+  <button class="mobile-button" id="mobilebutton">click if on mobile</button>
 
   <div class="url-container">
     <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
