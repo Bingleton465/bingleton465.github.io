@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
+ <script>
    (function () {
     const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
     const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
@@ -49,11 +49,10 @@
   })();
 </script>
 
-
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Velora – 🎮</title>
+
   <style>
     html, body {
       margin: 0;
@@ -61,6 +60,7 @@
       background: black;
       overflow-x: hidden;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* native momentum on iOS */
     }
 
     /* full-screen star canvas, non-blocking scroll/click */
@@ -72,7 +72,8 @@
       height: 100vh;
       pointer-events: none;
       z-index: 1;
-      display: block;
+      will-change: transform;    /* promote to its own layer */
+      transform: translateZ(0);  /* GPU hint */
     }
 
     .top-bar {
@@ -84,7 +85,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      padding: 0 20px; /* reduced padding for small screens */
       box-shadow: 0 2px 5px rgba(0,0,0,0.5);
       z-index: 1000;
     }
@@ -95,7 +96,7 @@
       display: flex;
       gap: 10px;
     }
-    .top-bar .buttons .button {
+    .top-bar .button {
       padding: 10px 20px;
       border: 2px solid white;
       border-radius: 5px;
@@ -108,7 +109,7 @@
       overflow: hidden;
       transition: background 0.3s, color 0.3s;
     }
-    .top-bar .buttons .button::after {
+    .top-bar .button::after {
       content: "";
       position: absolute;
       top: 0; left: -100%;
@@ -117,26 +118,26 @@
       transition: left 0.5s;
       z-index: 1;
     }
-    .top-bar .buttons .button:hover::after {
+    .top-bar .button:hover::after {
       left: 100%;
     }
-    .top-bar .buttons .button:hover {
+    .top-bar .button:hover {
       background: white;
       color: black;
     }
 
-    .container {
-      position: relative;
-      top: 80px;           /* moved up from 120px */
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
+   .container {
+  position: relative;  
+  margin: 80px auto 20px;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20px;
+  max-width: 1200px;
+}
+
     .game-item {
       width: 150px;
       height: 150px;
@@ -150,6 +151,7 @@
       height: 100%;
       object-fit: cover;
       cursor: pointer;
+      display: block;
     }
     .game-item:hover {
       transform: scale(1.1);
@@ -217,126 +219,95 @@
     <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parent"            onclick="openFullscreenGame('games/badparent.html')"></div>
     <div class="game-item"><img src="images/icons/guess.png"    alt="Guess Their Answer"       onclick="openFullscreenGame('games/guess.html')"></div>
     <div class="game-item"><img src="images/icons/bacon.png"    alt="Bacon May Die"            onclick="openFullscreenGame('games/bacon.html')"></div>
-      <div class="game-item"><img src="images/icons/bottle.png"    alt="Bottle Flip 3D"            onclick="openFullscreenGame('games/bottle.html')"></div>
-     <div class="game-item"><img src="images/icons/cup.png"    alt="A Small World Cup"            onclick="openFullscreenGame('games/cup.html')"></div>
-     <div class="game-item"><img src="images/icons/cattle.jpg"    alt="Crazy Cattle 3D"            onclick="openFullscreenGame('games/cattle.html')"></div>
+    <div class="game-item"><img src="images/icons/bottle.png"   alt="Bottle Flip 3D"           onclick="openFullscreenGame('games/bottle.html')"></div>
+    <div class="game-item"><img src="images/icons/cup.png"      alt="A Small World Cup"        onclick="openFullscreenGame('games/cup.html')"></div>
+    <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D"          onclick="openFullscreenGame('games/cattle.html')"></div>
+       <div class="game-item"><img src="images/icons/flood.webp"   alt="Flood Runner (i forgot name)"          onclick="openFullscreenGame('games/flood.html')"></div>
   </div>
 
-  <script>   // canvas + context
-     // canvas + context
-  const canvas = document.getElementById('constellationCanvas');
-  const ctx = canvas.getContext('2d');
-
-  // star class
-  class Star {
-    constructor(x, y, r) {
-      this.x = x;
-      this.y = y;
-      this.r = r;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.timeToBurst = Math.random() * 1000 + 3000;
-      this.age = 0;
-    }
-
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      this.age++;
-      if (this.age > this.timeToBurst) this.burst();
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-    }
-
-    burst() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.timeToBurst = Math.random() * 1000 + 3000;
-      this.age = 0;
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'white';
-      ctx.fill();
-    }
-  }
-
-  // globals
-  let stars = [];
-  const MAX_STARS = 80;
-  const LINE_DIST = 100;
-
-  // populate stars
-  function initStars() {
-    stars = [];
-    for (let i = 0; i < MAX_STARS; i++) {
-      stars.push(new Star(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height,
-        Math.random() * 2 + 1
-      ));
-    }
-  }
-
-  // resize canvas & re-init stars
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initStars();
-  }
-
-  // draw loop
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let star of stars) {
-      star.update();
-      star.draw();
-    }
-
-    for (let i = 0; i < stars.length; i++) {
-      for (let j = i + 1; j < stars.length; j++) {
-        const a = stars[i], b = stars[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < LINE_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
+<script>
+  // starfield canvas
+    const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    class Star {
+      constructor(x,y,r){
+        this.x=x;this.y=y;this.r=r;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=(Math.random()-0.5)*0.5;
+        this.timeToBurst=Math.random()*1000+3000;
+        this.age=0;
+      }
+      update(){
+        this.x+=this.vx; this.y+=this.vy; this.age++;
+        if(this.age>this.timeToBurst)this.burst();
+        if(this.x<0||this.x>canvas.width)this.vx*=-1;
+        if(this.y<0||this.y>canvas.height)this.vy*=-1;
+      }
+      burst(){
+        this.x=Math.random()*canvas.width;
+        this.y=Math.random()*canvas.height;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=(Math.random()-0.5)*0.5;
+        this.timeToBurst=Math.random()*1000+3000;
+        this.age=0;
+      }
+      draw(){
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+        ctx.fillStyle='white';
+        ctx.fill();
       }
     }
+    let stars=[]; const MAX_STARS=80, LINE_DIST=100;
+    function initStars(){
+      stars=[]; 
+      for(let i=0;i<MAX_STARS;i++){
+        stars.push(new Star(
+          Math.random()*canvas.width,
+          Math.random()*canvas.height,
+          Math.random()*2+1
+        ));
+      }
+    }
+    function resizeCanvas(){
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+      initStars();
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let s of stars){ s.update(); s.draw(); }
+      for(let i=0;i<stars.length;i++){
+        for(let j=i+1;j<stars.length;j++){
+          const a=stars[i], b=stars[j];
+          const dx=a.x-b.x, dy=a.y-b.y;
+          const dist=Math.hypot(dx,dy);
+          if(dist<LINE_DIST){
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle=`rgba(255,255,255,${1-dist/LINE_DIST})`;
+            ctx.lineWidth=0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    canvas.addEventListener('click', e=>{
+      stars.push(new Star(e.clientX,e.clientY,Math.random()*2+1));
+    });
+    window.addEventListener('load', ()=>{
+      resizeCanvas(); draw();
+    });
+    window.addEventListener('resize', resizeCanvas);
 
-    requestAnimationFrame(draw);
-  }
-
-  // add star on click
-  canvas.addEventListener('click', e => {
-    stars.push(new Star(e.clientX, e.clientY, Math.random() * 2 + 1));
-  });
-
-  // open game in new tab
-  function openFullscreenGame(url) {
-    const win = window.open(url, '_blank');
-    if (win) win.focus();
-    else alert("Please enable popups to play the game – Marshall");
-  }
-
-  // initialize on load
-  window.addEventListener('load', () => {
-    resizeCanvas();
-    draw();
-  });
-
-  window.addEventListener('resize', resizeCanvas);
+    // open game popup
+    function openFullscreenGame(url) {
+      const win = window.open(url, '_blank');
+      if (win) win.focus();
+      else alert("Please enable popups to play the game – Marshall");
+    }
   </script>
-
 </body>
 </html>
