@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    // load custom title/favicon
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      if (savedTitle) document.title = savedTitle;
+      setFavicon(savedFavicon || 'images/icons/logo.png');
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', document.querySelector('link[rel="icon"]').href);
+        document.cookie = `customFavicon=${encodeURIComponent(document.querySelector('link[rel="icon"]').href)}; path=/`;
+      }
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        link.href = url;
+      }
+      function getCookie(name) {
+        const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return m ? decodeURIComponent(m[2]) : null;
+      }
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="images/icons/logo.png">
@@ -175,40 +209,8 @@
     <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D"          onclick="openFullscreenGame('games/cattle.html')"></div>
   </div>
 
-  <script>
-    // load custom title/favicon
-    (function () {
-      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-      if (savedTitle) document.title = savedTitle;
-      setFavicon(savedFavicon || 'images/icons/logo.png');
-      if (!savedFavicon) {
-        localStorage.setItem('customFavicon', document.querySelector('link[rel="icon"]').href);
-        document.cookie = `customFavicon=${encodeURIComponent(document.querySelector('link[rel="icon"]').href)}; path=/`;
-      }
-      function setFavicon(url) {
-        let link = document.querySelector('link[rel="icon"]');
-        link.href = url;
-      }
-      function getCookie(name) {
-        const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return m ? decodeURIComponent(m[2]) : null;
-      }
-      window.setCustomCloak = function(title, faviconURL) {
-        if (title) {
-          document.title = title;
-          localStorage.setItem('customTitle', title);
-          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
-        }
-        if (faviconURL) {
-          setFavicon(faviconURL);
-          localStorage.setItem('customFavicon', faviconURL);
-          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
-        }
-      };
-    })();
-
-    // starfield canvas
+<script>
+  // starfield canvas
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
     class Star {
