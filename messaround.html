@@ -205,7 +205,87 @@
         item.style.display = alt.includes(query) ? 'block' : 'none';
       });
     }
+  const canvas = document.getElementById('constellationCanvas');
+    const ctx = canvas.getContext('2d');
+    class Star {
+      constructor(x,y,r){
+        this.x=x;this.y=y;this.r=r;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=(Math.random()-0.5)*0.5;
+        this.timeToBurst=Math.random()*1000+3000;
+        this.age=0;
+      }
+      update(){
+        this.x+=this.vx; this.y+=this.vy; this.age++;
+        if(this.age>this.timeToBurst)this.burst();
+        if(this.x<0||this.x>canvas.width)this.vx*=-1;
+        if(this.y<0||this.y>canvas.height)this.vy*=-1;
+      }
+      burst(){
+        this.x=Math.random()*canvas.width;
+        this.y=Math.random()*canvas.height;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=(Math.random()-0.5)*0.5;
+        this.timeToBurst=Math.random()*1000+3000;
+        this.age=0;
+      }
+      draw(){
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+        ctx.fillStyle='white';
+        ctx.fill();
+      }
+    }
+    let stars=[]; const MAX_STARS=80, LINE_DIST=100;
+    function initStars(){
+      stars=[]; 
+      for(let i=0;i<MAX_STARS;i++){
+        stars.push(new Star(
+          Math.random()*canvas.width,
+          Math.random()*canvas.height,
+          Math.random()*2+1
+        ));
+      }
+    }
+    function resizeCanvas(){
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+      initStars();
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(let s of stars){ s.update(); s.draw(); }
+      for(let i=0;i<stars.length;i++){
+        for(let j=i+1;j<stars.length;j++){
+          const a=stars[i], b=stars[j];
+          const dx=a.x-b.x, dy=a.y-b.y;
+          const dist=Math.hypot(dx,dy);
+          if(dist<LINE_DIST){
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle=`rgba(255,255,255,${1-dist/LINE_DIST})`;
+            ctx.lineWidth=0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    canvas.addEventListener('click', e=>{
+      stars.push(new Star(e.clientX,e.clientY,Math.random()*2+1));
+    });
+    window.addEventListener('load', ()=>{
+      resizeCanvas(); draw();
+    });
+    window.addEventListener('resize', resizeCanvas);
 
+    // open game popup
+    function openFullscreenGame(url) {
+      const win = window.open(url, '_blank');
+      if (win) win.focus();
+      else alert("Please enable popups to play the game – Marshall");
+    }
 
   </script>
 </body>
