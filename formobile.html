@@ -3,220 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora–🎮</title>
+  <title>Velora Error</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
+      height: 100%;
       background: black;
+      color: white;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      text-align: center;
     }
     canvas {
-      display: block;
       position: absolute;
       top: 0;
       left: 0;
-    }
-    .top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 48px;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.top-bar .title {
-  color: white;
-  font-size: 18px;
-  font-family: Arial, sans-serif;
-  display: flex;
-  align-items: center;
-}
-
-.title img {
-  height: 30px;
-}
-
-.buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.top-bar .button {
-  font-size: 14px;
-  padding: 6px 12px;
-  border: 2px solid white;
-  border-radius: 4px;
-  background: transparent;
-  color: white;
-  font-family: Arial, sans-serif;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.top-bar .button::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.3);
-  transition: left 0.5s;
-  z-index: 1;
-}
-
-.top-bar .button:hover::after {
-  left: 100%;
-}
-
-.top-bar .button:hover {
-  background: white;
-  color: black;
-}
-
-    .title img {
-      height: 40px;
-    }
-    .buttons {
-      margin-right: 40px;
-      display: flex;
-      gap: 10px;
-    }
-    .buttons .button {
-      background-color: white;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .buttons .button:hover {
-      background-color: #ddd;
-    }
-    .container {
-      position: relative;
-      top: 120px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      padding: 20px;
-    }
-    .game-item {
-      width: 150px;
-      height: 150px;
-      border: 2px solid white;
-      border-radius: 10px;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .game-item img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      cursor: pointer;
+      display: block;
     }
-    .game-item:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8);
+    .error {
+      position: relative;
+      z-index: 10;
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .message {
+      position: relative;
+      z-index: 10;
+      font-size: 24px;
     }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
-    </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
-    </div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://cooltext.com">
-      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games" style="margin-top: 150px;" />
-    </a>
-  </div>
-
   <canvas id="constellationCanvas"></canvas>
-  <div class="container">
-   <div class="buttons">
-      <button class="button" onclick="location.href='index.html'">Home</button>
-      <button class="button" onclick="location.href='g.html'">Games</button>
-      <button class="button" onclick="location.href='settings.html'">Settings</button>
-    </div>
-  </div>
-
-  <div style="text-align: center; margin-top: 150px; z-index:10; position: relative;">
-    <a href="https://cooltext.com">
-      <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games">
-    </a>
-  </div>
-
-  <canvas id="constellationCanvas"></canvas>
-
-  <div class="container">
-    <div class="game-item"><img src="images/icons/1v1.png"       alt="1v1.lol"                   onclick="openFullscreenGame('games/1v1.html')"></div>
-    <div class="game-item"><img src="images/icons/rl.webp"      alt="Rocket League"            onclick="openFullscreenGame('games/rl.html')"></div>
-    <div class="game-item"><img src="images/icons/er1.webp"     alt="Escape Road 1"            onclick="openFullscreenGame('games/er1.html')"></div>
-    <div class="game-item"><img src="images/icons/er2.jpg"      alt="Escape Road 2"            onclick="openFullscreenGame('games/er2.html')"></div>
-    <div class="game-item"><img src="images/icons/kong.png"     alt="Kong Minigame"            onclick="openFullscreenGame('games/kong.html')"></div>
-    <div class="game-item"><img src="images/icons/bitlife.png"  alt="BitLife Simulator"        onclick="openFullscreenGame('games/bitlife.html')"></div>
-    <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash"      onclick="openFullscreenGame('games/geometry.html')"></div>
-    <div class="game-item"><img src="images/icons/craft.png"    alt="EaglercraftX 1.8.8 (u29)" onclick="openFullscreenGame('games/EaglercraftX 1.8.8(u29).html')"></div>
-    <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms"         onclick="openFullscreenGame('games/skibidi.html')"></div>
-    <div class="game-item"><img src="images/icons/boxels.webp"  alt="CLS Sandboxels"           onclick="openFullscreenGame('games/clsandboxels.html')"></div>
-    <div class="game-item"><img src="images/icons/slope.png"    alt="Slope"                    onclick="openFullscreenGame('games/slope.html')"></div>
-    <div class="game-item"><img src="images/icons/happy.jpeg"   alt="Happy Wheels"             onclick="openFullscreenGame('games/happy.html')"></div>
-    <div class="game-item"><img src="images/icons/tiny.avif"    alt="Tiny Fishing"             onclick="openFullscreenGame('games/tiny.html')"></div>
-    <div class="game-item"><img src="images/icons/rhit.avif"    alt="Ragdoll Hit"              onclick="openFullscreenGame('games/rhit.html')"></div>
-    <div class="game-item"><img src="images/icons/ra.webp"      alt="Ragdoll Archers"          onclick="openFullscreenGame('games/ra.html')"></div>
-    <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters"              onclick="openFullscreenGame('games/bowmasters.html')"></div>
-    <div class="game-item"><img src="images/icons/bl.png"       alt="Basketball Legends"       onclick="openFullscreenGame('games/bl.html')"></div>
-    <div class="game-item"><img src="images/icons/agar.jpg"     alt="Agar.io Lite"             onclick="openFullscreenGame('games/agar.html')"></div>
-    <div class="game-item"><img src="images/icons/police.avif"  alt="Amazing Strange Rope Police" onclick="openFullscreenGame('games/rope.html')"></div>
-    <div class="game-item"><img src="images/icons/baldi.jpg"    alt="Baldi’s Basics"           onclick="openFullscreenGame('games/baldi.html')"></div>
-    <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters"            onclick="openFullscreenGame('games/drift.html')"></div>
-    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1"                 onclick="openFullscreenGame('games/granny1.html')"></div>
-    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2"                onclick="openFullscreenGame('games/granny2.html')"></div>
-    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin’"     onclick="openFullscreenGame('games/fnf.html')"></div>
-    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad"               onclick="openFullscreenGame('games/mad.html')"></div>
-    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D"            onclick="openFullscreenGame('games/snowrider.html')"></div>
-    <div class="game-item"><img src="images/icons/revert.png"   alt="Sonic Revert"             onclick="openFullscreenGame('games/revert.html')"></div>
-    <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss"             onclick="openFullscreenGame('games/driftboss.html')"></div>
-    <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast"            onclick="openFullscreenGame('games/blockblast.html')"></div>
-    <div class="game-item"><img src="images/icons/elasticface.webp" alt="Elastic Face"           onclick="openFullscreenGame('games/elasticface.html')"></div>
-    <div class="game-item"><img src="images/icons/shrek.jpg"    alt="Five Nights at Shrek’s Hotel" onclick="openFullscreenGame('games/shrek.html')"></div>
-    <div class="game-item"><img src="images/icons/cluster.png"  alt="Cluster Rush"             onclick="openFullscreenGame('games/cluster.html')"></div>
-    <div class="game-item"><img src="images/icons/crossy.avif" alt="Crossy Road"              onclick="openFullscreenGame('games/crossyroad.html')"></div>
-    <div class="game-item"><img src="images/icons/10.png"       alt="10 Minutes Till Dawn"     onclick="openFullscreenGame('games/10.html')"></div>
-    <div class="game-item"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft"      onclick="openFullscreenGame('games/infinitecraft.html')"></div>
-    <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parent"            onclick="openFullscreenGame('games/badparent.html')"></div>
-    <div class="game-item"><img src="images/icons/guess.png"    alt="Guess Their Answer"       onclick="openFullscreenGame('games/guess.html')"></div>
-    <div class="game-item"><img src="images/icons/bacon.png"    alt="Bacon May Die"            onclick="openFullscreenGame('games/bacon.html')"></div>
-      <div class="game-item"><img src="images/icons/bottle.png"    alt="Bottle Flip 3D"            onclick="openFullscreenGame('games/bottle.html')"></div>
-     <div class="game-item"><img src="images/icons/cup.png"    alt="A Small World Cup"            onclick="openFullscreenGame('games/cup.html')"></div>
-  
-  </div>
-
+  <div class="error">error: 102</div>
+  <div class="message">switch to desktop to run velora</div>
 
   <script>
     const canvas = document.getElementById('constellationCanvas');
@@ -227,20 +51,18 @@
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
-    }
-
-    function ensureScrollArea() {
-      const bottom = document.querySelector('.container').getBoundingClientRect().bottom;
-      document.body.style.minHeight = (bottom + 20) + 'px';
-      resizeCanvas();
+      canvas.height = window.innerHeight;
     }
 
     class Star {
-      constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+      constructor() {
+        this.reset();
+        this.age = 0;
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.r = Math.random() * 1.5 + 0.5;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
         this.timeToBurst = Math.random() * 1000 + 3000;
@@ -250,16 +72,9 @@
         this.x += this.vx;
         this.y += this.vy;
         this.age++;
-        if (this.age > this.timeToBurst) this.burst();
+        if (this.age > this.timeToBurst) this.reset();
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.age = 0;
       }
       draw() {
         ctx.beginPath();
@@ -274,7 +89,7 @@
         for (let j = i + 1; j < stars.length; j++) {
           const dx = stars[i].x - stars[j].x;
           const dy = stars[i].y - stars[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const dist = Math.hypot(dx, dy);
           if (dist < LINE_DIST) {
             ctx.beginPath();
             ctx.moveTo(stars[i].x, stars[i].y);
@@ -286,37 +101,30 @@
       }
     }
 
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < MAX_STARS; i++) {
+        stars.push(new Star());
+      }
+    }
+
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
+      stars.forEach(s => {
+        s.update();
+        s.draw();
+      });
       connectStars();
       requestAnimationFrame(animate);
     }
 
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < MAX_STARS; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const r = Math.random() * 1.5 + 0.5;
-        stars.push(new Star(x, y, r));
-      }
-    }
-
-    function openFullscreenGame(url) {
-      const win = window.open(url, '_blank');
-      win.focus();
-    }
-
+    // initialize
     window.addEventListener('resize', () => {
-      ensureScrollArea();
+      resizeCanvas();
       initStars();
     });
 
-    ensureScrollArea();
+    resizeCanvas();
     initStars();
     animate();
   </script>
