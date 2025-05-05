@@ -1,332 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-   (function () {
-    const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-    const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-    const defaultFavicon = 'images/icons/logo.png';
-
-    
-    if (savedTitle) document.title = savedTitle;
-
-    const favicon = savedFavicon || defaultFavicon;
-    setFavicon(favicon);
-
-    if (!savedFavicon) {
-      localStorage.setItem('customFavicon', favicon);
-      document.cookie = customFavicon=${encodeURIComponent(favicon)}; path=/;
-    }
-
-    function setFavicon(url) {
-      let link = document.querySelector('link[rel="icon"]');
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-      }
-      link.href = url;
-    }
-
-    function getCookie(name) {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-      return match ? decodeURIComponent(match[2]) : null;
-    }
-
-
-    window.setCustomCloak = function(title, faviconURL) {
-      if (title) {
-        document.title = title;
-        localStorage.setItem('customTitle', title);
-        document.cookie = customTitle=${encodeURIComponent(title)}; path=/;
-      }
-      if (faviconURL) {
-        setFavicon(faviconURL);
-        localStorage.setItem('customFavicon', faviconURL);
-        document.cookie = customFavicon=${encodeURIComponent(faviconURL)}; path=/;
-      }
-    };
-  })();
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora – 🏠</title>
-   
+  <title>Velora – 🏠</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- AOS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <style>
-    html, body {
-      margin: 0; padding: 0;
-      overflow: hidden;
-      background: black;
-      width: 100%; height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0; left: 0;
-    }
-    .url-container {
-      position: relative;
-      z-index: 1;
-      margin-top: 20px;
-    }
-    .url-input, .url-button {
-      font-size: 24px;
-      padding: 10px 25px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      outline: none;
-    }
-    .url-input {
-      width: 250px;
-      margin-right: 10px;
-    }
-    .url-button {
-      cursor: pointer;
-    }
-    .url-button:hover {
-      background: white;
-      color: black;
-    }
-    .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      width: 90%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-    .top-bar .title {
-      color: white;
-      font-size: 24px;
-      font-family: Arial, sans-serif;
-    }
-    .top-bar .buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .top-bar .button {
-      font-size: 18px;
-      padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .top-bar .button::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
-    }
-    .top-bar .button:hover::after {
-      left: 100%;
-    }
-    .top-bar .button:hover {
-      background: white;
-      color: black;
-    }
-
-    /* ADDED: Style for the toggle music button */
-    .music-toggle {
-      font-size: 24px;
-      padding: 10px 25px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      margin-top: 20px;
-      z-index: 1;
-    }
-    .music-toggle:hover {
-      background: white;
-      color: black;
-    } 
-    
+    /* Custom tweaks */
+    body { @apply bg-black overflow-hidden; }
+    #constellationCanvas { @apply absolute inset-0; }
   </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center h-screen">
   <canvas id="constellationCanvas"></canvas>
-  
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
+
+  <!-- Top Bar -->
+  <nav class="w-full px-8 py-4 bg-black/80 backdrop-blur-md fixed top-0 flex justify-between items-center z-30">
+    <div class="flex items-center">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" class="h-10" />
     </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+    <div class="flex space-x-4">
+      <button onclick="location.href='index.html'" class="px-4 py-2 border border-white rounded-lg text-white hover:bg-white hover:text-black transition">Home</button>
+      <button onclick="location.href='g.html'" class="px-4 py-2 border border-white rounded-lg text-white hover:bg-white hover:text-black transition">Games</button>
+      <button onclick="location.href='settings.html'" class="px-4 py-2 border border-white rounded-lg text-white hover:bg-white hover:text-black transition">Settings</button>
     </div>
+  </nav>
+
+  <!-- URL Input -->
+  <div class="mt-24 z-20 flex items-center" data-aos="fade-down">
+    <input id="urlInput" type="text" placeholder="Enter URL here..." class="w-64 px-4 py-2 mr-2 border border-white rounded-lg bg-transparent text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white transition" />
+    <button id="urlButton" class="px-6 py-2 border border-white rounded-lg text-white hover:bg-white hover:text-black transition" data-aos="zoom-in" data-aos-delay="100">Go</button>
   </div>
 
-  <!-- ADDED: Toggle Music Button -->
-  <button class="music-toggle" id="musicToggle">toggle music</button>
+  <!-- Music Toggle -->
+  <button id="musicToggle" class="mt-6 px-6 py-2 border border-white rounded-lg text-white hover:bg-white hover:text-black transition" data-aos="fade-up" data-aos-delay="200">Toggle Music</button>
 
-
- 
-
-  <div class="url-container">
-    <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
-    <button id="urlButton" class="url-button">Search or Enter URL</button>
-  </div>
-
-  <!-- ADDED: Audio Element (hidden) -->
   <audio id="backgroundMusic" loop>
     <source src="audio/444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
-    Your browser does not support the audio element.
   </audio>
 
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script>
-  function isMobileOrTablet() {
-    const ua = navigator.userAgent.toLowerCase();
-    return /iphone|ipod|android.*mobile|windows phone|blackberry|iemobile|opera mini|ipad|android(?!.*mobile)/.test(ua);
-  }
+    // Initialize AOS
+    AOS.init({ duration: 800, once: true });
 
-  if (isMobileOrTablet() && !window.location.href.includes("formobile.html")) {
-    window.location.href = "formobile.html";
-  }
+    // Constellation Canvas (same logic)
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    class Star {
-      constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+    class Star { constructor(x,y,r){Object.assign(this,{x,y,r,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,time:Math.random()*1000+3000,age:0});}
+      update(){this.x+=this.vx;this.y+=this.vy;this.age++;if(this.age>this.time){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.time=Math.random()*1000+3000;this.age=0;}if(this.x<0||this.x>canvas.width) this.vx*=-1;if(this.y<0||this.y>canvas.height) this.vy*=-1;}
+      draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();}
     }
-    
-    const stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 100;
-    for (let i = 0; i < MAX_STARS; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
-    }
-    
-    canvas.addEventListener('click', e => {
-      let r = Math.random() * 2 + 1;
-      let s = new Star(e.clientX, e.clientY, r);
-      stars.push(s);
-    });
-    
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          let a = stars[i], b = stars[j];
-          let dx = a.x - b.x, dy = a.y - b.y;
-          let dist = Math.hypot(dx, dy);
-          if (dist < LINE_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = rgba(255,255,255,${1 - dist / LINE_DIST});
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-    
-    draw();
-    
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const stars=[];for(let i=0;i<80;i++)stars.push(new Star(Math.random()*canvas.width,Math.random()*canvas.height,Math.random()*2+1));
+    function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{s.update();s.draw()});for(let i=0;i<stars.length;i++)for(let j=i+1;j<stars.length;j++){const a=stars[i],b=stars[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);if(dist<100){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(255,255,255,${1-dist/100})`;ctx.lineWidth=0.5;ctx.stroke()}}requestAnimationFrame(draw);} draw();
+
+    // URL Button Logic
+    document.getElementById('urlButton').addEventListener('click', ()=>{
+      let url=document.getElementById('urlInput').value.trim(); if(!url) return alert('Enter URL');
+      if(!/^https?:\/\//.test(url)) url='https://'+url;
+      try{new URL(url); location.href='/proxy?url='+encodeURIComponent(url);}catch(e){alert('Invalid URL');}
     });
 
-    const urlInput = document.getElementById('urlInput');
-    const urlButton = document.getElementById('urlButton');
-    urlButton.addEventListener('click', () => {
-      let url = urlInput.value.trim();
-      if (!url) {
-        alert('Type in a valid URL');
-        return;
-      }
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
-      }
-      try {
-        new URL(url);
-        window.location.href = '/proxy?url=' + encodeURIComponent(url);
-      } catch (e) {
-        alert('Type in a valid URL');
-      }
-    });
+    // Music Toggle
+    const music=document.getElementById('backgroundMusic');let playing=false;
+    document.getElementById('musicToggle').addEventListener('click', ()=>{ playing?music.pause():music.play(); playing=!playing; });
 
-    // music toggle logic
-    const music = document.getElementById('backgroundMusic');
-    const toggleButton = document.getElementById('musicToggle');
-
-    let isPlaying = false;
-
-    toggleButton.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-      } else {
-        music.play();
-      }
-      isPlaying = !isPlaying;
-    });
+    // Top-bar entrance animation
+    gsap.from('nav', { y: -100, opacity: 0, duration: 1, ease: 'bounce.out' });
   </script>
 </body>
 </html>
