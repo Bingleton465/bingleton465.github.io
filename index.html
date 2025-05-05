@@ -6,7 +6,6 @@
     const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
     const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
     const defaultFavicon = 'images/icons/logo.png';
-
     
     if (savedTitle) document.title = savedTitle;
 
@@ -15,7 +14,7 @@
 
     if (!savedFavicon) {
       localStorage.setItem('customFavicon', favicon);
-      document.cookie = customFavicon=${encodeURIComponent(favicon)}; path=/;
+      document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/;`;
     }
 
     function setFavicon(url) {
@@ -33,17 +32,16 @@
       return match ? decodeURIComponent(match[2]) : null;
     }
 
-
     window.setCustomCloak = function(title, faviconURL) {
       if (title) {
         document.title = title;
         localStorage.setItem('customTitle', title);
-        document.cookie = customTitle=${encodeURIComponent(title)}; path=/;
+        document.cookie = `customTitle=${encodeURIComponent(title)}; path=/;`;
       }
       if (faviconURL) {
         setFavicon(faviconURL);
         localStorage.setItem('customFavicon', faviconURL);
-        document.cookie = customFavicon=${encodeURIComponent(faviconURL)}; path=/;
+        document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/;`;
       }
     };
   })();
@@ -185,9 +183,6 @@
   <!-- ADDED: Toggle Music Button -->
   <button class="music-toggle" id="musicToggle">toggle music</button>
 
-
- 
-
   <div class="url-container">
     <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
     <button id="urlButton" class="url-button">Search or Enter URL</button>
@@ -278,7 +273,7 @@
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = rgba(255,255,255,${1 - dist / LINE_DIST});
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / LINE_DIST})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -302,7 +297,7 @@
         alert('Type in a valid URL');
         return;
       }
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      if (!/^https?:\/\//i.test(url)) {
         url = 'https://' + url;
       }
       try {
@@ -317,13 +312,22 @@
     const music = document.getElementById('backgroundMusic');
     const toggleButton = document.getElementById('musicToggle');
 
-    let isPlaying = false;
+    // Load previous music state
+    let isPlaying = localStorage.getItem('isMusicPlaying') === 'true';
+
+    if (isPlaying) {
+      music.play();
+    } else {
+      music.pause();
+    }
 
     toggleButton.addEventListener('click', () => {
       if (isPlaying) {
         music.pause();
+        localStorage.setItem('isMusicPlaying', 'false');
       } else {
         music.play();
+        localStorage.setItem('isMusicPlaying', 'true');
       }
       isPlaying = !isPlaying;
     });
