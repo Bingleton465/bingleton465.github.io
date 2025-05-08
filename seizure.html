@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Ultimate Sensory Overload</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>⚠️ Flash Warning</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
       overflow: hidden;
-      background-color: #00ff00;
-      filter: invert(100%) brightness(500%) saturate(1000%);
+      animation: flashBackground 0.1s infinite;
+    }
+
+    @keyframes flashBackground {
+      0% { background-color: red; }
+      25% { background-color: lime; }
+      50% { background-color: blue; }
+      75% { background-color: yellow; }
+      100% { background-color: magenta; }
+    }
+
+    .crazy-box {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      animation: spinMove 0.5s linear infinite;
+      background-color: white;
+      mix-blend-mode: difference;
+    }
+
+    @keyframes spinMove {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      100% {
+        transform: translate(100vw, 100vh) rotate(360deg);
+      }
     }
   </style>
 </head>
 <body>
-  <audio id="audio" src="your-audio-file.mp3" autoplay loop></audio>
   <script>
-    const colors = ['#00ff00', '#39ff14'];
-    let i = 0;
-    setInterval(() => {
-      document.body.style.backgroundColor = colors[i % colors.length];
-      i++;
-    }, 1);
+    // Spam the screen with spinning boxes
+    for (let i = 0; i < 100; i++) {
+      const box = document.createElement('div');
+      box.className = 'crazy-box';
+      box.style.top = Math.random() * window.innerHeight + 'px';
+      box.style.left = Math.random() * window.innerWidth + 'px';
+      document.body.appendChild(box);
+    }
   </script>
 </body>
 </html>
