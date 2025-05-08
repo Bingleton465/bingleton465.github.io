@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NEON INVERSION HELL</title>
+  <title>Ultimate Sensory Overload</title>
   <style>
     html, body {
       margin: 0;
@@ -10,37 +10,20 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: #00ff00;
-      filter: invert(100%) brightness(500%) contrast(2000%) saturate(1000%);
-      animation: pulse 0.001s infinite linear;
-    }
-
-    @keyframes pulse {
-      0% {
-        background: #00ff00;
-        filter: invert(100%) brightness(800%) contrast(2000%) saturate(2000%);
-      }
-      50% {
-        background: #39ff14;
-        filter: invert(100%) brightness(1200%) contrast(4000%) saturate(4000%) hue-rotate(180deg);
-      }
-      100% {
-        background: #00ff00;
-        filter: invert(100%) brightness(800%) contrast(2000%) saturate(2000%);
-      }
+      background-color: #00ff00;
+      filter: invert(100%) brightness(500%) saturate(1000%);
     }
   </style>
 </head>
 <body>
-  <!-- Ear destruction -->
-  <audio id="blast" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
-
+  <audio id="audio" src="your-audio-file.mp3" autoplay loop></audio>
   <script>
-    window.onload = () => {
-      const blast = document.getElementById('blast');
-      blast.volume = 1.0;
-      blast.play();
-    };
+    const colors = ['#00ff00', '#39ff14'];
+    let i = 0;
+    setInterval(() => {
+      document.body.style.backgroundColor = colors[i % colors.length];
+      i++;
+    }, 1);
   </script>
 </body>
 </html>
