@@ -2,83 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DEFCON 1</title>
+  <title>💀 MAXIMUM CHAOS 💀</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
     html, body {
-      width:100%; height:100%; overflow:hidden;
-      background:#fff; animation: strobe 0.01s infinite alternate;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff0000, #00ff00, #0000ff);
+      background-size: 400% 400%;
+      animation: bgshift 0.2s infinite linear;
+      overflow: hidden;
     }
 
-    @keyframes strobe {
-      0% { background: #fff; }
-      100% { background: #000; }
+    @keyframes bgshift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
 
-    #shockwave {
-      position: fixed; top:0; left:0; width:100%; height:100%;
-      pointer-events:none; z-index:1000;
-      animation: flashback 0.1s infinite;
-    }
-
-    @keyframes flashback {
-      0% { background: red; }
-      25% { background: yellow; }
-      50% { background: lime; }
-      75% { background: cyan; }
-      100% { background: magenta; }
-    }
-
-    #nuke-text {
-      position: absolute; top:50%; left:50%;
-      transform: translate(-50%, -50%);
-      font-size: 120px; font-family: Impact, sans-serif;
-      text-align: center; line-height:1;
-      animation:
-        spin 0.4s infinite linear,
-        flash 0.05s infinite alternate,
-        shake 0.05s infinite;
-      z-index:999;
+    .chaos-text {
+      position: absolute;
+      font-family: Impact, sans-serif;
+      font-size: 60px;
+      font-weight: bold;
       color: #fff;
-      text-shadow: 0 0 30px #fff, 0 0 60px #f0f, 0 0 100px #0ff;
+      text-shadow:
+        0 0 10px #f0f,
+        0 0 20px #0ff,
+        0 0 30px #ff0,
+        0 0 50px #0f0,
+        0 0 60px #f00,
+        0 0 80px #00f;
+      animation: fly 1s infinite linear, colorflash 0.1s infinite linear;
     }
 
-    @keyframes spin {
-      0%{transform:translate(-50%,-50%) rotate(0deg);}
-      100%{transform:translate(-50%,-50%) rotate(360deg);}
+    @keyframes fly {
+      0% {
+        top: 100%;
+        left: 0%;
+        transform: rotate(0deg) scale(1);
+      }
+      100% {
+        top: -10%;
+        left: 100%;
+        transform: rotate(1080deg) scale(3);
+      }
     }
 
-    @keyframes flash {
-      0%{color:red; background:yellow}
-      25%{color:blue; background:white}
-      50%{color:green; background:black}
-      75%{color:purple; background:pink}
-      100%{color:orange; background:cyan}
-    }
-
-    @keyframes shake {
-      0%,100%{transform:translate(-50%,-50%) translate(0,0)}
-      25%{transform:translate(-50%,-50%) translate(10px,-10px)}
-      50%{transform:translate(-50%,-50%) translate(-10px,10px)}
-      75%{transform:translate(-50%,-50%) translate(10px,10px)}
+    @keyframes colorflash {
+      0% { color: #f00; }
+      25% { color: #0f0; }
+      50% { color: #00f; }
+      75% { color: #ff0; }
+      100% { color: #f0f; }
     }
   </style>
 </head>
 <body>
 
-  <div id="shockwave"></div>
-  <div id="nuke-text">THE END IS NOW</div>
-
-  <audio id="boom" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" preload="auto" loop></audio>
+  <!-- Max volume looping audio -->
+  <audio id="sound" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
 
   <script>
+    const textOptions = ["CHAOS", "LIGHT", "LOUD", "END", "💥", "🔥", "🚨", "⚡", "🌈", "💀"];
+    function spawnText() {
+      const t = document.createElement('div');
+      t.className = 'chaos-text';
+      t.style.top = Math.random() * 100 + '%';
+      t.style.left = Math.random() * 100 + '%';
+      t.style.fontSize = (30 + Math.random() * 70) + 'px';
+      t.textContent = textOptions[Math.floor(Math.random() * textOptions.length)];
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2000);
+    }
+
+    setInterval(spawnText, 20); // Extremely fast spawn rate
+
+    // Boost volume to max
     window.onload = () => {
-      const boom = document.getElementById("boom");
-      boom.volume = 1.0;
-      boom.play();
+      const s = document.getElementById('sound');
+      s.volume = 1.0;
+      s.play();
     };
   </script>
 
 </body>
 </html>
-
