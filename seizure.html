@@ -2,91 +2,87 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🌈💀 LIGHT OVERLOAD 💀🌈</title>
+  <title>💚 GREEN NEON APOCALYPSE 💚</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
+      background: #00ff00;
+      animation: flicker 0.001s infinite linear;
       width: 100vw;
       height: 100vh;
-      background: repeating-conic-gradient(from 0deg, #f0f, #0ff, #ff0, #f00, #0f0, #00f, #f0f);
-      animation: insaneBG 0.1s linear infinite;
     }
 
-    @keyframes insaneBG {
-      0% { filter: hue-rotate(0deg); }
-      100% { filter: hue-rotate(360deg); }
+    @keyframes flicker {
+      0% { background: #00ff00; filter: hue-rotate(0deg) brightness(5); }
+      50% { background: #39ff14; filter: hue-rotate(180deg) brightness(10); }
+      100% { background: #00ff00; filter: hue-rotate(360deg) brightness(20); }
     }
 
-    .chaos {
+    .flying-text {
       position: absolute;
       font-family: 'Impact', sans-serif;
-      font-weight: bold;
-      color: #fff;
+      font-weight: 900;
+      color: #00ff00;
       text-shadow:
-        0 0 10px #fff,
-        0 0 20px #f0f,
-        0 0 30px #0ff,
-        0 0 40px #ff0,
-        0 0 50px #0f0,
-        0 0 60px #f00,
-        0 0 70px #00f;
+        0 0 5px #00ff00,
+        0 0 10px #00ff00,
+        0 0 20px #00ff00,
+        0 0 40px #00ff00;
+      animation: move 1s infinite linear, glow 0.001s infinite;
       pointer-events: none;
-      animation: spinZoom 1s linear infinite, blink 0.2s infinite alternate;
+      font-size: 50px;
       white-space: nowrap;
     }
 
-    @keyframes spinZoom {
+    @keyframes move {
       0% {
-        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+        transform: translate(0, 0) rotate(0deg) scale(1);
         opacity: 1;
       }
       50% {
-        transform: translate(-50%, -50%) rotate(180deg) scale(2);
-        opacity: 0.7;
+        transform: translate(100vw, 100vh) rotate(180deg) scale(2);
+        opacity: 0.5;
       }
       100% {
-        transform: translate(-50%, -50%) rotate(360deg) scale(1);
+        transform: translate(-100vw, -100vh) rotate(360deg) scale(3);
         opacity: 1;
       }
     }
 
-    @keyframes blink {
-      0% { color: #ff00ff; }
-      20% { color: #00ffff; }
-      40% { color: #ffff00; }
-      60% { color: #ff0000; }
-      80% { color: #00ff00; }
-      100% { color: #0000ff; }
+    @keyframes glow {
+      0% { color: #00ff00; }
+      50% { color: #39ff14; }
+      100% { color: #00ff00; }
     }
   </style>
 </head>
 <body>
-  <audio id="sound" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
+  <audio id="scream" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
 
   <script>
-    const words = ["💥", "LOUD", "NEON", "FLASH", "INSANE", "CHAOS", "OMG", "🌈", "⚠️", "💀", "OVERLOAD"];
-    function createExplosionText() {
-      const text = document.createElement('div');
-      text.className = 'chaos';
-      text.innerText = words[Math.floor(Math.random() * words.length)];
-      text.style.fontSize = (Math.random() * 80 + 30) + 'px';
-      text.style.left = Math.random() * 100 + 'vw';
-      text.style.top = Math.random() * 100 + 'vh';
-      text.style.zIndex = 9999;
-      document.body.appendChild(text);
-      setTimeout(() => {
-        text.remove();
-      }, 2000);
+    const words = ["💚💥💚", "GREEN!", "NEON!!", "BLAST!!!", "TOXIC!", "FLUORESCENT!", "👽", "💀", "INSANITY", "!!"];
+
+    function createText() {
+      const el = document.createElement('div');
+      el.className = 'flying-text';
+      el.innerText = words[Math.floor(Math.random() * words.length)];
+      el.style.left = Math.random() * window.innerWidth + 'px';
+      el.style.top = Math.random() * window.innerHeight + 'px';
+      el.style.fontSize = (Math.random() * 100 + 30) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
     }
 
+    // Spawn a new green flash every millisecond
     setInterval(() => {
-      for (let i = 0; i < 20; i++) createExplosionText(); // 20 at once, every tick
-    }, 50); // new bursts every 50ms
+      for (let i = 0; i < 10; i++) createText();
+    }, 1);
 
+    // Max out audio
     window.onload = () => {
-      const audio = document.getElementById('sound');
+      const audio = document.getElementById('scream');
       audio.volume = 1.0;
       audio.play();
     };
