@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>definitely not a seisure</title>
+  <style>
+    /* Full-screen reset */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; background:#000; }
+
+    /* Shockwave & Flashback */
+    #shockwave {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index:1000;
+      animation: shockwave 3s infinite, flashback 6s infinite;
+    }
+    @keyframes shockwave {
+      0%,80% { background:none; }
+      81%,90% { background: white; }
+      91%,100%{ background: yellow; }
+    }
+    @keyframes flashback {
+      0%,100% { background:none; }
+      50% { background: red; }
+    }
+
+    /* Text Chaos */
+    #nuke-text {
+      position: absolute; top:50%; left:50%;
+      transform: translate(-50%, -50%);
+      font-size: 800px; font-family: sans-serif;
+      text-align: center; line-height:1;
+      animation:
+        spin 1s infinite linear,
+        flash 0.2s infinite alternate,
+        shake 0.1s infinite,
+        vibrate 0.05s infinite,
+        nuclear-blast 6s infinite;
+      z-index:999;
+      color: #fff; text-shadow: 0 0 20px #fff;
+    }
+    @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    @keyframes flash {
+      0%{color:red; background:yellow}
+      25%{color:blue; background:white}
+      50%{color:green; background:black}
+      75%{color:purple; background:pink}
+      100%{color:orange; background:cyan}
+    }
+    @keyframes shake {
+      0%,100%{transform:translate(0,0)}
+      25%{transform:translate(5px,-5px)}
+      50%{transform:translate(-5px,5px)}
+      75%{transform:translate(5px,5px)}
+    }
+    @keyframes vibrate {
+      0%,100%{transform:translate(0,0)}
+      25%{transform:translate(2px,-2px)}
+      50%{transform:translate(-2px,2px)}
+      75%{transform:translate(2px,2px)}
+    }
+    @keyframes nuclear-blast {
+      0% { opacity:1; transform: scale(1); }
+      50% { opacity:0.7; transform: scale(10); }
+      100% { opacity:0; transform: scale(100); }
+    }
+
+    /* Confetti Particles */
+    #confetti {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      pointer-events:none; z-index: 1001;
+    }
+    .particle {
+      position:absolute; width:10px; height:10px;
+      background: hsla(calc(360 * var(--i)), 100%, 50%, 0.8);
+      animation: fall calc(3s + var(--i)) infinite linear;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-20px) scale(1); }
+      100% { transform: translateY(110vh) scale(0.5); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shockwave + Flash -->
+  <div id="shockwave"></div>
+
+  <!-- Confetti Container -->
+  <canvas id="confetti"></canvas>
+
+  <!-- Eternal Nuclear Text -->
+  <h1 id="nuke-text">THE END OF ALL THINGS IS UNLEASHED!</h1>
+
+  <!-- Audio Sources -->
+  <audio id="boom-sound" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" preload="auto" loop></audio>
+  <audio id="salinewin" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" preload="auto" loop></audio>
+
+  <script>
+    // Play both tracks in sync
+    window.onload = () => {
+      document.getElementById('boom-sound').play();
+      document.getElementById('salinewin').play();
+      launchConfetti();
+    };
+
+    // Create infinite confetti
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = innerWidth; canvas.height = innerHeight;
+      const particles = [];
+      for(let i=0; i<200; i++){
+        particles.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*-canvas.height,
+          size: 10,
+          speed: 2 + Math.random()*4,
+          hue: Math.random()
+        });
+      }
+      function draw() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p => {
+          ctx.fillStyle = `hsla(${p.hue*360},100%,50%,0.8)`;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+          p.y += p.speed;
+          if(p.y > canvas.height){
+            p.y = -10;
+            p.x = Math.random()*canvas.width;
+          }
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  </script>
+</body>
+</html>
