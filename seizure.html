@@ -2,89 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>💚 GREEN NEON APOCALYPSE 💚</title>
+  <title>NEON INVERSION HELL</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      background: #00ff00;
-      animation: flicker 0.001s infinite linear;
       width: 100vw;
       height: 100vh;
+      overflow: hidden;
+      background: #00ff00;
+      filter: invert(100%) brightness(500%) contrast(2000%) saturate(1000%);
+      animation: pulse 0.001s infinite linear;
     }
 
-    @keyframes flicker {
-      0% { background: #00ff00; filter: hue-rotate(0deg) brightness(5); }
-      50% { background: #39ff14; filter: hue-rotate(180deg) brightness(10); }
-      100% { background: #00ff00; filter: hue-rotate(360deg) brightness(20); }
-    }
-
-    .flying-text {
-      position: absolute;
-      font-family: 'Impact', sans-serif;
-      font-weight: 900;
-      color: #00ff00;
-      text-shadow:
-        0 0 5px #00ff00,
-        0 0 10px #00ff00,
-        0 0 20px #00ff00,
-        0 0 40px #00ff00;
-      animation: move 1s infinite linear, glow 0.001s infinite;
-      pointer-events: none;
-      font-size: 50px;
-      white-space: nowrap;
-    }
-
-    @keyframes move {
+    @keyframes pulse {
       0% {
-        transform: translate(0, 0) rotate(0deg) scale(1);
-        opacity: 1;
+        background: #00ff00;
+        filter: invert(100%) brightness(800%) contrast(2000%) saturate(2000%);
       }
       50% {
-        transform: translate(100vw, 100vh) rotate(180deg) scale(2);
-        opacity: 0.5;
+        background: #39ff14;
+        filter: invert(100%) brightness(1200%) contrast(4000%) saturate(4000%) hue-rotate(180deg);
       }
       100% {
-        transform: translate(-100vw, -100vh) rotate(360deg) scale(3);
-        opacity: 1;
+        background: #00ff00;
+        filter: invert(100%) brightness(800%) contrast(2000%) saturate(2000%);
       }
-    }
-
-    @keyframes glow {
-      0% { color: #00ff00; }
-      50% { color: #39ff14; }
-      100% { color: #00ff00; }
     }
   </style>
 </head>
 <body>
-  <audio id="scream" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
+  <!-- Ear destruction -->
+  <audio id="blast" src="https://tuna.voicemod.net/sound/5b30ea5d-2780-4b91-98e6-b5e85451f761" autoplay loop></audio>
 
   <script>
-    const words = ["💚💥💚", "GREEN!", "NEON!!", "BLAST!!!", "TOXIC!", "FLUORESCENT!", "👽", "💀", "INSANITY", "!!"];
-
-    function createText() {
-      const el = document.createElement('div');
-      el.className = 'flying-text';
-      el.innerText = words[Math.floor(Math.random() * words.length)];
-      el.style.left = Math.random() * window.innerWidth + 'px';
-      el.style.top = Math.random() * window.innerHeight + 'px';
-      el.style.fontSize = (Math.random() * 100 + 30) + 'px';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 1000);
-    }
-
-    // Spawn a new green flash every millisecond
-    setInterval(() => {
-      for (let i = 0; i < 10; i++) createText();
-    }, 1);
-
-    // Max out audio
     window.onload = () => {
-      const audio = document.getElementById('scream');
-      audio.volume = 1.0;
-      audio.play();
+      const blast = document.getElementById('blast');
+      blast.volume = 1.0;
+      blast.play();
     };
   </script>
 </body>
