@@ -1,61 +1,22 @@
+<!-- Ultimate Game Stash file--> 
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
+<!-- Made by Genizy--> 
+
+<!--
+Game Bootstrapper
+
+New - Jon A Bellini 11/4/2024
 
  
-<!-- finally woerks -->
+-->
 <!doctype HTML>
 <html lang="en">
 <head>
- <script>
-   (function () {
-    const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-    const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-    const defaultFavicon = 'images/icons/logo.png';
-
-    
-    if (savedTitle) document.title = savedTitle;
-
-    const favicon = savedFavicon || defaultFavicon;
-    setFavicon(favicon);
-
-    if (!savedFavicon) {
-      localStorage.setItem('customFavicon', favicon);
-      document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
-    }
-
-    function setFavicon(url) {
-      let link = document.querySelector('link[rel="icon"]');
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
-      }
-      link.href = url;
-    }
-
-    function getCookie(name) {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-      return match ? decodeURIComponent(match[2]) : null;
-    }
-
-
-    window.setCustomCloak = function(title, faviconURL) {
-      if (title) {
-        document.title = title;
-        localStorage.setItem('customTitle', title);
-        document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
-      }
-      if (faviconURL) {
-        setFavicon(faviconURL);
-        localStorage.setItem('customFavicon', faviconURL);
-        document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
-      }
-    };
-  })();
-</script>
- <base href="https://rawcdn.githack.com/bubbls/youtube-playables/3fa3b6dbb7675ba6d708abe1ba272e67607ba807/crossy-road/">
+  <base href="https://rawcdn.githack.com/bubbls/youtube-playables/3fa3b6dbb7675ba6d708abe1ba272e67607ba807/crossy-road/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Velora - Crossy Road</title>
+  <title>Crossy Road</title>
 
   <!-- Load the YouTube Playables SDK as the first script -->
   <script src="https://rawcdn.githack.com/bubbls/youtube-playables/main/ytgame.js" nonce="2KHli9LrFFijH2jCb5SkMw"></script>
