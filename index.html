@@ -1,70 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-   (function () {
-    const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-    const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-    const defaultFavicon = 'images/icons/logo.png';
-    
-    if (savedTitle) document.title = savedTitle;
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
 
-    const favicon = savedFavicon || defaultFavicon;
-    setFavicon(favicon);
-
-    if (!savedFavicon) {
-      localStorage.setItem('customFavicon', favicon);
-      document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/;`;
-    }
-
-    function setFavicon(url) {
-      let link = document.querySelector('link[rel="icon"]');
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/;`;
       }
-      link.href = url;
-    }
 
-    function getCookie(name) {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-      return match ? decodeURIComponent(match[2]) : null;
-    }
-
-    window.setCustomCloak = function(title, faviconURL) {
-      if (title) {
-        document.title = title;
-        localStorage.setItem('customTitle', title);
-        document.cookie = `customTitle=${encodeURIComponent(title)}; path=/;`;
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
       }
-      if (faviconURL) {
-        setFavicon(faviconURL);
-        localStorage.setItem('customFavicon', faviconURL);
-        document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/;`;
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
       }
-    };
-  })();
-</script>
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/;`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/;`;
+        }
+      };
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora – 🏠</title>
-   
+  <title>Velora â€“ ðŸ </title>
+
   <style>
     html, body {
       margin: 0; padding: 0;
       overflow: hidden;
-      background: black;
+      background-color: #00111a;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.2), transparent 60%),
+        radial-gradient(circle at 80% 30%, rgba(200,200,255,0.15), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(150,180,255,0.1), transparent 70%),
+        linear-gradient(to bottom, #001122, #002244, #003366);
+      background-blend-mode: screen;
       width: 100%; height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      position: relative;
     }
     canvas {
       display: block;
       position: absolute;
       top: 0; left: 0;
+      mix-blend-mode: screen;
     }
     .url-container {
       position: relative;
@@ -76,7 +80,7 @@
       padding: 10px 25px;
       border: 2px solid white;
       border-radius: 5px;
-      background: transparent;
+      background: rgba(255,255,255,0.05);
       color: white;
       font-family: Arial, sans-serif;
       outline: none;
@@ -89,7 +93,7 @@
       cursor: pointer;
     }
     .url-button:hover {
-      background: white;
+      background: rgba(255,255,255,0.2);
       color: black;
     }
     .top-bar {
@@ -98,7 +102,7 @@
       left: 0;
       width: 90%;
       height: 40px;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -120,7 +124,7 @@
       padding: 10px 20px;
       border: 2px solid white;
       border-radius: 5px;
-      background: transparent;
+      background: rgba(255,255,255,0.05);
       color: white;
       font-family: Arial, sans-serif;
       cursor: pointer;
@@ -145,14 +149,12 @@
       background: white;
       color: black;
     }
-
-
     .music-toggle {
       font-size: 24px;
       padding: 10px 25px;
       border: 2px solid white;
       border-radius: 5px;
-      background: transparent;
+      background: rgba(255,255,255,0.05);
       color: white;
       font-family: Arial, sans-serif;
       cursor: pointer;
@@ -160,15 +162,14 @@
       z-index: 1;
     }
     .music-toggle:hover {
-      background: white;
+      background: rgba(255,255,255,0.2);
       color: black;
-    } 
-    
+    }
   </style>
 </head>
 <body>
   <canvas id="constellationCanvas"></canvas>
-  
+
   <div class="top-bar">
     <div class="title">
       <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
@@ -187,40 +188,34 @@
     <button id="urlButton" class="url-button">search or Enter url</button>
   </div>
 
-
   <audio id="backgroundMusic" loop>
     <source src="audio/444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
-  ur browser does not support the audio
+    Your browser does not support the audio tag.
   </audio>
 
   <script>
-  function isMobileOrTablet() {
-    const ua = navigator.userAgent.toLowerCase();
-    return /iphone|ipod|android.*mobile|windows phone|blackberry|iemobile|opera mini|ipad|android(?!.*mobile)/.test(ua);
-  }
+    function isMobileOrTablet() {
+      const ua = navigator.userAgent.toLowerCase();
+      return /iphone|ipod|android.*mobile|windows phone|blackberry|iemobile|opera mini|ipad|android(?!.*mobile)/.test(ua);
+    }
+    if (isMobileOrTablet() && !window.location.href.includes("formobile.html")) {
+      window.location.href = "formobile.html";
+    }
 
-  if (isMobileOrTablet() && !window.location.href.includes("formobile.html")) {
-    window.location.href = "formobile.html";
-  }
+    // Constellation canvas logic
     const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
     class Star {
       constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
+        this.x = x; this.y = y; this.r = r;
         this.vx = (Math.random() - 0.5) * 0.5;
         this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
+        this.timeToBurst = Math.random() * 1000 + 3000; this.age = 0;
       }
       update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
+        this.x += this.vx; this.y += this.vy; this.age++;
         if (this.age > this.timeToBurst) this.burst();
         if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
         if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
@@ -236,97 +231,66 @@
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        ctx.fillStyle = 'white'; ctx.fill();
       }
     }
-    
     const stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 100;
+    const MAX_STARS = 80, LINE_DIST = 100;
     for (let i = 0; i < MAX_STARS; i++) {
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
+      stars.push(new Star(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2+1));
     }
-    
     canvas.addEventListener('click', e => {
-      let r = Math.random() * 2 + 1;
-      let s = new Star(e.clientX, e.clientY, r);
-      stars.push(s);
+      stars.push(new Star(e.clientX, e.clientY, Math.random()*2+1));
     });
-    
     function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let star of stars) {
-        star.update();
-        star.draw();
-      }
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          let a = stars[i], b = stars[j];
-          let dx = a.x - b.x, dy = a.y - b.y;
-          let dist = Math.hypot(dx, dy);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s => { s.update(); s.draw(); });
+      for (let i=0; i<stars.length; i++) {
+        for (let j=i+1; j<stars.length; j++) {
+          const a=stars[i], b=stars[j];
+          const dist = Math.hypot(a.x-b.x, a.y-b.y);
           if (dist < LINE_DIST) {
             ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / LINE_DIST})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1-dist/LINE_DIST})`;
+            ctx.lineWidth = 0.5; ctx.stroke();
           }
         }
       }
       requestAnimationFrame(draw);
     }
-    
     draw();
-    
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
 
+    // URL button logic
     const urlInput = document.getElementById('urlInput');
     const urlButton = document.getElementById('urlButton');
     urlButton.addEventListener('click', () => {
       let url = urlInput.value.trim();
-      if (!url) {
-        alert('Type in a valid URL');
-        return;
-      }
-      if (!/^https?:\/\//i.test(url)) {
-        url = 'https://' + url;
-      }
+      if (!url) { alert('Type in a valid URL'); return; }
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
       try {
         new URL(url);
         window.location.href = '/proxy?url=' + encodeURIComponent(url);
-      } catch (e) {
+      } catch {
         alert('Type in a valid URL');
       }
     });
 
-    // music toggle logic
+    // Music toggle logic
     const music = document.getElementById('backgroundMusic');
     const toggleButton = document.getElementById('musicToggle');
-
-    // Load previous music state
     let isPlaying = localStorage.getItem('isMusicPlaying') === 'true';
-
-    if (isPlaying) {
-      music.play();
-    } else {
-      music.pause();
-    }
-
+    if (isPlaying) music.play(); else music.pause();
     toggleButton.addEventListener('click', () => {
       if (isPlaying) {
-        music.pause();
-        localStorage.setItem('isMusicPlaying', 'false');
+        music.pause(); localStorage.setItem('isMusicPlaying','false');
       } else {
-        music.play();
-        localStorage.setItem('isMusicPlaying', 'true');
+        music.play(); localStorage.setItem('isMusicPlaying','true');
       }
       isPlaying = !isPlaying;
     });
