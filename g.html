@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
+  <script> 
     (function () {
       const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
       const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
@@ -53,12 +53,19 @@
     html, body {
       margin: 0;
       padding: 0;
-      background: black;
       overflow-x: hidden;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      background-color: #00111a;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.2), transparent 60%),
+        radial-gradient(circle at 80% 30%, rgba(200,200,255,0.15), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(150,180,255,0.1), transparent 70%),
+        linear-gradient(to bottom, #001122, #002244, #003366);
+      background-blend-mode: screen;
+      width: 100%; height: 100%;
+      display: block;
+      position: relative;
     }
-
     #constellationCanvas {
       position: fixed;
       top: 0;
@@ -70,7 +77,6 @@
       will-change: transform;
       transform: translateZ(0);
     }
-
     .top-bar {
       position: fixed;
       top: 0; left: 0;
@@ -121,7 +127,6 @@
       padding: 0 20px;
       max-width: 1200px;
     }
-
     .game-item {
       width: 150px; height: 150px;
       border: 2px solid white;
@@ -139,7 +144,6 @@
       transform: scale(1.1);
       box-shadow: 0 0 15px 5px rgba(255,255,255,0.8);
     }
-
 
     .search-container {
       text-align: center;
@@ -167,7 +171,6 @@
   </style>
 </head>
 <body>
-
   <div class="top-bar">
     <div class="title">
       <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
@@ -184,7 +187,7 @@
       <img src="https://images.cooltext.com/5729219.png" width="400" height="109" alt="games">
     </a>
   </div>
-  <p style="color: white; text-align: center;">V3 coming soon -marshall <3</p>
+  <p style="color: white; text-align: center; z-index:10; position: relative;">v3 is here -marshall <3</p>
 
   <div class="search-container">
     <input type="text" class="search-box" placeholder="Search games..." id="gameSearch" oninput="filterGames()" />
@@ -192,23 +195,24 @@
 
   <canvas id="constellationCanvas"></canvas>
 
+  
   <div class="container" id="gamesContainer">
-  <div class="game-item"><img src="images/icons/1v1.png"       alt="1v1.lol"                   onclick="openFullscreenGame('games/1v1.html')"></div>
+    <div class="game-item"><img src="images/icons/1v1.png"       alt="1v1.lol"                   onclick="openFullscreenGame('games/1v1.html')"></div>
     <div class="game-item"><img src="images/icons/rl.webp"      alt="Rocket League"            onclick="openFullscreenGame('games/rl.html')"></div>
     <div class="game-item"><img src="images/icons/er1.webp"     alt="Escape Road 1"            onclick="openFullscreenGame('games/er1.html')"></div>
     <div class="game-item"><img src="images/icons/er2.jpg"      alt="Escape Road 2"            onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
-    <div class="game-item"><img src="images/icons/kong.png"     alt="Flying Kong Minigame"            onclick="openFullscreenGame('games/kong.html')"></div>
+    <div class="game-item"><img src="images/icons/kong.png"     alt="Flying Kong Minigame"     onclick="openFullscreenGame('games/kong.html')"></div>
     <div class="game-item"><img src="images/icons/bitlife.png"  alt="BitLife Simulator"        onclick="openFullscreenGame('games/bitlife.html')"></div>
-    <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash"      onclick="openFullscreenGame('games/geometry.html')"></div>
+    <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash"         onclick="openFullscreenGame('games/geometry.html')"></div>
     <div class="game-item"><img src="images/icons/craft.png"    alt="EaglercraftX 1.8.8 (u29)" onclick="openFullscreenGame('games/EaglercraftX 1.8.8(u29).html')"></div>
     <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms"         onclick="openFullscreenGame('games/skibidi.html')"></div>
-    <div class="game-item"><img src="images/icons/boxels.webp"  alt="Sandboxels"           onclick="openFullscreenGame('games/clsandboxels.html')"></div>
+    <div class="game-item"><img src="images/icons/boxels.webp"  alt="Sandboxels"                onclick="openFullscreenGame('games/clsandboxels.html')"></div>
     <div class="game-item"><img src="images/icons/slope.png"    alt="Slope"                    onclick="openFullscreenGame('games/slope.html')"></div>
     <div class="game-item"><img src="images/icons/happy.jpeg"   alt="Happy Wheels"             onclick="openFullscreenGame('games/happy.html')"></div>
     <div class="game-item"><img src="images/icons/tiny.avif"    alt="Tiny Fishing"             onclick="openFullscreenGame('games/tiny.html')"></div>
     <div class="game-item"><img src="images/icons/rhit.avif"    alt="Ragdoll Hit"              onclick="openFullscreenGame('games/rhit.html')"></div>
     <div class="game-item"><img src="images/icons/ra.webp"      alt="Ragdoll Archers"          onclick="openFullscreenGame('games/ra.html')"></div>
-    <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters"              onclick="openFullscreenGame('games/bowmasters.html')"></div>
+    <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters"             onclick="openFullscreenGame('games/bowmasters.html')"></div>
     <div class="game-item"><img src="images/icons/bl.png"       alt="Basketball Legends"       onclick="openFullscreenGame('games/bl.html')"></div>
     <div class="game-item"><img src="images/icons/agar.jpg"     alt="Agar.io Lite"             onclick="openFullscreenGame('games/agar.html')"></div>
     <div class="game-item"><img src="images/icons/police.avif"  alt="Amazing Strange Rope Police" onclick="openFullscreenGame('games/rope.html')"></div>
@@ -235,104 +239,97 @@
     <div class="game-item"><img src="images/icons/cup.png"      alt="A Small World Cup"        onclick="openFullscreenGame('games/cup.html')"></div>
     <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D"          onclick="openFullscreenGame('games/cattle.html')"></div>
     <div class="game-item"><img src="images/icons/flood.webp"   alt="Flood Runner 4"          onclick="openFullscreenGame('games/flood.html')"></div>
-     <div class="game-item"><img src="images/icons/post.png"   alt="blockpost"          onclick="openFullscreenGame('games/post.html')"></div>
-    <div class="game-item"><img src="images/icons/suika.avif"   alt="suika watermelon game"          onclick="openFullscreenGame('games/suika.html')"></div>
-    <div class="game-item"><img src="images/icons/wars.webp"   alt="lego star wars"          onclick="openFullscreenGame('games/wars.html')"></div>
-     <div class="game-item"><img src="images/icons/cn.webp"   alt="cartoon network tennis"          onclick="openFullscreenGame('games/cn.html')"></div>
-    <!-- game items -->
+    <div class="game-item"><img src="images/icons/post.png"     alt="blockpost"                 onclick="openFullscreenGame('games/post.html')"></div>
+    <div class="game-item"><img src="images/icons/suika.avif"   alt="suika watermelon game"     onclick="openFullscreenGame('games/suika.html')"></div>
+    <div class="game-item"><img src="images/icons/wars.webp"    alt="lego star wars"            onclick="openFullscreenGame('games/wars.html')"></div>
+    <div class="game-item"><img src="images/icons/cn.webp"      alt="cartoon network tennis"    onclick="openFullscreenGame('games/cn.html')"></div>
   </div>
 
+
   <script>
-    function filterGames() {
-      const query = document.getElementById('gameSearch').value.toLowerCase();
-      const items = document.querySelectorAll('.game-item');
-      items.forEach(item => {
-        const alt = item.querySelector('img').alt.toLowerCase();
-        item.style.display = alt.includes(query) ? 'block' : 'none';
-      });
-    }
-  const canvas = document.getElementById('constellationCanvas');
+    const canvas = document.getElementById('constellationCanvas');
     const ctx = canvas.getContext('2d');
+    let stars = [];
+    const MAX_STARS = 80, LINE_DIST = 100;
+
     class Star {
-      constructor(x,y,r){
-        this.x=x;this.y=y;this.r=r;
-        this.vx=(Math.random()-0.5)*0.5;
-        this.vy=(Math.random()-0.5)*0.5;
-        this.timeToBurst=Math.random()*1000+3000;
-        this.age=0;
+      constructor(x, y, r) {
+        this.x = x; this.y = y; this.r = r;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;
+        this.age = 0;
       }
-      update(){
-        this.x+=this.vx; this.y+=this.vy; this.age++;
-        if(this.age>this.timeToBurst)this.burst();
-        if(this.x<0||this.x>canvas.width)this.vx*=-1;
-        if(this.y<0||this.y>canvas.height)this.vy*=-1;
+      update() {
+        this.x += this.vx; this.y += this.vy; this.age++;
+        if (this.age > this.timeToBurst) this.burst();
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
       }
-      burst(){
-        this.x=Math.random()*canvas.width;
-        this.y=Math.random()*canvas.height;
-        this.vx=(Math.random()-0.5)*0.5;
-        this.vy=(Math.random()-0.5)*0.5;
-        this.timeToBurst=Math.random()*1000+3000;
-        this.age=0;
+      burst() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.timeToBurst = Math.random() * 1000 + 3000;
+        this.age = 0;
       }
-      draw(){
+      draw() {
         ctx.beginPath();
-        ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-        ctx.fillStyle='white';
-        ctx.fill();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'white'; ctx.fill();
       }
     }
-    let stars=[]; const MAX_STARS=80, LINE_DIST=100;
-    function initStars(){
-      stars=[]; 
-      for(let i=0;i<MAX_STARS;i++){
-        stars.push(new Star(
-          Math.random()*canvas.width,
-          Math.random()*canvas.height,
-          Math.random()*2+1
-        ));
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < MAX_STARS; i++) {
+        stars.push(new Star(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 2 + 1));
       }
     }
-    function resizeCanvas(){
-      canvas.width=window.innerWidth;
-      canvas.height=window.innerHeight;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
       initStars();
     }
-    function draw(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for(let s of stars){ s.update(); s.draw(); }
-      for(let i=0;i<stars.length;i++){
-        for(let j=i+1;j<stars.length;j++){
-          const a=stars[i], b=stars[j];
-          const dx=a.x-b.x, dy=a.y-b.y;
-          const dist=Math.hypot(dx,dy);
-          if(dist<LINE_DIST){
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) { s.update(); s.draw(); }
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const a = stars[i], b = stars[j];
+          const dist = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dist < LINE_DIST) {
             ctx.beginPath();
-            ctx.moveTo(a.x,a.y);
-            ctx.lineTo(b.x,b.y);
-            ctx.strokeStyle=`rgba(255,255,255,${1-dist/LINE_DIST})`;
-            ctx.lineWidth=0.5;
-            ctx.stroke();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / LINE_DIST})`;
+            ctx.lineWidth = 0.5; ctx.stroke();
           }
         }
       }
       requestAnimationFrame(draw);
     }
-    canvas.addEventListener('click', e=>{
-      stars.push(new Star(e.clientX,e.clientY,Math.random()*2+1));
-    });
-    window.addEventListener('load', ()=>{
-      resizeCanvas(); draw();
-    });
-    window.addEventListener('resize', resizeCanvas);
 
-    // open game popup
-    function openFullscreenGame(url) {
-      const win = window.open(url, '_blank');
-      if (win) win.focus();
-      else alert("Please enable popups to play the game – Marshall");
+    window.addEventListener('load', () => { resizeCanvas(); draw(); });
+    window.addEventListener('resize', resizeCanvas);
+    canvas.addEventListener('click', e => stars.push(new Star(e.clientX, e.clientY, Math.random() * 2 + 1)));
+   
+    function filterGames() {
+      const query = document.getElementById('gameSearch').value.toLowerCase();
+      document.querySelectorAll('.game-item').forEach(item => {
+        const alt = item.querySelector('img').alt.toLowerCase();
+        item.style.display = alt.includes(query) ? 'block' : 'none';
+      });
     }
+
+    function openFullscreenGame(gamePath) {
+   // encode path to avoid issues
+   const encoded = encodeURIComponent(gamePath);
+   window.location.href = `iframe.html?game=${encoded}`;
+ }
   </script>
 </body>
 </html>
-
