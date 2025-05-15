@@ -325,12 +325,11 @@
       });
     }
 
-    // open game in new tab (easyier)
-    function openFullscreenGame(url) {
-      const win = window.open(url, '_blank');
-      if (win) win.focus();
-      else alert("Please enable popups to play the game – Marshall");
-    }
+    function openFullscreenGame(gamePath) {
+   // encode path to avoid issues
+   const encoded = encodeURIComponent(gamePath);
+   window.location.href = `iframe.html?game=${encoded}`;
+ }
   </script>
 </body>
 </html>
