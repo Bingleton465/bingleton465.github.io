@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-    <script> 
+ <script>
     (function () {
       const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
       const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
       const defaultFavicon = 'images/icons/logo.png';
-
       if (savedTitle) document.title = savedTitle;
       const favicon = savedFavicon || defaultFavicon;
       setFavicon(favicon);
@@ -15,7 +13,6 @@
         localStorage.setItem('customFavicon', favicon);
         document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
       }
-
       function setFavicon(url) {
         let link = document.querySelector('link[rel="icon"]');
         if (!link) {
@@ -25,12 +22,10 @@
         }
         link.href = url;
       }
-
       function getCookie(name) {
         const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
         return match ? decodeURIComponent(match[2]) : null;
       }
-
       window.setCustomCloak = function(title, faviconURL) {
         if (title) {
           document.title = title;
@@ -44,8 +39,9 @@
         }
       };
     })();
-  </script><meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora – 📺</title>
   <style>
     html, body {
@@ -64,35 +60,88 @@
       font-family: Arial, sans-serif;
       color: #fff;
     }
-
     .top-bar {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
       padding: 8px 16px;
       background: rgba(0,0,0,0.7);
       z-index: 1000;
     }
-    .top-bar h1 {
-      flex: 1;
-      margin: 0;
-      font-size: 1.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .top-bar .title {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
-    .btn {
-      padding: 6px 12px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 4px;
-      color: #fff;
+    .top-bar .title img {
+      height: 40px;
+    }
+    .top-bar .fullscreen-btn {
+      font-size: 18px;
+      padding: 10px 28px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-family: Arial, sans-serif;
       cursor: pointer;
-      font-size: 0.9rem;
-      transition: background 0.2s;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
     }
-    .btn:hover {
-      background: rgba(255,255,255,0.2);
+    .top-bar .fullscreen-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s;
+      z-index: 1;
+    }
+    .top-bar .fullscreen-btn:hover::after {
+      left: 100%;
+    }
+    .top-bar .fullscreen-btn:hover {
+      background: white;
+      color: black;
+    }
+    .top-bar .buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .top-bar .button {
+      font-size: 18px;
+      padding: 10px 20px;
+      border: 2px solid white;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+    .top-bar .button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s;
+      z-index: 1;
+    }
+    .top-bar .button:hover::after {
+      left: 100%;
+    }
+    .top-bar .button:hover {
+      background: white;
+      color: black;
     }
     #gameFrame {
       flex: 1;
@@ -100,58 +149,46 @@
       width: 100%; height: 100%;
       background: #000;
     }
-
     @media (max-width: 480px) {
       .top-bar {
         padding: 6px 10px;
       }
-      .top-bar h1 {
-        font-size: 1rem;
-      }
-      .btn {
-        padding: 4px 8px;
-        font-size: 0.8rem;
+      .top-bar .fullscreen-btn,
+      .top-bar .button {
+        padding: 6px 16px;
+        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <button class="btn" onclick="history.back()">← Back</button>
-    <h1 id="gameTitle">Loading…</h1>
-    <button class="btn" id="fsBtn">⛶ Fullscreen</button>
+    <div class="title">
+      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+      <button class="fullscreen-btn" id="fsBtnTop">Fullscreen</button>
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="window.location.href='index.html'">Home</button>
+      <button class="button" onclick="window.location.href='g.html'">Games</button>
+      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+    </div>
   </div>
-
   <iframe id="gameFrame" src=""></iframe>
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const gamePath = params.get('game');
-    const frame = document.getElementById('gameFrame');
-    const title = document.getElementById('gameTitle');
-    const fsBtn = document.getElementById('fsBtn');
-
+    const mainFrame = document.getElementById('gameFrame');
+    const fsBtnTop = document.getElementById('fsBtnTop');
     if (gamePath) {
-      
-      frame.src = decodeURIComponent(gamePath);
-
-      
-      const name = decodeURIComponent(gamePath.split('/').pop())
-                      .replace(/\.[^/.]+$/, '')  // strip extension
-                      .replace(/[-_]/g, ' ');    // dashes → spaces
-      title.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+      mainFrame.src = decodeURIComponent(gamePath);
     } else {
-      title.textContent = 'Game not found 😢';
-      frame.remove();
-      fsBtn.disabled = true;
+      fsBtnTop.disabled = true;
     }
-
-
-    fsBtn.addEventListener('click', () => {
-      if (frame.requestFullscreen) {
-        frame.requestFullscreen();
-      } else if (frame.webkitRequestFullscreen) {
-        frame.webkitRequestFullscreen();
+    fsBtnTop.addEventListener('click', () => {
+      if (mainFrame.requestFullscreen) {
+        mainFrame.requestFullscreen();
+      } else if (mainFrame.webkitRequestFullscreen) {
+        mainFrame.webkitRequestFullscreen();
       } else {
         alert('Fullscreen API not supported');
       }
