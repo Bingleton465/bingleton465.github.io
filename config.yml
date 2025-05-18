@@ -1,0 +1,4 @@
+security:
+  disable_image_drag: true
+  disable_copy: true
+  disable_inspect: true
