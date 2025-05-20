@@ -1,5 +1,6 @@
+<!-- Ultimate Game Stash file -->
+<!-- For the regularly updating doc go to https://docs.google.com/document/d/1_FmH3BlSBQI7FGgAQL59-ZPe8eCxs35wel6JUyVaG8Q/ -->
 
-<!-- i may have used chatgpt -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,60 +25,51 @@
     }
   </style>
 
-  <!-- ✅ Working External Scripts (not 403) -->
-  <script src="https://rawcdn.githack.com/ayunami2000/eaglercraftx-1.8-offline/7648c07dc27a850c290bc3d8e30e59c623a2e101/classes.js"></script>
-  <script src="https://rawcdn.githack.com/ayunami2000/eaglercraftx-1.8-offline/7648c07dc27a850c290bc3d8e30e59c623a2e101/fix-webm-duration.js"></script>
+  <!-- Reference local scripts in repo root -->
+  <script src="classes.min.js"></script>
+  <script src="fix-webm-duration.js"></script>
 
   <script>
     window.addEventListener('load', () => {
-      if (location.protocol === "file:") {
-        alert("❌ ERROR: Do not run this file locally. You must use an HTTP server like GitHub Pages or localhost.");
-        console.warn("HTTP required. Do not open this file locally.");
+      if (location.protocol === 'file:') {
+        alert('❌ ERROR: Do not run this file locally. Use GitHub Pages or a local HTTP server.');
         return;
       }
-
       window.focus();
+      document.body.addEventListener('click', () => window.focus());
 
-      document.body.addEventListener('click', () => {
-        window.focus();
-      });
-
-      // Setup default options if not already defined
       if (!window.eaglercraftXOpts) {
         window.eaglercraftXOpts = {
-          container: "game_frame",
-          assetsURI: "https://rawcdn.githack.com/ayunami2000/eaglercraftx-1.8-offline/7648c07dc27a850c290bc3d8e30e59c623a2e101/assets.epk",
-          localesURI: "lang/",
+          container: 'game_frame',
+          assetsURI: 'assets.epk',
+          localesURI: 'lang/',
           servers: [
-            { addr: "wss://mc.arch.lol/", name: "ArchMC" },
-            { addr: "wss://mc.asspixel.net", name: "AssPixel" },
-            { addr: "wss://sus.shhnowisnottheti.me", name: "Ayunboom" },
-            { addr: "wss://aeon-network.net/1.8", name: "Aeon" },
-            { addr: "wss://zentic.org/", name: "Zentic" }
+            { addr: 'wss://mc.arch.lol/', name: 'ArchMC' },
+            { addr: 'wss://mc.asspixel.net', name: 'AssPixel' },
+            { addr: 'wss://sus.shhnowisnottheti.me', name: 'Ayunboom' },
+            { addr: 'wss://aeon-network.net/1.8', name: 'Aeon' },
+            { addr: 'wss://zentic.org/', name: 'Zentic' }
           ]
         };
       }
 
-      const containerID = window.eaglercraftXOpts.container;
-      let container = document.getElementById(containerID);
-
-      if (!container) {
-        console.warn("⚠️ Container not found. Creating a fallback container.");
-        container = document.createElement("div");
-        container.id = containerID;
-        document.body.appendChild(container);
-      }
+      const container = document.getElementById(window.eaglercraftXOpts.container) || (() => {
+        const el = document.createElement('div');
+        el.id = window.eaglercraftXOpts.container;
+        document.body.appendChild(el);
+        return el;
+      })();
 
       try {
-        main(); // Call the EaglercraftX main() function
+        if (typeof main !== 'function') throw new Error('main() not found');
+        main();
       } catch (err) {
-        console.error("❌ Error launching EaglercraftX:", err);
-        alert("Something went wrong starting the game. Check console.");
+        console.error('❌ Error launching EaglercraftX:', err);
+        alert('Game failed to start. Check console for details.');
       }
     });
   </script>
 </head>
-
 <body>
   <div id="game_frame"></div>
   <div class="_eaglercraftX_wrapper_element"></div>
