@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GH Pages Static Proxy</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    #url {
+      width: 400px;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid #525252;
+      border-radius: 5px;
+      background: #0a0a0a;
+      color: #fff;
+    }
+    #go {
+      padding: 10px 20px;
+      background: #4400ff;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+    }
+    #go:hover {
+      background: rgba(140, 0, 255, 0.55);
+    }
+  </style>
+</head>
+<body>
+  <input id="url" type="text" placeholder="Enter full URL, e.g. https://example.com" />
+  <button id="go">Go 🔥</button>
+
+  <script>
+    document.getElementById('go').addEventListener('click', () => {
+      const raw = document.getElementById('url').value.trim();
+      if (!raw) return alert('👀 Please enter a URL');
+      let url;
+      try {
+        url = new URL(raw).toString();
+      } catch (e) {
+        return alert('🚨 Invalid URL format. Include protocol (https://)');
+      }
+      const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
+      window.location.href = proxy;
+    });
+    document.getElementById('url').addEventListener('keyup', e => {
+      if (e.key === 'Enter') document.getElementById('go').click();
+    });
+  </script>
+</body>
+</html>
