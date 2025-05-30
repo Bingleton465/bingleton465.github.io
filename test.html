@@ -37,48 +37,62 @@
       z-index: 0;
       pointer-events: none;
     }
-    .topbar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: var(--topbar-height);
-      background: var(--glass-bg);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      z-index: 10;
-    }
-    .topbar img { height: 40px; }
-    .search-container {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      margin-left: 24px;
-    }
+   .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--topbar-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  z-index: 10;
+}
+
+    .topbar img {
+  height: 40px;
+  /* Optional: keep logo to left side */
+  position: absolute;
+  left: 24px;
+}
+.search-container {
+  /* Remove flex-grow so it won’t fill all available space */
+  flex: none;
+  /* Center this container within .topbar */
+  margin: 0 auto;
+  /* Set a max-width for the search bar */
+  width: 360px;
+  display: flex;
+  align-items: center;
+}
     .search-container input {
-      flex: 1;
-      padding: 10px 16px;
-      border: none;
-      border-radius: var(--border-radius) 0 0 var(--border-radius);
-      background: rgba(255,255,255,0.1);
-      color: var(--text-color);
-      outline: none;
-      transition: transform var(--transition-speed), background var(--transition-speed);
-    }
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  outline: none;
+  transition: transform var(--transition-speed), background var(--transition-speed);
+}
+
     .search-container input:focus {
       background: rgba(255,255,255,0.2);
       transform: scale(1.03);
     }
     .search-container button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 0 var(--border-radius) var(--border-radius) 0;
-      background: var(--accent-color);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform var(--transition-speed), background var(--transition-speed);
-    }
+  padding: 8px 12px;
+  border: none;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  background: var(--accent-color);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-speed), background var(--transition-speed);
+}
     .search-container button:hover {
       background: #6cb3f0;
       transform: translateY(-2px) scale(1.05);
