@@ -1,299 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    (function () {
-      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-      const defaultFavicon = 'images/icons/logo.png';
-
-      if (savedTitle) document.title = savedTitle;
-      const favicon = savedFavicon || defaultFavicon;
-      setFavicon(favicon);
-      if (!savedFavicon) {
-        localStorage.setItem('customFavicon', favicon);
-        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/;`;
-      }
-
-      function setFavicon(url) {
-        let link = document.querySelector('link[rel="icon"]');
-        if (!link) {
-          link = document.createElement('link');
-          link.rel = 'icon';
-          document.head.appendChild(link);
-        }
-        link.href = url;
-      }
-      function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-      }
-      window.setCustomCloak = function(title, faviconURL) {
-        if (title) {
-          document.title = title;
-          localStorage.setItem('customTitle', title);
-          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/;`;
-        }
-        if (faviconURL) {
-          setFavicon(faviconURL);
-          localStorage.setItem('customFavicon', faviconURL);
-          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/;`;
-        }
-      };
-    })();
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora - 🏠</title>
-
+  <title>Velora - Free Online Games</title>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
-    html, body {
-      margin: 0; padding: 0;
-      overflow: hidden;
-      background-color: #00111a;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.2), transparent 60%),
-        radial-gradient(circle at 80% 30%, rgba(200,200,255,0.15), transparent 50%),
-        radial-gradient(circle at 50% 80%, rgba(150,180,255,0.1), transparent 70%),
-        linear-gradient(to bottom, #001122, #002244, #003366);
-      background-blend-mode: screen;
-      width: 100%; height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: relative;
-    }
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0; left: 0;
-      mix-blend-mode: screen;
-    }
-    .url-container {
-      position: relative;
-      z-index: 1;
-      margin-top: 20px;
-    }
-    .url-input, .url-button {
-      font-size: 24px;
-      padding: 10px 25px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.05);
-      color: white;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
       font-family: Arial, sans-serif;
-      outline: none;
+      color: #fff;
+      background: #0e0e0e;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
     }
-    .url-input {
-      width: 250px;
-      margin-right: 10px;
-    }
-    .url-button {
-      cursor: pointer;
-    }
-    .url-button:hover {
-      background: rgba(255,255,255,0.2);
-      color: black;
-    }
-    .top-bar {
-      position: absolute;
+.main {
+  position: absolute;
+  top: 60px;
+  left: 200px;
+  width: calc(100% - 200px);  
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+   
+    #tsparticles {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.5);
+      height: 100%;
+      z-index: 0;
+      pointer-events: none; 
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(17,17,17,0.9);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0px 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-    .top-bar .title {
-      color: white;
-      font-size: 24px;
-      font-family: Arial, sans-serif;
-    }
-    .top-bar .buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .top-bar .button {
-      font-size: 18px;
       padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
+      height: 60px;
+      z-index: 10;
     }
-    .top-bar .button::after {
-      content: '';
+    .topbar img { height: 40px; }
+    .topbar .search-container {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .topbar .search-container input {
+      padding: 8px 12px;
+      width: 300px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+      transition: transform 0.2s;
+    }
+    .topbar .search-container input:focus {
+      transform: scale(1.05);
+    }
+    .topbar .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      background: #333;
+      color: #fff;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .topbar .search-container button:hover {
+      background: #4a90e2;
+      transform: scale(1.1) rotate(-2deg);
+    }
+
+ 
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 200px;
+      bottom: 0;
+      background: rgba(17,17,17,0.9);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      z-index: 9;
+    }
+    .sidebar a {
+      padding: 8px 16px;
+      color: #ccc;
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+    }
+    .sidebar a:hover {
+      background: #333;
+      color: #fff;
+      transform: translateX(5px);
+    }
+
+  
+    .main {
       position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
+      top: 60px;
+      left: 200px;
+      right: 0;
+      bottom: 0;
+      padding: 20px;
+      overflow-y: auto;
       z-index: 1;
     }
-    .top-bar .button:hover::after {
-      left: 100%;
-    }
-    .top-bar .button:hover {
-      background: white;
-      color: black;
-    }
-    .music-toggle {
-      font-size: 24px;
-      padding: 10px 25px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-family: Arial, sans-serif;
+    .game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+  gap: 25px;
+}
+    .game-item {
+      background: rgba(26,26,26,0.8);
+      border-radius: 10px;
+      overflow: hidden;
       cursor: pointer;
-      margin-top: 20px;
-      z-index: 1;
+      transition: transform 0.2s, box-shadow 0.3s;
+      border: 2px solid white;
     }
-    .music-toggle:hover {
-      background: rgba(255,255,255,0.2);
-      color: black;
+    .game-item:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
+    .game-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+ .game-item.hidden {
+  display: none !important;
+}
   </style>
 </head>
 <body>
-  <canvas id="constellationCanvas"></canvas>
+  <!-- Particles background -->
+  <div id="tsparticles"></div>
 
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora" style="height: 40px; margin-left: 40px;">
-    </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+  <div class="topbar">
+    <img src="logos.png" alt="Logo">
+    <div class="search-container">
+      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
+      <button onclick="searchGames()">Search</button>
     </div>
   </div>
 
-  <button class="music-toggle" id="musicToggle">toggle music</button>
-
-  <div class="url-container">
-    <input type="text" id="urlInput" class="url-input" placeholder="Enter URL here..." />
-    <button id="urlButton" class="url-button">search or Enter url</button>
+    <div class="sidebar">
+    <a href="#" onclick="filterGames('')">Show All</a>
+    <a href="#" onclick="filterGames('action')">Action</a>
+    <a href="#" onclick="filterGames('shooter')">Shooter</a>
+    <a href="#" onclick="filterGames('sports')">Sports</a>
+    <a href="#" onclick="filterGames('2 player')">2 Player</a>
+    <a href="#" onclick="filterGames('car')">Car</a>
+    <a href="#" onclick="filterGames('arcade')">Arcade</a>
+    <a href="#" onclick="filterGames('puzzle')">Puzzle</a>
+    <a href="#" onclick="filterGames('simulator')">Simulator</a>
+    <a href="#" onclick="filterGames('horror')">Horror</a>
+    <a href="#" onclick="filterGames('levels')">Levels</a>
+    <a href="#" onclick="filterGames('endless')">Endless</a>
   </div>
 
-  <audio id="backgroundMusic" loop>
-    <source src="audio/444880__pax11__shopping-theme-90bpm (1).wav" type="audio/wav">
-    Your browser does not support the audio tag.
-  </audio>
+  <div class="main">
+    <div class="game-grid" id="gameGrid">
+        <div class="game-grid" id="gameGrid">
+      <!-- these are the games-->
+      <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
+      <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
+      <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
+      <div class="game-item"><img src="images/icons/er2.jpg" alt="Escape Road 2 action car endless" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
+      <div class="game-item"><img src="images/icons/kong.png" alt="Flying Kong arcade" onclick="openFullscreenGame('games/kong.html')"></div>
+      <div class="game-item"><img src="images/icons/bitlife.png" alt="BitLife Simulator" onclick="openFullscreenGame('games/bitlife.html')"></div>
+      <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash action" onclick="openFullscreenGame('games/geometry.html')"></div>
+      <div class="game-item"><img src="images/icons/craft.png" alt="Minecraft eaglercraft action simulator" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
+      <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms horror" onclick="openFullscreenGame('games/skibidi.html')"></div>
+      <div class="game-item"><img src="images/icons/boxels.webp" alt="Sandboxels simulator" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
+      <div class="game-item"><img src="images/icons/slope.png" alt="Slope arcade" onclick="openFullscreenGame('games/slope.html')"></div>
+      <div class="game-item"><img src="images/icons/happy.jpeg" alt="Happy Wheels action levels" onclick="openFullscreenGame('games/happy.html')"></div>
+      <div class="game-item"><img src="images/icons/tiny.avif" alt="Tiny Fishing simulator" onclick="openFullscreenGame('games/tiny.html')"></div>
+      <div class="game-item"><img src="images/icons/rhit.avif" alt="Ragdoll Hit arcade action" onclick="openFullscreenGame('games/rhit.html')"></div>
+      <div class="game-item"><img src="images/icons/ra.webp" alt="Ragdoll Archers arcade action" onclick="openFullscreenGame('games/ra.html')"></div>
+      <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters shooter arcade" onclick="openFullscreenGame('games/bowmasters.html')"></div>
+      <div class="game-item"><img src="images/icons/bl.png" alt="Basketball Legends sports" onclick="openFullscreenGame('games/bl.html')"></div>
+      <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite arcade endless" onclick="openFullscreenGame('games/agar.html')"></div>
+      <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police action simulator" onclick="openFullscreenGame('games/rope.html')"></div>
+      <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics horror" onclick="openFullscreenGame('games/baldi.html')"></div>
+          <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters car"            onclick="openFullscreenGame('games/drift.html')"></div>
+    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1 horror"                 onclick="openFullscreenGame('games/granny1.html')"></div>
+    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2 horror"                onclick="openFullscreenGame('games/granny2.html')"></div>
+    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin' levels action"     onclick="openFullscreenGame('games/fnf.html')"></div>
+    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car levels"               onclick="openFullscreenGame('games/mad.html')"></div>
+    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D endless"            onclick="openFullscreenGame('games/snowrider.html')"></div>
+    <div class="game-item"><img src="images/icons/revert.png"   alt="Sonic Revert endless simuator"             onclick="openFullscreenGame('games/revert.html')"></div>
+    <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss endless"             onclick="openFullscreenGame('games/driftboss.html')"></div>
+    <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast endless puzzle"            onclick="openFullscreenGame('games/blockblast.html')"></div>
+    <div class="game-item"><img src="images/icons/elasticface.webp" alt="Elastic Face simulator"           onclick="openFullscreenGame('games/elasticface.html')"></div>
+    <div class="game-item"><img src="images/icons/shrek.jpg"    alt="Five Nights at Shrek’s Hotel horror" onclick="openFullscreenGame('games/shrek.html')"></div>
+    <div class="game-item"><img src="images/icons/cluster.png"  alt="Cluster Rush levels"             onclick="openFullscreenGame('games/cluster.html')"></div>
+    <div class="game-item"><img src="images/icons/crossy.avif" alt="Crossy Road endless"              onclick="openFullscreenGame('games/crossyroad.html')"></div>
+    <div class="game-item"><img src="images/icons/10.png"       alt="10 Minutes Till Dawn action"     onclick="openFullscreenGame('games/10.html')"></div>
+    <div class="game-item"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft endless"      onclick="openFullscreenGame('games/infinitecraft.html')"></div>
+    <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parenting horror"            onclick="openFullscreenGame('games/badparent.html')"></div>
+    <div class="game-item"><img src="images/icons/guess.png"    alt="Guess Their Answer levels"       onclick="openFullscreenGame('games/guess.html')"></div>
+    <div class="game-item"><img src="images/icons/bacon.png"    alt="Bacon May Die endless"            onclick="openFullscreenGame('games/bacon.html')"></div>
+    <div class="game-item"><img src="images/icons/bottle.png"   alt="Bottle Flip 3D levels"           onclick="openFullscreenGame('games/bottle.html')"></div>
+    <div class="game-item"><img src="images/icons/cup.png"      alt="A Small World Cup levels endless sports"        onclick="openFullscreenGame('games/cup.html')"></div>
+    <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D action sports"          onclick="openFullscreenGame('games/cattle.html')"></div>
+    <div class="game-item"><img src="images/icons/flood.webp"   alt="Flood Runner 4 action"          onclick="openFullscreenGame('games/flood.html')"></div>
+    <div class="game-item"><img src="images/icons/post.png"     alt="blockpost action shooter"                 onclick="openFullscreenGame('games/post.html')"></div>
+    <div class="game-item"><img src="images/icons/suika.avif"   alt="suika watermelon game endless"     onclick="openFullscreenGame('games/suika.html')"></div>
+    <div class="game-item"><img src="images/icons/wars.webp"    alt="lego star wars action"            onclick="openFullscreenGame('games/wars.html')"></div>
+    <div class="game-item"><img src="images/icons/cn.webp"      alt="cartoon network tennis sports endless"    onclick="openFullscreenGame('games/cn.html')"></div>
+    <div class="game-item"><img src="images/icons/dta6.avif"      alt="Dude theft wars dta6 gta6 car action"    onclick="openFullscreenGame('dta6/index.html')"></div>
+    <div class="game-item"><img src="images/icons/stickrpg.webp"      alt="stickman rpg simulator"    onclick="openFullscreenGame('games/stickrpg.html')"></div>
+    <div class="game-item"><img src="images/icons/plant.jpg"      alt="plants vs zombies levels"    onclick="openFullscreenGame('games/plant.html')"></div>
+   <div class="game-item"><img src="images/icons/ovo1.jpg"      alt="OVO 1 action levels"    onclick="openFullscreenGame('games/ovo1.html')"></div>
+   <div class="game-item"><img src="images/icons/ovo2.jpg"      alt="OVO 2 action levels"    onclick="openFullscreenGame('games/ovo2.html')"></div>
+   <div class="game-item"><img src="images/icons/ovo3.png"      alt="OVO 3 action levels"    onclick="openFullscreenGame('games/ovo3.html')"></div>
+   <div class="game-item"><img src="images/icons/ahole.jpg"      alt="attack hole levels"    onclick="openFullscreenGame('games/ahole.html')"></div>
+   <div class="game-item"><img src="images/icons/bison.jpg"      alt="burrito bison endless"    onclick="openFullscreenGame('games/bison.html')"></div>
+   <div class="game-item"><img src="images/icons/cc.png"      alt="capybara clicker endless"    onclick="openFullscreenGame('games/cc.html')"></div>
+   <div class="game-item"><img src="images/icons/folder.webp"      alt="folder dungeon puzzle"    onclick="openFullscreenGame('games/folder.html')"></div>
+   <div class="game-item"><img src="images/icons/evilglitch.jpg"      alt="evil glitch endless"    onclick="openFullscreenGame('games/evilglitch.html')"></div>
+   <div class="game-item"><img src="images/icons/hcr.png"      alt="hill climb racing endless"    onclick="openFullscreenGame('games/hcr.html')"></div>
+   <div class="game-item"><img src="images/icons/tanuki.jpg"      alt="tanuki sunset car action sport endless"    onclick="openFullscreenGame('games/tanuki.html')"></div>
+   <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods horror"    onclick="openFullscreenGame('games/woods.html')"></div>
+  
+                      <!-- so on -->   
+    </div>
+  </div>
 
   <script>
-    function isMobileOrTablet() {
-      const ua = navigator.userAgent.toLowerCase();
-      return /iphone|ipod|android.*mobile|windows phone|blackberry|iemobile|opera mini|ipad|android(?!.*mobile)/.test(ua);
-    }
-    if (isMobileOrTablet() && !window.location.href.includes("formobile.html")) {
-      window.location.href = "formobile.html";
-    }
-
-
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    class Star {
-      constructor(x, y, r) {
-        this.x = x; this.y = y; this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000; this.age = 0;
-      }
-      update() {
-        this.x += this.vx; this.y += this.vy; this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white'; ctx.fill();
-      }
-    }
-    const stars = [];
-    const MAX_STARS = 80, LINE_DIST = 100;
-    for (let i = 0; i < MAX_STARS; i++) {
-      stars.push(new Star(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2+1));
-    }
-    canvas.addEventListener('click', e => {
-      stars.push(new Star(e.clientX, e.clientY, Math.random()*2+1));
-    });
-    function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      stars.forEach(s => { s.update(); s.draw(); });
-      for (let i=0; i<stars.length; i++) {
-        for (let j=i+1; j<stars.length; j++) {
-          const a=stars[i], b=stars[j];
-          const dist = Math.hypot(a.x-b.x, a.y-b.y);
-          if (dist < LINE_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(a.x,a.y);
-            ctx.lineTo(b.x,b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1-dist/LINE_DIST})`;
-            ctx.lineWidth = 0.5; ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, direction: "none", random: false, straight: false, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: false, mode: [] }, 
+          onClick: { enable: true, mode: "push" }
+        },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
     });
 
-    // URL button logic (no work yet)
-    const urlInput = document.getElementById('urlInput');
-    const urlButton = document.getElementById('urlButton');
-    urlButton.addEventListener('click', () => {
-      let url = urlInput.value.trim();
-      if (!url) { alert('Type in a valid URL'); return; }
-      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-      try {
-        new URL(url);
-        window.location.href = '/proxy?url=' + encodeURIComponent(url);
-      } catch {
-        alert('Type in a valid URL');
-      }
-    });
-
-    // music toggle logic
-    const music = document.getElementById('backgroundMusic');
-    const toggleButton = document.getElementById('musicToggle');
-    let isPlaying = localStorage.getItem('isMusicPlaying') === 'true';
-    if (isPlaying) music.play(); else music.pause();
-    toggleButton.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause(); localStorage.setItem('isMusicPlaying','false');
-      } else {
-        music.play(); localStorage.setItem('isMusicPlaying','true');
-      }
-      isPlaying = !isPlaying;
-    });
+   
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+    }
+    function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
+    function openFullscreenGame(path) { location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
   </script>
 </body>
 </html>
