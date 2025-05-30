@@ -4,29 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora - Free Online Games</title>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #0e0e0e;
       color: #fff;
-      display: flex;
-      flex-direction: column;
+      background: #0e0e0e;
       height: 100vh;
+      overflow: hidden;
+      position: relative;
     }
-    /* Top bar */
+.main {
+  position: absolute;
+  top: 60px;
+  left: 200px;
+  width: calc(100% - 200px);  
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+   
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none; 
+    }
+
     .topbar {
-      background: #111;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(17,17,17,0.9);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
       height: 60px;
-      flex-shrink: 0;
+      z-index: 10;
     }
-    .topbar img {
-      height: 40px;
-    }
+    .topbar img { height: 40px; }
     .topbar .search-container {
       flex-grow: 1;
       display: flex;
@@ -38,6 +63,10 @@
       border: none;
       border-radius: 4px 0 0 4px;
       outline: none;
+      transition: transform 0.2s;
+    }
+    .topbar .search-container input:focus {
+      transform: scale(1.05);
     }
     .topbar .search-container button {
       padding: 8px 12px;
@@ -46,55 +75,69 @@
       cursor: pointer;
       background: #333;
       color: #fff;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.2s;
     }
-    /* Sidebar */
+    .topbar .search-container button:hover {
+      background: #4a90e2;
+      transform: scale(1.1) rotate(-2deg);
+    }
+
+ 
     .sidebar {
-      width: 200px;
-      background: #111;
-      height: calc(100vh - 60px);
       position: fixed;
       top: 60px;
       left: 0;
+      width: 200px;
+      bottom: 0;
+      background: rgba(17,17,17,0.9);
       padding: 10px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       overflow-y: auto;
+      z-index: 9;
     }
     .sidebar a {
       padding: 8px 16px;
       color: #ccc;
       text-decoration: none;
       font-size: 14px;
-      transition: background 0.3s;
       border-radius: 4px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
     }
     .sidebar a:hover {
       background: #333;
       color: #fff;
+      transform: translateX(5px);
     }
-    /* Main content */
+
+  
     .main {
-      margin-top: 60px;
-      margin-left: 220px;
+      position: absolute;
+      top: 60px;
+      left: 200px;
+      right: 0;
+      bottom: 0;
       padding: 20px;
-      flex-grow: 1;
       overflow-y: auto;
+      z-index: 1;
     }
     .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 15px;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+  gap: 15px;
+}
     .game-item {
-      background: #1a1a1a;
+      background: rgba(26,26,26,0.8);
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
     .game-item:hover {
-      transform: scale(1.05);
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
     }
     .game-item img {
       width: 100%;
@@ -104,6 +147,8 @@
   </style>
 </head>
 <body>
+  <!-- Particles background -->
+  <div id="tsparticles"></div>
 
   <div class="topbar">
     <img src="logos.png" alt="Logo">
@@ -113,8 +158,7 @@
     </div>
   </div>
 
-
-  <div class="sidebar">
+    <div class="sidebar">
     <a href="#" onclick="filterGames('')">Show All</a>
     <a href="#" onclick="filterGames('action')">Action</a>
     <a href="#" onclick="filterGames('shooter')">Shooter</a>
@@ -129,7 +173,9 @@
     <a href="#" onclick="filterGames('endless')">Endless</a>
   </div>
 
-   <div class="game-grid" id="gameGrid">
+  <div class="main">
+    <div class="game-grid" id="gameGrid">
+        <div class="game-grid" id="gameGrid">
       <!-- these are the games-->
       <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
       <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
@@ -197,24 +243,38 @@
   </div>
 
   <script>
+    
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, direction: "none", random: false, straight: false, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: false, mode: [] }, 
+          onClick: { enable: true, mode: "push" }
+        },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
+    });
+
+   
     function searchGames() {
       const input = document.getElementById("searchInput").value.toLowerCase();
-      const items = document.querySelectorAll(".game-item");
-      items.forEach(item => {
+      document.querySelectorAll(".game-item").forEach(item => {
         const alt = item.querySelector("img").alt.toLowerCase();
         item.style.display = alt.includes(input) ? "block" : "none";
       });
     }
-
-    function filterGames(term) {
-      document.getElementById("searchInput").value = term;
-      searchGames();
-    }
-
-    function openFullscreenGame(gamePath) {
-      const encoded = encodeURIComponent(gamePath);
-      window.location.href = `iframe.html?game=${encoded}`;
-    }
+    function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
+    function openFullscreenGame(path) { location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
   </script>
 </body>
 </html>
