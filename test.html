@@ -75,43 +75,50 @@
   <div class="sidebar">
     <a href="#" onclick="filterGames('')">Show All</a>
     <a href="#" onclick="filterGames('action')">Action Games</a>
+    <a href="#" onclick="filterGames('shooter')">Shooters</a>
+    <a href="#" onclick="filterGames('sports')">Sports</a>
     <a href="#" onclick="filterGames('2 player')">2 Player Games</a>
     <a href="#" onclick="filterGames('car')">Car Games</a>
     <a href="#" onclick="filterGames('arcade')">Arcade</a>
     <a href="#" onclick="filterGames('puzzle')">Puzzle</a>
+    <a href="#" onclick="filterGames('simulator')">Simulator</a>
+    <a href="#" onclick="filterGames('sports')">Sports</a>
+    <a href="#" onclick="filterGames('horror')">Horror</a>
+     <a href="#" onclick="filterGames('levels')">Levels</a>
+         <a href="#" onclick="filterGames('endless')">Endless</a>
   </div>
   <div class="main">
     <div class="search-box">
       <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
     </div>
     <div class="game-grid" id="gameGrid">
-      <!-- Game items go here -->
-      <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol" onclick="openFullscreenGame('games/1v1.html')"></div>
-      <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League" onclick="openFullscreenGame('games/rl.html')"></div>
-      <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1" onclick="openFullscreenGame('games/er1.html')"></div>
-      <div class="game-item"><img src="images/icons/er2.jpg" alt="Escape Road 2" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
+      <!-- these are the games-->
+      <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
+      <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
+      <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
+      <div class="game-item"><img src="images/icons/er2.jpg" alt="Escape Road 2 action car endless" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
       <div class="game-item"><img src="images/icons/kong.png" alt="Flying Kong arcade" onclick="openFullscreenGame('games/kong.html')"></div>
       <div class="game-item"><img src="images/icons/bitlife.png" alt="BitLife Simulator" onclick="openFullscreenGame('games/bitlife.html')"></div>
-      <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash" onclick="openFullscreenGame('games/geometry.html')"></div>
-      <div class="game-item"><img src="images/icons/craft.png" alt="minecraft Eaglercraft Shadow_Client" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
-      <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms" onclick="openFullscreenGame('games/skibidi.html')"></div>
-      <div class="game-item"><img src="images/icons/boxels.webp" alt="Sandboxels" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
-      <div class="game-item"><img src="images/icons/slope.png" alt="Slope" onclick="openFullscreenGame('games/slope.html')"></div>
-      <div class="game-item"><img src="images/icons/happy.jpeg" alt="Happy Wheels" onclick="openFullscreenGame('games/happy.html')"></div>
-      <div class="game-item"><img src="images/icons/tiny.avif" alt="Tiny Fishing" onclick="openFullscreenGame('games/tiny.html')"></div>
-      <div class="game-item"><img src="images/icons/rhit.avif" alt="Ragdoll Hit" onclick="openFullscreenGame('games/rhit.html')"></div>
-      <div class="game-item"><img src="images/icons/ra.webp" alt="Ragdoll Archers" onclick="openFullscreenGame('games/ra.html')"></div>
-      <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters" onclick="openFullscreenGame('games/bowmasters.html')"></div>
-      <div class="game-item"><img src="images/icons/bl.png" alt="Basketball Legends" onclick="openFullscreenGame('games/bl.html')"></div>
-      <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite" onclick="openFullscreenGame('games/agar.html')"></div>
-      <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police" onclick="openFullscreenGame('games/rope.html')"></div>
-      <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics" onclick="openFullscreenGame('games/baldi.html')"></div>
-          <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters"            onclick="openFullscreenGame('games/drift.html')"></div>
-    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1"                 onclick="openFullscreenGame('games/granny1.html')"></div>
-    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2"                onclick="openFullscreenGame('games/granny2.html')"></div>
-    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin’"     onclick="openFullscreenGame('games/fnf.html')"></div>
-    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad"               onclick="openFullscreenGame('games/mad.html')"></div>
-    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D"            onclick="openFullscreenGame('games/snowrider.html')"></div>
+      <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash action" onclick="openFullscreenGame('games/geometry.html')"></div>
+      <div class="game-item"><img src="images/icons/craft.png" alt="Minecraft eaglercraft action simulator" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
+      <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms horror" onclick="openFullscreenGame('games/skibidi.html')"></div>
+      <div class="game-item"><img src="images/icons/boxels.webp" alt="Sandboxels simulator" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
+      <div class="game-item"><img src="images/icons/slope.png" alt="Slope arcade" onclick="openFullscreenGame('games/slope.html')"></div>
+      <div class="game-item"><img src="images/icons/happy.jpeg" alt="Happy Wheels action" onclick="openFullscreenGame('games/happy.html')"></div>
+      <div class="game-item"><img src="images/icons/tiny.avif" alt="Tiny Fishing simulator" onclick="openFullscreenGame('games/tiny.html')"></div>
+      <div class="game-item"><img src="images/icons/rhit.avif" alt="Ragdoll Hit arcade action" onclick="openFullscreenGame('games/rhit.html')"></div>
+      <div class="game-item"><img src="images/icons/ra.webp" alt="Ragdoll Archers arcade action" onclick="openFullscreenGame('games/ra.html')"></div>
+      <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters shooter arcade" onclick="openFullscreenGame('games/bowmasters.html')"></div>
+      <div class="game-item"><img src="images/icons/bl.png" alt="Basketball Legends sports" onclick="openFullscreenGame('games/bl.html')"></div>
+      <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite arcade endless" onclick="openFullscreenGame('games/agar.html')"></div>
+      <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police action simulator" onclick="openFullscreenGame('games/rope.html')"></div>
+      <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics horror" onclick="openFullscreenGame('games/baldi.html')"></div>
+          <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters car"            onclick="openFullscreenGame('games/drift.html')"></div>
+    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1 horror"                 onclick="openFullscreenGame('games/granny1.html')"></div>
+    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2 horror"                onclick="openFullscreenGame('games/granny2.html')"></div>
+    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin' levels action"     onclick="openFullscreenGame('games/fnf.html')"></div>
+    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car"               onclick="openFullscreenGame('games/mad.html')"></div>
+    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D endless"            onclick="openFullscreenGame('games/snowrider.html')"></div>
     <div class="game-item"><img src="images/icons/revert.png"   alt="Sonic Revert"             onclick="openFullscreenGame('games/revert.html')"></div>
     <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss"             onclick="openFullscreenGame('games/driftboss.html')"></div>
     <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast"            onclick="openFullscreenGame('games/blockblast.html')"></div>
@@ -146,9 +153,9 @@
    <div class="game-item"><img src="images/icons/hcr.png"      alt="hill climb racing"    onclick="openFullscreenGame('games/hcr.html')"></div>
    <div class="game-item"><img src="images/icons/tanuki.jpg"      alt="tanuki sunset"    onclick="openFullscreenGame('games/tanuki.html')"></div>
    <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods"    onclick="openFullscreenGame('games/woods.html')"></div>
-  </div>
-      <!-- And so on... You can copy the rest similarly -->
-    </div>
+  
+                      <!-- so on -->    <!-- ended off at sonic revert making alt= have genres to filter -->
+  
   </div>
   <script>
     function searchGames() {
@@ -165,10 +172,11 @@
       searchGames();
     }
 
-    function openFullscreenGame(url) {
-      const win = window.open(url, "_blank");
-      win.focus();
-    }
+     function openFullscreenGame(gamePath) {
+   // encode path to avoid issues
+   const encoded = encodeURIComponent(gamePath);
+   window.location.href = `iframe.html?game=${encoded}`;
+ }
   </script>
 </body>
 </html>
