@@ -2,62 +2,132 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GH Pages Static Proxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bingleton's Games</title>
   <style>
     body {
-      background: #000;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0e0e0e;
       color: #fff;
-      font-family: 'DM Sans', sans-serif;
+      display: flex;
+    }
+    .sidebar {
+      width: 220px;
+      background: #111;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+      gap: 15px;
     }
-    #url {
-      width: 400px;
-      padding: 10px;
-      margin-bottom: 1rem;
-      border: 1px solid #525252;
-      border-radius: 5px;
-      background: #0a0a0a;
+    .sidebar a {
+      padding: 12px 20px;
+      color: #ccc;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .sidebar a:hover {
+      background: #333;
       color: #fff;
     }
-    #go {
-      padding: 10px 20px;
-      background: #4400ff;
+    .main {
+      margin-left: 240px;
+      padding: 20px;
+      flex-grow: 1;
+    }
+    .search-box {
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
       border: none;
       border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
     }
-    #go:hover {
-      background: rgba(140, 0, 255, 0.55);
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    .game-item {
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .game-item:hover {
+      transform: scale(1.05);
+    }
+    .game-item img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <input id="url" type="text" placeholder="Enter full URL, e.g. https://example.com" />
-  <button id="go">Go 🔥</button>
-
+  <div class="sidebar">
+    <a href="#" onclick="filterGames('')">Show All</a>
+    <a href="#" onclick="filterGames('action')">Action Games</a>
+    <a href="#" onclick="filterGames('2 player')">2 Player Games</a>
+    <a href="#" onclick="filterGames('car')">Car Games</a>
+    <a href="#" onclick="filterGames('arcade')">Arcade</a>
+    <a href="#" onclick="filterGames('puzzle')">Puzzle</a>
+  </div>
+  <div class="main">
+    <div class="search-box">
+      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
+    </div>
+    <div class="game-grid" id="gameGrid">
+      <!-- Game items go here -->
+      <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol" onclick="openFullscreenGame('games/1v1.html')"></div>
+      <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League" onclick="openFullscreenGame('games/rl.html')"></div>
+      <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1" onclick="openFullscreenGame('games/er1.html')"></div>
+      <div class="game-item"><img src="images/icons/er2.jpg" alt="Escape Road 2" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
+      <div class="game-item"><img src="images/icons/kong.png" alt="Flying Kong arcade" onclick="openFullscreenGame('games/kong.html')"></div>
+      <div class="game-item"><img src="images/icons/bitlife.png" alt="BitLife Simulator" onclick="openFullscreenGame('games/bitlife.html')"></div>
+      <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash" onclick="openFullscreenGame('games/geometry.html')"></div>
+      <div class="game-item"><img src="images/icons/craft.png" alt="minecraft Eaglercraft Shadow_Client" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
+      <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms" onclick="openFullscreenGame('games/skibidi.html')"></div>
+      <div class="game-item"><img src="images/icons/boxels.webp" alt="Sandboxels" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
+      <div class="game-item"><img src="images/icons/slope.png" alt="Slope" onclick="openFullscreenGame('games/slope.html')"></div>
+      <div class="game-item"><img src="images/icons/happy.jpeg" alt="Happy Wheels" onclick="openFullscreenGame('games/happy.html')"></div>
+      <div class="game-item"><img src="images/icons/tiny.avif" alt="Tiny Fishing" onclick="openFullscreenGame('games/tiny.html')"></div>
+      <div class="game-item"><img src="images/icons/rhit.avif" alt="Ragdoll Hit" onclick="openFullscreenGame('games/rhit.html')"></div>
+      <div class="game-item"><img src="images/icons/ra.webp" alt="Ragdoll Archers" onclick="openFullscreenGame('games/ra.html')"></div>
+      <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters" onclick="openFullscreenGame('games/bowmasters.html')"></div>
+      <div class="game-item"><img src="images/icons/bl.png" alt="Basketball Legends" onclick="openFullscreenGame('games/bl.html')"></div>
+      <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite" onclick="openFullscreenGame('games/agar.html')"></div>
+      <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police" onclick="openFullscreenGame('games/rope.html')"></div>
+      <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics" onclick="openFullscreenGame('games/baldi.html')"></div>
+      <!-- And so on... You can copy the rest similarly -->
+    </div>
+  </div>
   <script>
-    document.getElementById('go').addEventListener('click', () => {
-      const raw = document.getElementById('url').value.trim();
-      if (!raw) return alert('👀 Please enter a URL');
-      let url;
-      try {
-        url = new URL(raw).toString();
-      } catch (e) {
-        return alert('🚨 Invalid URL format. Include protocol (https://)');
-      }
-      const proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
-      window.location.href = proxy;
-    });
-    document.getElementById('url').addEventListener('keyup', e => {
-      if (e.key === 'Enter') document.getElementById('go').click();
-    });
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const items = document.querySelectorAll(".game-item");
+      items.forEach((item) => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+    }
+
+    function filterGames(term) {
+      document.getElementById("searchInput").value = term;
+      searchGames();
+    }
+
+    function openFullscreenGame(url) {
+      const win = window.open(url, "_blank");
+      win.focus();
+    }
   </script>
 </body>
 </html>
