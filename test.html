@@ -126,7 +126,7 @@
     .game-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-  gap: 15px;
+  gap: 25px;
 }
     .game-item {
       background: rgba(26,26,26,0.8);
@@ -134,6 +134,7 @@
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.3s;
+      border: 2px solid white;
     }
     .game-item:hover {
       transform: scale(1.05) translateY(-5px);
