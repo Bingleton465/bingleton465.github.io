@@ -11,43 +11,75 @@
       background-color: #0e0e0e;
       color: #fff;
       display: flex;
-    }
-    .sidebar {
-      width: 220px;
-      background: #111;
+      flex-direction: column;
       height: 100vh;
+    }
+    /* Top bar */
+    .topbar {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+    .topbar img {
+      height: 40px;
+    }
+    .topbar .search-container {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .topbar .search-container input {
+      padding: 8px 12px;
+      width: 300px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+      outline: none;
+    }
+    .topbar .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      cursor: pointer;
+      background: #333;
+      color: #fff;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      background: #111;
+      height: calc(100vh - 60px);
       position: fixed;
-      top: 0;
+      top: 60px;
       left: 0;
-      padding-top: 20px;
+      padding: 10px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 10px;
+      overflow-y: auto;
     }
     .sidebar a {
-      padding: 12px 20px;
+      padding: 8px 16px;
       color: #ccc;
       text-decoration: none;
+      font-size: 14px;
       transition: background 0.3s;
+      border-radius: 4px;
     }
     .sidebar a:hover {
       background: #333;
       color: #fff;
     }
+    /* Main content */
     .main {
-      margin-left: 240px;
+      margin-top: 60px;
+      margin-left: 220px;
       padding: 20px;
       flex-grow: 1;
-    }
-    .search-box {
-      margin-bottom: 20px;
-    }
-    .search-box input {
-      padding: 10px;
-      width: 100%;
-      max-width: 400px;
-      border: none;
-      border-radius: 5px;
+      overflow-y: auto;
     }
     .game-grid {
       display: grid;
@@ -72,26 +104,32 @@
   </style>
 </head>
 <body>
+
+  <div class="topbar">
+    <img src="logos.png" alt="Logo">
+    <div class="search-container">
+      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
+      <button onclick="searchGames()">Search</button>
+    </div>
+  </div>
+
+
   <div class="sidebar">
     <a href="#" onclick="filterGames('')">Show All</a>
-    <a href="#" onclick="filterGames('action')">Action Games</a>
-    <a href="#" onclick="filterGames('shooter')">Shooters</a>
+    <a href="#" onclick="filterGames('action')">Action</a>
+    <a href="#" onclick="filterGames('shooter')">Shooter</a>
     <a href="#" onclick="filterGames('sports')">Sports</a>
-    <a href="#" onclick="filterGames('2 player')">2 Player Games</a>
-    <a href="#" onclick="filterGames('car')">Car Games</a>
+    <a href="#" onclick="filterGames('2 player')">2 Player</a>
+    <a href="#" onclick="filterGames('car')">Car</a>
     <a href="#" onclick="filterGames('arcade')">Arcade</a>
     <a href="#" onclick="filterGames('puzzle')">Puzzle</a>
     <a href="#" onclick="filterGames('simulator')">Simulator</a>
-    <a href="#" onclick="filterGames('sports')">Sports</a>
     <a href="#" onclick="filterGames('horror')">Horror</a>
-     <a href="#" onclick="filterGames('levels')">Levels</a>
-         <a href="#" onclick="filterGames('endless')">Endless</a>
+    <a href="#" onclick="filterGames('levels')">Levels</a>
+    <a href="#" onclick="filterGames('endless')">Endless</a>
   </div>
-  <div class="main">
-    <div class="search-box">
-      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
-    </div>
-    <div class="game-grid" id="gameGrid">
+
+   <div class="game-grid" id="gameGrid">
       <!-- these are the games-->
       <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
       <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
@@ -155,13 +193,14 @@
    <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods horror"    onclick="openFullscreenGame('games/woods.html')"></div>
   
                       <!-- so on -->   
-  
+    </div>
   </div>
+
   <script>
     function searchGames() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const items = document.querySelectorAll(".game-item");
-      items.forEach((item) => {
+      items.forEach(item => {
         const alt = item.querySelector("img").alt.toLowerCase();
         item.style.display = alt.includes(input) ? "block" : "none";
       });
@@ -172,11 +211,10 @@
       searchGames();
     }
 
-     function openFullscreenGame(gamePath) {
-   // encode path to avoid issues
-   const encoded = encodeURIComponent(gamePath);
-   window.location.href = `iframe.html?game=${encoded}`;
- }
+    function openFullscreenGame(gamePath) {
+      const encoded = encodeURIComponent(gamePath);
+      window.location.href = `iframe.html?game=${encoded}`;
+    }
   </script>
 </body>
 </html>
