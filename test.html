@@ -139,92 +139,94 @@
       <span class="rainbow-text" id="rainbowText"></span>
       <span class="typewriter" id="typewriter"></span>
       <br>
-      <a href="test.html" class="get-started-btn">Get Started</a>
+      <a href="test.html" class="get-started-btn">Get Started!</a>
     </div>
   </div>
-  <script>
-    // Particle background (unchanged)
-    tsParticles.load("tsparticles", {
-      fpsLimit: 60,
-      background: { color: "transparent" },
-      particles: {
-        number: { value: 80 },
-        color: { value: "#ffffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: { min: 1, max: 3 } },
-        move: { enable: true, speed: 1, outMode: "bounce" }
-      },
-      interactivity: {
-        events: { onClick: { enable: true, mode: "push" } },
-        modes: { push: { quantity: 4 } }
-      },
-      detectRetina: true
-    });
+<script>
 
-    // Animated welcome text -- always types and untypes "Welcome to [something]"
-    document.addEventListener("DOMContentLoaded", function () {
-      const possibleWords = [
-        "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
-        "creativity", "games", "fun", "adventure", "innovation", "mystery", "expression",
-        "community", "connection", "surprises", "imagination", "challenge", "discovery"
-      ];
-      let wordIdx = -1;
-      let rainbowText = document.getElementById("rainbowText");
-      let typewriterEl = document.getElementById("typewriter");
+  tsParticles.load("tsparticles", {
+    fpsLimit: 60,
+    background: { color: "transparent" },
+    particles: {
+      number: { value: 80 },
+      color: { value: "#ffffff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: { min: 1, max: 3 } },
+      move: { enable: true, speed: 1, outMode: "bounce" }
+    },
+    interactivity: {
+      events: { onClick: { enable: true, mode: "push" } },
+      modes: { push: { quantity: 4 } }
+    },
+    detectRetina: true
+  });
 
-      function capitalize(str) {
-        if (!str) return "";
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      }
+  document.addEventListener("DOMContentLoaded", function () {
+    const possibleWords = [
+      "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
+      "creativity", "games", "fun", "adventure", "innovation", "mystery", "velora",
+      "community", "connection", "surprises", "imagination", "challenge", "discovery"
+    ];
+    let lastIdx = -1;
+    let rainbowText = document.getElementById("rainbowText");
+    let typewriterEl = document.getElementById("typewriter");
 
-      function nextWord() {
-        wordIdx = (wordIdx + 1) % possibleWords.length;
-        return capitalize(possibleWords[wordIdx]);
-      }
+    function capitalize(str) {
+      if (!str) return "";
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
-      function typeAndUntype(word, cb) {
-        const prefix = "Welcome to ";
-        let fullText = prefix + word;
-        let i = 0;
-        let typingSpeed = 120;   // Slow typing
-        let untypingSpeed = 70;  // Slow untyping
+    function nextWord() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * possibleWords.length);
+      } while (idx === lastIdx && possibleWords.length > 1);
+      lastIdx = idx;
+      return capitalize(possibleWords[idx]);
+    }
 
-        function type() {
-          if (i <= fullText.length) {
-            rainbowText.textContent = prefix;
-            typewriterEl.textContent = fullText.substring(prefix.length, i);
-            i++;
-            setTimeout(type, typingSpeed);
-          } else {
-            setTimeout(untype, 1200);
-          }
+    function typeAndUntype(word, cb) {
+      const prefix = "Welcome to ";
+      let i = 0;
+      let typingSpeed = 120;   
+      let untypingSpeed = 70; 
+
+      function type() {
+        if (i <= word.length) {
+          rainbowText.textContent = prefix;
+          typewriterEl.textContent = word.substring(0, i);
+          i++;
+          setTimeout(type, typingSpeed);
+        } else {
+          setTimeout(untype, 1200);
         }
+      }
 
-        function untype() {
-          if (i > prefix.length) {
-            i--;
-            rainbowText.textContent = prefix;
-            typewriterEl.textContent = fullText.substring(prefix.length, i);
-            setTimeout(untype, untypingSpeed);
-          } else if (cb) {
-            setTimeout(cb, 400);
-          }
+      function untype() {
+        if (i > 0) {
+          i--;
+          rainbowText.textContent = prefix;
+          typewriterEl.textContent = word.substring(0, i);
+          setTimeout(untype, untypingSpeed);
+        } else if (cb) {
+          setTimeout(cb, 400);
         }
-
-        type();
       }
 
-      function loop() {
-        let word = nextWord();
-        typeAndUntype(word, loop);
-      }
+      type();
+    }
 
-      // Initialize
-      rainbowText.textContent = "Welcome to";
-      typewriterEl.textContent = "";
-      loop();
-    });
-  </script>
+    function loop() {
+      let word = nextWord();
+      typeAndUntype(word, loop);
+    }
+
+
+    rainbowText.textContent = "Welcome to";
+    typewriterEl.textContent = "";
+    loop();
+  });
+</script>
 </body>
 </html>
