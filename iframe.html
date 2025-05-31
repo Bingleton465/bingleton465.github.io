@@ -403,6 +403,7 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    //  metadata mapping copied from g.html 
     const GAME_METADATA = {
       "games/1v1.html": {
         icon: "images/icons/1v1.png",
@@ -646,7 +647,6 @@
       }
     };
 
-
     const FAVORITES_KEY = 'veloraFavorites';
     function getFavorites() {
       return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -676,7 +676,7 @@
       const favs = getFavorites();
       favs.forEach(gamePath => {
         const meta = GAME_METADATA[gamePath];
-        if (!meta) return; 
+        if (!meta) return;
         const img = document.createElement('img');
         img.src = meta.icon;
         img.title = meta.title;
@@ -702,13 +702,12 @@
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
 
+
     function pickRandom() {
-      const allTiles = Array.from(document.querySelectorAll('.game-item'));
-      const visibleTiles = allTiles.filter(t => t.style.display !== 'none');
-      if (visibleTiles.length === 0) return;
-      const pick = visibleTiles[Math.floor(Math.random() * visibleTiles.length)];
-      const gamePath = pick.getAttribute('data-game');
-      openFullscreenGame(gamePath);
+      const keys = Object.keys(GAME_METADATA);
+      if (keys.length === 0) return;
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      openFullscreenGame(randomKey);
     }
 
     function searchGames() {
@@ -746,16 +745,13 @@
         }
       }
 
-
       document.getElementById('iframeHeart').addEventListener('click', () => {
         if (!gamePath) return;
         toggleFavorite(gamePath);
       });
 
-
       renderFavoritesBar();
       updateIframeHeart();
-
 
       document.getElementById('fullscreenBtn').addEventListener('click', () => {
         const ifr = document.getElementById('gameIframe');
@@ -767,7 +763,6 @@
           ifr.msRequestFullscreen();
         }
       });
-
 
       document.getElementById('randomBtn').addEventListener('click', pickRandom);
     });
