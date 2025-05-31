@@ -173,7 +173,7 @@
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 20px;
+      gap: 36px;
     }
     .game-item {
       background: var(--card-bg);
@@ -188,9 +188,12 @@
       box-shadow: 0 12px 30px rgba(0,0,0,0.5);
       border-color: var(--accent-color);
     }
-    .game-item img {
-      width: 100%; height: auto; display: block;
-    }
+  .game-item img {
+  width: 80%;
+  max-width: 80px;
+  margin: 0 auto;
+  display: block;
+}
     .game-item.hidden {
       display: none !important;
     }
@@ -200,6 +203,26 @@
       .topbar { padding: 0 16px; }
       .search-container input { width: 200px; }
     }
+    .hero-section {
+  background: linear-gradient(90deg, #4a90e2 0%, #14141f 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 32px 24px;
+  margin-bottom: 44px;
+  box-shadow: 0 8px 32px rgba(74,144,226,0.08);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-section h1 {
+  font-size: 2.6em;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+.hero-section p {
+  font-size: 1.15em;
+  color: #e0e0e0;
+}
   </style>
 </head>
 <body>
@@ -221,7 +244,10 @@
     <a href="#" onclick="filterGames('puzzle')" title="Puzzle">🧩 - Puzzle</a>
     <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
   </div>
-
+<div class="hero-section">
+  <h1>🎲 Play and Discover New Games!</h1>
+  <p>Welcome to Velora – the best spot to find and play free online games. Search, filter, and jump into your favorites. Have fun!</p>
+</div>
   <div class="main">
      <div id="searchResultsMessage" style="display:none; margin-bottom:18px; font-size:1.2em; color:#fff;"></div>
     <div class="game-grid" id="gameGrid">
