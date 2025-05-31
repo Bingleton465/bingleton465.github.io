@@ -1,49 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script> 
-    (function () {
-      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-      const defaultFavicon = 'images/icons/logo.png';
-
-      if (savedTitle) document.title = savedTitle;
-      const favicon = savedFavicon || defaultFavicon;
-      setFavicon(favicon);
-      if (!savedFavicon) {
-        localStorage.setItem('customFavicon', favicon);
-        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
-      }
-
-      function setFavicon(url) {
-        let link = document.querySelector('link[rel="icon"]');
-        if (!link) {
-          link = document.createElement('link');
-          link.rel = 'icon';
-          document.head.appendChild(link);
-        }
-        link.href = url;
-      }
-
-      function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-      }
-
-      window.setCustomCloak = function(title, faviconURL) {
-        if (title) {
-          document.title = title;
-          localStorage.setItem('customTitle', title);
-          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
-        }
-        if (faviconURL) {
-          setFavicon(faviconURL);
-          localStorage.setItem('customFavicon', faviconURL);
-          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
-        }
-      };
-    })();
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora - Free Online Games</title>
@@ -80,58 +37,56 @@
       z-index: 0;
       pointer-events: none;
     }
-   .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--topbar-height);
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  z-index: 10;
-}
-
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      z-index: 10;
+    }
     .topbar img {
-  height: 70px;
-  position: absolute;
-  left: 54px;
-}
-.search-container {
-  flex: none;
-  margin: 0 auto;
-  width: 360px;
-  display: flex;
-  align-items: center;
-}
+      height: 70px;
+      position: absolute;
+      left: 54px;
+    }
+    .search-container {
+      flex: none;
+      margin: 0 auto;
+      width: 360px;
+      display: flex;
+      align-items: center;
+    }
     .search-container input {
-  width: 100%;
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  outline: none;
-  transition: transform var(--transition-speed), background var(--transition-speed);
-}
-
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      outline: none;
+      transition: transform var(--transition-speed), background var(--transition-speed);
+    }
     .search-container input:focus {
       background: rgba(255,255,255,0.2);
       transform: scale(1.03);
     }
     .search-container button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  background: var(--accent-color);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform var(--transition-speed), background var(--transition-speed);
-}
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      background: var(--accent-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition-speed), background var(--transition-speed);
+    }
     .search-container button:hover {
       background: #6cb3f0;
       transform: translateY(-2px) scale(1.05);
@@ -201,49 +156,89 @@
       .search-container input { width: 200px; }
     }
     .trippy-welcome {
-  margin: 70px 0 68px 0;
-  text-align: center;
-  z-index: 2;
-  position: relative;
-}
-.rainbow-text {
-  font-size: 3em;
-  font-weight: bold;
-  background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffea, #ffff00, #ff6600, #ff00cc 90%);
-  background-size: 400% 400%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbow-anim 4s linear infinite;
-  display: block;
-  margin-bottom: 0.22em;
-  letter-spacing: 0.08em;
-  filter: drop-shadow(0 0 16px #fff8);
-}
-
-@keyframes rainbow-anim {
-  0% {background-position:0% 50%;}
-  100% {background-position:100% 50%;}
-}
-
-.typewriter {
-  font-size: 3em;
-  color: #fff;
-  font-family: 'Inter', monospace;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  border-right: 0.08em solid #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
-  text-shadow: 0 0 16px #00ffea, 0 0 32px #3333ff;
-  filter: blur(0.5px);
-  min-height: 1.3em;
-}
+      margin: 70px 0 68px 0;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+    .rainbow-text {
+      font-size: 3em;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffea, #ffff00, #ff6600, #ff00cc 90%);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbow-anim 4s linear infinite;
+      display: block;
+      margin-bottom: 0.22em;
+      letter-spacing: 0.08em;
+      filter: drop-shadow(0 0 16px #fff8);
+    }
+    @keyframes rainbow-anim {
+      0% {background-position:0% 50%;}
+      100% {background-position:100% 50%;}
+    }
+    .typewriter {
+      font-size: 3em;
+      color: #fff;
+      font-family: 'Inter', monospace;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      border-right: 0.08em solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      text-shadow: 0 0 16px #00ffea, 0 0 32px #3333ff;
+      filter: blur(0.5px);
+      min-height: 1.3em;
+    }
   </style>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
+      }
+
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
 </head>
 <body>
   <div id="tsparticles"></div>
-
   <div class="topbar">
     <img src="images/icons/velora.png" alt="Logo">
     <div class="search-container">
@@ -251,7 +246,6 @@
       <button onclick="searchGames()">Go</button>
     </div>
   </div>
-
   <div class="sidebar">
     <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
     <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
@@ -260,14 +254,14 @@
     <a href="#" onclick="filterGames('puzzle')" title="Puzzle">🧩 - Puzzle</a>
     <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
   </div>
-<div class="trippy-welcome">
-  <span class="rainbow-text" id="rainbowText"></span>
-  <span class="typewriter" id="typewriter"></span>
-</div>
+  <div class="trippy-welcome">
+    <span class="rainbow-text" id="rainbowText"></span>
+    <span class="typewriter" id="typewriter"></span>
+  </div>
   <div class="main">
-     <div id="searchResultsMessage" style="display:none; margin-bottom:18px; font-size:1.2em; color:#fff;"></div>
+    <div id="searchResultsMessage" style="display:none; margin-bottom:18px; font-size:1.2em; color:#fff;"></div>
     <div class="game-grid" id="gameGrid">
-         <!-- these are the games-->
+      <!-- FULL GAME GRID STARTS HERE -->
       <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
       <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
       <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
@@ -288,158 +282,162 @@
       <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite arcade endless" onclick="openFullscreenGame('games/agar.html')"></div>
       <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police action simulator" onclick="openFullscreenGame('games/rope.html')"></div>
       <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics horror" onclick="openFullscreenGame('games/baldi.html')"></div>
-          <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters car"            onclick="openFullscreenGame('games/drift.html')"></div>
-    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1 horror"                 onclick="openFullscreenGame('games/granny1.html')"></div>
-    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2 horror"                onclick="openFullscreenGame('games/granny2.html')"></div>
-    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin' levels action"     onclick="openFullscreenGame('games/fnf.html')"></div>
-    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car levels"               onclick="openFullscreenGame('games/mad.html')"></div>
-    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D endless"            onclick="openFullscreenGame('games/snowrider.html')"></div>
-    <div class="game-item"><img src="images/icons/revert.png"   alt="Sonic Revert endless simuator"             onclick="openFullscreenGame('games/revert.html')"></div>
-    <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss endless"             onclick="openFullscreenGame('games/driftboss.html')"></div>
-    <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast endless puzzle"            onclick="openFullscreenGame('games/blockblast.html')"></div>
-    <div class="game-item"><img src="images/icons/elasticface.webp" alt="Elastic Face simulator"           onclick="openFullscreenGame('games/elasticface.html')"></div>
-    <div class="game-item"><img src="images/icons/shrek.jpg"    alt="Five Nights at Shrek’s Hotel horror" onclick="openFullscreenGame('games/shrek.html')"></div>
-    <div class="game-item"><img src="images/icons/cluster.png"  alt="Cluster Rush levels"             onclick="openFullscreenGame('games/cluster.html')"></div>
-    <div class="game-item"><img src="images/icons/crossy.avif" alt="Crossy Road endless"              onclick="openFullscreenGame('games/crossyroad.html')"></div>
-    <div class="game-item"><img src="images/icons/10.png"       alt="10 Minutes Till Dawn action"     onclick="openFullscreenGame('games/10.html')"></div>
-    <div class="game-item"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft endless"      onclick="openFullscreenGame('games/infinitecraft.html')"></div>
-    <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parenting horror"            onclick="openFullscreenGame('games/badparent.html')"></div>
-    <div class="game-item"><img src="images/icons/guess.png"    alt="Guess Their Answer levels"       onclick="openFullscreenGame('games/guess.html')"></div>
-    <div class="game-item"><img src="images/icons/bacon.png"    alt="Bacon May Die endless"            onclick="openFullscreenGame('games/bacon.html')"></div>
-    <div class="game-item"><img src="images/icons/bottle.png"   alt="Bottle Flip 3D levels"           onclick="openFullscreenGame('games/bottle.html')"></div>
-    <div class="game-item"><img src="images/icons/cup.png"      alt="A Small World Cup levels endless sports"        onclick="openFullscreenGame('games/cup.html')"></div>
-    <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D action sports"          onclick="openFullscreenGame('games/cattle.html')"></div>
-    <div class="game-item"><img src="images/icons/flood.webp"   alt="Flood Runner 4 action"          onclick="openFullscreenGame('games/flood.html')"></div>
-    <div class="game-item"><img src="images/icons/post.png"     alt="blockpost action shooter"                 onclick="openFullscreenGame('games/post.html')"></div>
-    <div class="game-item"><img src="images/icons/suika.avif"   alt="suika watermelon game endless"     onclick="openFullscreenGame('games/suika.html')"></div>
-    <div class="game-item"><img src="images/icons/wars.webp"    alt="lego star wars action"            onclick="openFullscreenGame('games/wars.html')"></div>
-    <div class="game-item"><img src="images/icons/cn.webp"      alt="cartoon network tennis sports endless"    onclick="openFullscreenGame('games/cn.html')"></div>
-    <div class="game-item"><img src="images/icons/dta6.avif"      alt="Dude theft wars dta6 gta6 car action"    onclick="openFullscreenGame('dta6/index.html')"></div>
-    <div class="game-item"><img src="images/icons/stickrpg.webp"      alt="stickman rpg simulator"    onclick="openFullscreenGame('games/stickrpg.html')"></div>
-    <div class="game-item"><img src="images/icons/plant.jpg"      alt="plants vs zombies levels"    onclick="openFullscreenGame('games/plant.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo1.jpg"      alt="OVO 1 action levels"    onclick="openFullscreenGame('games/ovo1.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo2.jpg"      alt="OVO 2 action levels"    onclick="openFullscreenGame('games/ovo2.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo3.png"      alt="OVO 3 action levels"    onclick="openFullscreenGame('games/ovo3.html')"></div>
-   <div class="game-item"><img src="images/icons/ahole.jpg"      alt="attack hole levels"    onclick="openFullscreenGame('games/ahole.html')"></div>
-   <div class="game-item"><img src="images/icons/bison.jpg"      alt="burrito bison endless"    onclick="openFullscreenGame('games/bison.html')"></div>
-   <div class="game-item"><img src="images/icons/cc.png"      alt="capybara clicker endless"    onclick="openFullscreenGame('games/cc.html')"></div>
-   <div class="game-item"><img src="images/icons/folder.webp"      alt="folder dungeon puzzle"    onclick="openFullscreenGame('games/folder.html')"></div>
-   <div class="game-item"><img src="images/icons/evilglitch.jpg"      alt="evil glitch endless"    onclick="openFullscreenGame('games/evilglitch.html')"></div>
-   <div class="game-item"><img src="images/icons/hcr.png"      alt="hill climb racing endless"    onclick="openFullscreenGame('games/hcr.html')"></div>
-   <div class="game-item"><img src="images/icons/tanuki.jpg"      alt="tanuki sunset car action sport endless"    onclick="openFullscreenGame('games/tanuki.html')"></div>
-   <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods horror"    onclick="openFullscreenGame('games/woods.html')"></div>
+      <div class="game-item"><img src="images/icons/drift.png" alt="Drift Hunters car" onclick="openFullscreenGame('games/drift.html')"></div>
+      <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1 horror" onclick="openFullscreenGame('games/granny1.html')"></div>
+      <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2 horror" onclick="openFullscreenGame('games/granny2.html')"></div>
+      <div class="game-item"><img src="images/icons/fnf.png" alt="Friday Night Funkin' levels action" onclick="openFullscreenGame('games/fnf.html')"></div>
+      <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car levels" onclick="openFullscreenGame('games/mad.html')"></div>
+      <div class="game-item"><img src="images/icons/snow.png" alt="Snow Rider 3D endless" onclick="openFullscreenGame('games/snowrider.html')"></div>
+      <div class="game-item"><img src="images/icons/revert.png" alt="Sonic Revert endless simuator" onclick="openFullscreenGame('games/revert.html')"></div>
+      <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss endless" onclick="openFullscreenGame('games/driftboss.html')"></div>
+      <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast endless puzzle" onclick="openFullscreenGame('games/blockblast.html')"></div>
+      <div class="game-item"><img src="images/icons/elasticface.webp" alt="Elastic Face simulator" onclick="openFullscreenGame('games/elasticface.html')"></div>
+      <div class="game-item"><img src="images/icons/shrek.jpg" alt="Five Nights at Shrek’s Hotel horror" onclick="openFullscreenGame('games/shrek.html')"></div>
+      <div class="game-item"><img src="images/icons/cluster.png" alt="Cluster Rush levels" onclick="openFullscreenGame('games/cluster.html')"></div>
+      <div class="game-item"><img src="images/icons/crossy.avif" alt="Crossy Road endless" onclick="openFullscreenGame('games/crossyroad.html')"></div>
+      <div class="game-item"><img src="images/icons/10.png" alt="10 Minutes Till Dawn action" onclick="openFullscreenGame('games/10.html')"></div>
+      <div class="game-item"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft endless" onclick="openFullscreenGame('games/infinitecraft.html')"></div>
+      <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parenting horror" onclick="openFullscreenGame('games/badparent.html')"></div>
+      <div class="game-item"><img src="images/icons/guess.png" alt="Guess Their Answer levels" onclick="openFullscreenGame('games/guess.html')"></div>
+      <div class="game-item"><img src="images/icons/bacon.png" alt="Bacon May Die endless" onclick="openFullscreenGame('games/bacon.html')"></div>
+      <div class="game-item"><img src="images/icons/bottle.png" alt="Bottle Flip 3D levels" onclick="openFullscreenGame('games/bottle.html')"></div>
+      <div class="game-item"><img src="images/icons/cup.png" alt="A Small World Cup levels endless sports" onclick="openFullscreenGame('games/cup.html')"></div>
+      <div class="game-item"><img src="images/icons/cattle.jpg" alt="Crazy Cattle 3D action sports" onclick="openFullscreenGame('games/cattle.html')"></div>
+      <div class="game-item"><img src="images/icons/flood.webp" alt="Flood Runner 4 action" onclick="openFullscreenGame('games/flood.html')"></div>
+      <div class="game-item"><img src="images/icons/post.png" alt="blockpost action shooter" onclick="openFullscreenGame('games/post.html')"></div>
+      <div class="game-item"><img src="images/icons/suika.avif" alt="suika watermelon game endless" onclick="openFullscreenGame('games/suika.html')"></div>
+      <div class="game-item"><img src="images/icons/wars.webp" alt="lego star wars action" onclick="openFullscreenGame('games/wars.html')"></div>
+      <div class="game-item"><img src="images/icons/cn.webp" alt="cartoon network tennis sports endless" onclick="openFullscreenGame('games/cn.html')"></div>
+      <div class="game-item"><img src="images/icons/dta6.avif" alt="Dude theft wars dta6 gta6 car action" onclick="openFullscreenGame('dta6/index.html')"></div>
+      <div class="game-item"><img src="images/icons/stickrpg.webp" alt="stickman rpg simulator" onclick="openFullscreenGame('games/stickrpg.html')"></div>
+      <div class="game-item"><img src="images/icons/plant.jpg" alt="plants vs zombies levels" onclick="openFullscreenGame('games/plant.html')"></div>
+      <div class="game-item"><img src="images/icons/ovo1.jpg" alt="OVO 1 action levels" onclick="openFullscreenGame('games/ovo1.html')"></div>
+      <div class="game-item"><img src="images/icons/ovo2.jpg" alt="OVO 2 action levels" onclick="openFullscreenGame('games/ovo2.html')"></div>
+      <div class="game-item"><img src="images/icons/ovo3.png" alt="OVO 3 action levels" onclick="openFullscreenGame('games/ovo3.html')"></div>
+      <div class="game-item"><img src="images/icons/ahole.jpg" alt="attack hole levels" onclick="openFullscreenGame('games/ahole.html')"></div>
+      <div class="game-item"><img src="images/icons/bison.jpg" alt="burrito bison endless" onclick="openFullscreenGame('games/bison.html')"></div>
+      <div class="game-item"><img src="images/icons/cc.png" alt="capybara clicker endless" onclick="openFullscreenGame('games/cc.html')"></div>
+      <div class="game-item"><img src="images/icons/folder.webp" alt="folder dungeon puzzle" onclick="openFullscreenGame('games/folder.html')"></div>
+      <div class="game-item"><img src="images/icons/evilglitch.jpg" alt="evil glitch endless" onclick="openFullscreenGame('games/evilglitch.html')"></div>
+      <div class="game-item"><img src="images/icons/hcr.png" alt="hill climb racing endless" onclick="openFullscreenGame('games/hcr.html')"></div>
+      <div class="game-item"><img src="images/icons/tanuki.jpg" alt="tanuki sunset car action sport endless" onclick="openFullscreenGame('games/tanuki.html')"></div>
+      <div class="game-item"><img src="images/icons/woods.webp" alt="slide in the woods horror" onclick="openFullscreenGame('games/woods.html')"></div>
+      <!-- FULL GAME GRID ENDS HERE -->
     </div>
   </div>
-
   <script>
+    // Particle background
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
-      particles: { number: { value: 80 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: { min: 1, max: 3 } }, move: { enable: true, speed: 1, outModes: { default: "out" } } },
+      particles: { number: { value: 80 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: { min: 1, max: 3 } }, move: { enable: true, speed: 1, outMode: "bounce" } },
       interactivity: { events: { onClick: { enable: true, mode: "push" } }, modes: { push: { quantity: 4 } } },
       detectRetina: true
     });
 
-  function searchGames() {
-  const input = document.getElementById("searchInput").value.trim().toLowerCase();
-  const messageDiv = document.getElementById("searchResultsMessage");
-  if (input) {
-    messageDiv.textContent = `Search results for '${input}'`;
-    messageDiv.style.display = "block";
-  } else {
-    messageDiv.textContent = "";
-    messageDiv.style.display = "none";
-  }
-  document.querySelectorAll(".game-item").forEach(item => {
-    const alt = item.querySelector("img").alt.toLowerCase();
-    item.style.display = alt.includes(input) ? "block" : "none";
-  });
-}
-    function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
-    function openFullscreenGame(path) { window.location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
+    // Search and filter games
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
+      if (input) {
+        messageDiv.textContent = `Search results for '${input}'`;
+        messageDiv.style.display = "block";
+      } else {
+        messageDiv.textContent = "";
+        messageDiv.style.display = "none";
+      }
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
     }
+    function filterGames(term) {
+      document.getElementById("searchInput").value = term;
+      searchGames();
     }
-    <script>
-const possibleWords = [
-  "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
-  "creativity", "games", "fun", "adventure", "innovation", "mystery", "expression",
-  "community", "connection", "surprises", "imagination", "challenge", "discovery"
-];
-const welcomeMsg = "Welcome to Velora";
-let shownWelcome = false;
-let allWords = [];
-let rainbowText = document.getElementById("rainbowText");
-let typewriterEl = document.getElementById("typewriter");
+    function openFullscreenGame(path) {
+      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
+    }
 
-function shuffle(arr) {
-  for(let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-}
-function getWordSequence() {
-  let seq = [];
-  let chance = Math.random();
-  if (chance < 0.20) {
-    seq.push(welcomeMsg);
-    shownWelcome = true;
-  }
-  let rest = possibleWords.slice();
-  shuffle(rest);
+    // Animated welcome text
+    document.addEventListener("DOMContentLoaded", function () {
+      const possibleWords = [
+        "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
+        "creativity", "games", "fun", "adventure", "innovation", "mystery", "expression",
+        "community", "connection", "surprises", "imagination", "challenge", "discovery"
+      ];
+      const welcomeMsg = "Welcome to Velora";
+      let shownWelcome = false;
+      let allWords = [];
+      let rainbowText = document.getElementById("rainbowText");
+      let typewriterEl = document.getElementById("typewriter");
 
-  rest = rest.filter(word => word.toLowerCase() !== "velora");
-  seq = seq.concat(rest);
-  return seq;
-}
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+      function getWordSequence() {
+        let seq = [];
+        let chance = Math.random();
+        if (chance < 0.20) {
+          seq.push(welcomeMsg);
+          shownWelcome = true;
+        }
+        let rest = possibleWords.slice();
+        shuffle(rest);
+        rest = rest.filter(word => word.toLowerCase() !== "velora");
+        seq = seq.concat(rest);
+        return seq;
+      }
 
-allWords = getWordSequence();
-let wordIdx = 0;
+      allWords = getWordSequence();
+      let wordIdx = 0;
 
-function showNextWord() {
-  let word = allWords[wordIdx];
-  typewriterEl.textContent = "";
-  if (word === welcomeMsg) {
-    rainbowText.textContent = "Welcome to";
-    typeTypewriter("Velora", () => {
-      setTimeout(() => {
-        wordIdx++;
-        showNextWord();
-      }, 1100);
+      function showNextWord() {
+        let word = allWords[wordIdx];
+        typewriterEl.textContent = "";
+        if (word === welcomeMsg) {
+          rainbowText.textContent = "Welcome to";
+          typeTypewriter("Velora", () => {
+            setTimeout(() => {
+              wordIdx++;
+              showNextWord();
+            }, 1100);
+          });
+        } else {
+          rainbowText.textContent = "";
+          typeTypewriter(capitalize(word), () => {
+            setTimeout(() => {
+              wordIdx++;
+              showNextWord();
+            }, 1100);
+          });
+        }
+      }
+
+      function typeTypewriter(text, callback) {
+        let i = 0;
+        function typing() {
+          if (i <= text.length) {
+            typewriterEl.textContent = text.substring(0, i);
+            i++;
+            setTimeout(typing, 90);
+          } else {
+            if (callback) callback();
+          }
+        }
+        typing();
+      }
+
+      function capitalize(str) {
+        if (!str) return "";
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
+
+      showNextWord();
     });
-  } else {
-    rainbowText.textContent = "";
-    typeTypewriter(capitalize(word), () => {
-      setTimeout(() => {
-        wordIdx++;
-        showNextWord();
-      }, 1100);
-    });
-  }
-}
-
-function typeTypewriter(text, callback) {
-  let i = 0;
-  function typing() {
-    if (i <= text.length) {
-      typewriterEl.textContent = text.substring(0, i);
-      i++;
-      setTimeout(typing, 90);
-    } else {
-      if (callback) callback();
-    }
-  }
-  typing();
-}
-
-function capitalize(str) {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-window.addEventListener("DOMContentLoaded", function() {
-  showNextWord();
-});
-</script>
   </script>
 </body>
 </html>
