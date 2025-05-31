@@ -143,7 +143,7 @@
     </div>
   </div>
   <script>
-    // Particle background
+    // Particle background (unchanged)
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -162,83 +162,68 @@
       detectRetina: true
     });
 
-    // Animated welcome text
+    // Animated welcome text -- always types and untypes "Welcome to [something]"
     document.addEventListener("DOMContentLoaded", function () {
       const possibleWords = [
         "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
         "creativity", "games", "fun", "adventure", "innovation", "mystery", "expression",
-        "community", "connection", "suprises", "imagination", "challenge", "discovery"
+        "community", "connection", "surprises", "imagination", "challenge", "discovery"
       ];
-      const welcomeMsg = "Welcome to Velora";
-      let allWords = [];
+      let wordIdx = -1;
       let rainbowText = document.getElementById("rainbowText");
       let typewriterEl = document.getElementById("typewriter");
-
-      function shuffle(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-      }
-      function getWordSequence() {
-        let seq = [];
-        let chance = Math.random();
-        if (chance < 0.33) {
-          seq.push(welcomeMsg);
-        }
-        let rest = possibleWords.slice();
-        shuffle(rest);
-        rest = rest.filter(word => word.toLowerCase() !== "velora");
-        seq = seq.concat(rest);
-        return seq;
-      }
-
-      allWords = getWordSequence();
-      let wordIdx = 0;
-
-      function showNextWord() {
-        let word = allWords[wordIdx];
-        typewriterEl.textContent = "";
-        if (word === welcomeMsg) {
-          rainbowText.textContent = "Welcome to";
-          typeTypewriter("Velora", () => {
-            setTimeout(() => {
-              wordIdx++;
-              showNextWord();
-            }, 1400);
-          });
-        } else {
-          rainbowText.textContent = "";
-          typeTypewriter(capitalize(word), () => {
-            setTimeout(() => {
-              wordIdx++;
-              if (wordIdx >= allWords.length) wordIdx = 0;
-              showNextWord();
-            }, 1200);
-          });
-        }
-      }
-
-      function typeTypewriter(text, callback) {
-        let i = 0;
-        function typing() {
-          if (i <= text.length) {
-            typewriterEl.textContent = text.substring(0, i);
-            i++;
-            setTimeout(typing, 70);
-          } else {
-            if (callback) callback();
-          }
-        }
-        typing();
-      }
 
       function capitalize(str) {
         if (!str) return "";
         return str.charAt(0).toUpperCase() + str.slice(1);
       }
 
-      showNextWord();
+      function nextWord() {
+        wordIdx = (wordIdx + 1) % possibleWords.length;
+        return capitalize(possibleWords[wordIdx]);
+      }
+
+      function typeAndUntype(word, cb) {
+        const prefix = "Welcome to ";
+        let fullText = prefix + word;
+        let i = 0;
+        let typingSpeed = 120;   // Slow typing
+        let untypingSpeed = 70;  // Slow untyping
+
+        function type() {
+          if (i <= fullText.length) {
+            rainbowText.textContent = prefix;
+            typewriterEl.textContent = fullText.substring(prefix.length, i);
+            i++;
+            setTimeout(type, typingSpeed);
+          } else {
+            setTimeout(untype, 1200);
+          }
+        }
+
+        function untype() {
+          if (i > prefix.length) {
+            i--;
+            rainbowText.textContent = prefix;
+            typewriterEl.textContent = fullText.substring(prefix.length, i);
+            setTimeout(untype, untypingSpeed);
+          } else if (cb) {
+            setTimeout(cb, 400);
+          }
+        }
+
+        type();
+      }
+
+      function loop() {
+        let word = nextWord();
+        typeAndUntype(word, loop);
+      }
+
+      // Initialize
+      rainbowText.textContent = "Welcome to";
+      typewriterEl.textContent = "";
+      loop();
     });
   </script>
 </body>
