@@ -4,183 +4,184 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora - Free Online Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
+    :root {
+      --bg-gradient-start: #14141f;
+      --bg-gradient-end: #1f1f2f;
+      --accent-color: #4a90e2;
+      --text-color: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-hover: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(20, 20, 30, 0.75);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --topbar-height: 64px;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      color: #fff;
-      background: #0e0e0e;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
       height: 100vh;
       overflow: hidden;
       position: relative;
     }
-.main {
-  position: absolute;
-  top: 60px;
-  left: 200px;
-  width: calc(100% - 200px);  
-  right: 0;
-  bottom: 0;
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 1;
-}
-
-   
     #tsparticles {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
-      pointer-events: none; 
+      pointer-events: none;
     }
+   .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--topbar-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  z-index: 10;
+}
 
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(17,17,17,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      height: 60px;
-      z-index: 10;
-    }
-    .topbar img { height: 40px; }
-    .topbar .search-container {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-    }
-    .topbar .search-container input {
-      padding: 8px 12px;
-      width: 300px;
-      border: none;
-      border-radius: 4px 0 0 4px;
-      outline: none;
-      transition: transform 0.2s;
-    }
-    .topbar .search-container input:focus {
-      transform: scale(1.05);
-    }
-    .topbar .search-container button {
-      padding: 8px 12px;
-      border: none;
-      border-radius: 0 4px 4px 0;
-      cursor: pointer;
-      background: #333;
-      color: #fff;
-      font-weight: bold;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .topbar .search-container button:hover {
-      background: #4a90e2;
-      transform: scale(1.1) rotate(-2deg);
-    }
+    .topbar img {
+  height: 40px;
+  position: absolute;
+  left: 24px;
+}
+.search-container {
+  flex: none;
+  margin: 0 auto;
+  width: 360px;
+  display: flex;
+  align-items: center;
+}
+    .search-container input {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  outline: none;
+  transition: transform var(--transition-speed), background var(--transition-speed);
+}
 
- 
+    .search-container input:focus {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.03);
+    }
+    .search-container button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  background: var(--accent-color);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-speed), background var(--transition-speed);
+}
+    .search-container button:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+    }
     .sidebar {
       position: fixed;
-      top: 60px;
-      left: 0;
-      width: 200px;
-      bottom: 0;
-      background: rgba(17,17,17,0.9);
-      padding: 10px;
+      top: var(--topbar-height); left: 0;
+      width: var(--sidebar-width); bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       overflow-y: auto;
       z-index: 9;
     }
     .sidebar a {
-      padding: 8px 16px;
-      color: #ccc;
+      padding: 10px 16px;
+      color: var(--text-color);
       text-decoration: none;
       font-size: 14px;
-      border-radius: 4px;
-      transition: background 0.3s, color 0.3s, transform 0.2s;
+      border-radius: var(--border-radius);
+      transition: background var(--transition-speed), transform var(--transition-speed);
     }
     .sidebar a:hover {
-      background: #333;
+      background: var(--accent-color);
       color: #fff;
-      transform: translateX(5px);
+      transform: translateX(4px);
     }
-
-  
     .main {
       position: absolute;
-      top: 60px;
-      left: 200px;
-      right: 0;
-      bottom: 0;
-      padding: 20px;
+      top: var(--topbar-height); left: var(--sidebar-width);
+      right: 0; bottom: 0;
+      padding: 24px;
       overflow-y: auto;
       z-index: 1;
     }
     .game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-  gap: 25px;
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
     .game-item {
-      background: rgba(26,26,26,0.8);
-      border-radius: 10px;
+      background: var(--card-bg);
+      border: 2px solid transparent;
+      border-radius: var(--border-radius);
       overflow: hidden;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
-      border: 2px solid white;
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
     }
     .game-item:hover {
-      transform: scale(1.05) translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      border-color: var(--accent-color);
     }
     .game-item img {
-      width: 100%;
-      height: auto;
-      display: block;
+      width: 100%; height: auto; display: block;
     }
- .game-item.hidden {
-  display: none !important;
-}
+    .game-item.hidden {
+      display: none !important;
+    }
+    @media (max-width: 768px) {
+      .sidebar { width: 60px; padding: 8px; }
+      .sidebar a { font-size: 12px; padding: 8px; }
+      .topbar { padding: 0 16px; }
+      .search-container input { width: 200px; }
+    }
   </style>
 </head>
 <body>
-  <!-- Particles background -->
   <div id="tsparticles"></div>
 
   <div class="topbar">
-    <img src="images/icons/velora/.ico" alt="Logo">
+    <img src="images/icons/velora.png" alt="Logo">
     <div class="search-container">
       <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
-      <button onclick="searchGames()">Search</button>
+      <button onclick="searchGames()">Go</button>
     </div>
   </div>
 
-    <div class="sidebar">
-    <a href="#" onclick="filterGames('')">Show All</a>
-    <a href="#" onclick="filterGames('action')">Action</a>
-    <a href="#" onclick="filterGames('shooter')">Shooter</a>
-    <a href="#" onclick="filterGames('sports')">Sports</a>
-    <a href="#" onclick="filterGames('2 player')">2 Player</a>
-    <a href="#" onclick="filterGames('car')">Car</a>
-    <a href="#" onclick="filterGames('arcade')">Arcade</a>
-    <a href="#" onclick="filterGames('puzzle')">Puzzle</a>
-    <a href="#" onclick="filterGames('simulator')">Simulator</a>
-    <a href="#" onclick="filterGames('horror')">Horror</a>
-    <a href="#" onclick="filterGames('levels')">Levels</a>
-    <a href="#" onclick="filterGames('endless')">Endless</a>
+  <div class="sidebar">
+    <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
+    <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
+    <a href="#" onclick="filterGames('shooter')" title="Shooter">🔫 - Shooters</a>
+    <a href="#" onclick="filterGames('sports')" title="Sports">🏈 - Sports</a>
+    <a href="#" onclick="filterGames('puzzle')" title="Puzzle">🧩 - Puzzle</a>
+    <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
   </div>
 
   <div class="main">
     <div class="game-grid" id="gameGrid">
-        <div class="game-grid" id="gameGrid">
-      <!-- these are the games-->
+         <!-- these are the games-->
       <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
       <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
       <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
@@ -241,35 +242,18 @@
    <div class="game-item"><img src="images/icons/hcr.png"      alt="hill climb racing endless"    onclick="openFullscreenGame('games/hcr.html')"></div>
    <div class="game-item"><img src="images/icons/tanuki.jpg"      alt="tanuki sunset car action sport endless"    onclick="openFullscreenGame('games/tanuki.html')"></div>
    <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods horror"    onclick="openFullscreenGame('games/woods.html')"></div>
-  
-                      <!-- so on -->   
     </div>
   </div>
 
   <script>
-    
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
-      particles: {
-        number: { value: 80 },
-        color: { value: "#ffffff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.5 },
-        size: { value: { min: 1, max: 3 } },
-        move: { enable: true, speed: 1, direction: "none", random: false, straight: false, outModes: { default: "out" } }
-      },
-      interactivity: {
-        events: {
-          onHover: { enable: false, mode: [] }, 
-          onClick: { enable: true, mode: "push" }
-        },
-        modes: { push: { quantity: 4 } }
-      },
+      particles: { number: { value: 80 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: { min: 1, max: 3 } }, move: { enable: true, speed: 1, outModes: { default: "out" } } },
+      interactivity: { events: { onClick: { enable: true, mode: "push" } }, modes: { push: { quantity: 4 } } },
       detectRetina: true
     });
 
-   
     function searchGames() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       document.querySelectorAll(".game-item").forEach(item => {
@@ -278,7 +262,7 @@
       });
     }
     function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
-    function openFullscreenGame(path) { location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
+    function openFullscreenGame(path) { window.location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
   </script>
 </body>
 </html>
