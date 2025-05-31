@@ -47,7 +47,7 @@
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pico – Information</title>
+  <title>Pico - Velora</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
@@ -212,7 +212,7 @@
       z-index: 1;
     }
 
-    /* Pico content styling */
+
     .main h1 {
       font-size: 2rem;
       margin-bottom: 16px;
@@ -251,12 +251,11 @@
   </style>
 </head>
 <body>
-  <!-- Particle background -->
+
   <div id="tsparticles"></div>
 
-  <!-- Topbar (identical to Velora) -->
   <div class="topbar">
-    <!-- Logo is still Velora (but you could swap to velora.webp if you'd like) -->
+
     <img src="images/icons/velora.png" alt="Velora Logo" onclick="window.location.href='index.html'">
     <div class="search-container">
       <input type="text" placeholder="Search..." disabled>
@@ -264,7 +263,6 @@
     </div>
   </div>
 
-  <!-- Sidebar (identical links as Velora) -->
   <div class="sidebar">
     <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
     <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
@@ -275,16 +273,14 @@
     <a href="#" onclick="filterGames('car')" title="Car">🚗 - Car</a>
   </div>
 
-  <!-- Main content (Pico description + logos) -->
+ 
   <div class="main">
-    <h1>About Pico</h1>
+    <h1>🔥 Pico – Your Pixel Pal!</h1>
     <p>
-      Pico is a highly streamlined fantasy‐console environment designed for creating tiny, self‐contained retro games. 
-      It features a fixed 128×128 display, a 4‐color palette, and a simple Lua‐based code API. Pico’s goal is to encourage 
-      creativity through tight technical constraints: developers write code, draw sprites, compose music, and design levels—all 
-      within Pico’s 4k cartridge size limit. Many users appreciate its nostalgic charm, the rapid edit–run–debug cycle, and the 
-      ease with which prototypes can be shared as single files. Whether you’re a hobbyist pixel‐artist or a seasoned coder 
-      looking to experiment with minimalism, Pico provides a fun sandbox for building bite‐sized games.
+     Pico is the energetic, fearless mascot of Velora,
+      always ready to dive into action and lead you to the best games online! With his pixel shades and nonstop attitude, 
+      Pico represents everything we love about gaming: fun, freedom, and a little bit of chaos. Whether you’re exploring new 
+      titles or grinding your favorites, Pico’s got your back.
     </p>
 
     <div class="logo-section">
@@ -302,7 +298,6 @@
     </div>
   </div>
 
-  <!-- tsparticles initialization (identical to Velora) -->
   <script>
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
@@ -321,14 +316,10 @@
       },
       detectRetina: true
     });
-
-    /* The following search/filter functions are still defined, 
-       but since there is no .game-item grid, they will have no effect. */
     function filterGames(term) {
       const inputEl = document.querySelector(".search-container input");
       inputEl.value = term;
-      // searchGames() doesn’t exist here (no grid), so nothing happens
-    }
+    }   // theres no point in having this function, but i might have this in the future.
   </script>
 </body>
 </html>
