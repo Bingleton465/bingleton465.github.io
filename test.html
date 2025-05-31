@@ -223,6 +223,7 @@
   </div>
 
   <div class="main">
+     <div id="searchResultsMessage" style="display:none; margin-bottom:18px; font-size:1.2em; color:#fff;"></div>
     <div class="game-grid" id="gameGrid">
          <!-- these are the games-->
       <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
@@ -297,13 +298,21 @@
       detectRetina: true
     });
 
-    function searchGames() {
-      const input = document.getElementById("searchInput").value.toLowerCase();
-      document.querySelectorAll(".game-item").forEach(item => {
-        const alt = item.querySelector("img").alt.toLowerCase();
-        item.style.display = alt.includes(input) ? "block" : "none";
-      });
-    }
+  function searchGames() {
+  const input = document.getElementById("searchInput").value.trim().toLowerCase();
+  const messageDiv = document.getElementById("searchResultsMessage");
+  if (input) {
+    messageDiv.textContent = `Search results for '${input}'`;
+    messageDiv.style.display = "block";
+  } else {
+    messageDiv.textContent = "";
+    messageDiv.style.display = "none";
+  }
+  document.querySelectorAll(".game-item").forEach(item => {
+    const alt = item.querySelector("img").alt.toLowerCase();
+    item.style.display = alt.includes(input) ? "block" : "none";
+  });
+}
     function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
     function openFullscreenGame(path) { window.location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
   </script>
