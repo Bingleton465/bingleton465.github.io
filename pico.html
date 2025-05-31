@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
+      }
+
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pico – Information</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+  <style>
+    :root {
+      --bg-gradient-start: #14141f;
+      --bg-gradient-end: #1f1f2f;
+      --accent-color: #4a90e2;
+      --accent-glow: rgba(74, 144, 226, 0.6);
+      --text-color: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(20, 20, 30, 0.75);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --topbar-height: 64px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    #tsparticles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .topbar img {
+      height: 70px;
+      position: absolute;
+      left: 54px;
+      transition: transform var(--transition-speed);
+      cursor: pointer;
+    }
+    .topbar img:hover {
+      transform: rotate(-15deg) scale(1.05);
+    }
+    .search-container {
+      flex: none;
+      margin: 0 auto;
+      width: 360px;
+      display: flex;
+      align-items: center;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      outline: none;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .search-container input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.03);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      background: var(--accent-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .search-container button:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: var(--topbar-height);
+      left: 0;
+      width: var(--sidebar-width);
+      bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      z-index: 9;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .sidebar a {
+      position: relative;
+      padding: 10px 16px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: color var(--transition-speed);
+    }
+    .sidebar a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+    .sidebar a:hover::before {
+      animation: shine 1s forwards;
+    }
+    .sidebar a:hover {
+      background: var(--accent-color);
+      color: #fff;
+      transform: translateX(4px);
+    }
+
+    .main {
+      position: absolute;
+      top: var(--topbar-height);
+      left: var(--sidebar-width);
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 1;
+    }
+
+    /* Pico content styling */
+    .main h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .main p {
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .logo-section {
+      margin-bottom: 32px;
+    }
+    .logo-section img {
+      max-width: 200px;
+      display: block;
+      margin-top: 8px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+        padding: 8px;
+      }
+      .sidebar a {
+        font-size: 12px;
+        padding: 8px;
+      }
+      .topbar {
+        padding: 0 16px;
+      }
+      .search-container input {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Particle background -->
+  <div id="tsparticles"></div>
+
+  <!-- Topbar (identical to Velora) -->
+  <div class="topbar">
+    <!-- Logo is still Velora (but you could swap to velora.webp if you'd like) -->
+    <img src="images/icons/velora.png" alt="Velora Logo" onclick="window.location.href='index.html'">
+    <div class="search-container">
+      <input type="text" placeholder="Search..." disabled>
+      <button disabled>Go</button>
+    </div>
+  </div>
+
+  <!-- Sidebar (identical links as Velora) -->
+  <div class="sidebar">
+    <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
+    <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
+    <a href="#" onclick="filterGames('shooter')" title="Shooters">🔫 - Shooters</a>
+    <a href="#" onclick="filterGames('sports')" title="Sports">🏈 - Sports</a>
+    <a href="#" onclick="filterGames('puzzle')" title="Puzzle">🧩 - Puzzle</a>
+    <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
+    <a href="#" onclick="filterGames('car')" title="Car">🚗 - Car</a>
+  </div>
+
+  <!-- Main content (Pico description + logos) -->
+  <div class="main">
+    <h1>About Pico</h1>
+    <p>
+      Pico is a highly streamlined fantasy‐console environment designed for creating tiny, self‐contained retro games. 
+      It features a fixed 128×128 display, a 4‐color palette, and a simple Lua‐based code API. Pico’s goal is to encourage 
+      creativity through tight technical constraints: developers write code, draw sprites, compose music, and design levels—all 
+      within Pico’s 4k cartridge size limit. Many users appreciate its nostalgic charm, the rapid edit–run–debug cycle, and the 
+      ease with which prototypes can be shared as single files. Whether you’re a hobbyist pixel‐artist or a seasoned coder 
+      looking to experiment with minimalism, Pico provides a fun sandbox for building bite‐sized games.
+    </p>
+
+    <div class="logo-section">
+      <div>
+        <strong>Original logo:</strong>
+      </div>
+      <img src="images/icons/oglogo.png" alt="Pico Original Logo">
+    </div>
+
+    <div class="logo-section">
+      <div>
+        <strong>Current logo:</strong>
+      </div>
+      <img src="images/icons/app.png" alt="Pico Current Logo">
+    </div>
+  </div>
+
+  <!-- tsparticles initialization (identical to Velora) -->
+  <script>
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onClick: { enable: true, mode: "push" } },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
+    });
+
+    /* The following search/filter functions are still defined, 
+       but since there is no .game-item grid, they will have no effect. */
+    function filterGames(term) {
+      const inputEl = document.querySelector(".search-container input");
+      inputEl.value = term;
+      // searchGames() doesn’t exist here (no grid), so nothing happens
+    }
+  </script>
+</body>
+</html>
