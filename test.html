@@ -374,7 +374,7 @@
   </div>
 
   <script>
-    // Initialize tsParticles background
+
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -393,7 +393,7 @@
       detectRetina: true
     });
 
-    // Utility to get URL parameter
+
     function getParameterByName(name) {
       const url = window.location.href;
       name = name.replace(/[\[\]]/g, "\\$&");
@@ -403,7 +403,7 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
-    // ── Metadata mapping copied from g.html ──
+    //  metadata mapping copied from g.html 
     const GAME_METADATA = {
       "games/1v1.html": {
         icon: "images/icons/1v1.png",
@@ -647,7 +647,6 @@
       }
     };
 
-    // ── LocalStorage favorites logic ──
     const FAVORITES_KEY = 'veloraFavorites';
     function getFavorites() {
       return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -703,7 +702,7 @@
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
 
-    // ── pickRandom now chooses from the metadata keys ──
+
     function pickRandom() {
       const keys = Object.keys(GAME_METADATA);
       if (keys.length === 0) return;
@@ -736,28 +735,24 @@
     document.addEventListener('DOMContentLoaded', () => {
       const gamePath = getParameterByName('game');
 
-      // If a game param exists, load it into the iframe
       if (gamePath) {
         document.getElementById('gameIframe').src = gamePath;
 
-        // Set page title to "Game Title - Velora"
+
         const meta = GAME_METADATA[gamePath];
         if (meta && meta.title) {
           document.title = `${meta.title} - Velora`;
         }
       }
 
-      // Heart button: toggle favorite
       document.getElementById('iframeHeart').addEventListener('click', () => {
         if (!gamePath) return;
         toggleFavorite(gamePath);
       });
 
-      // Initial render of favorites bar and heart state
       renderFavoritesBar();
       updateIframeHeart();
 
-      // Fullscreen button
       document.getElementById('fullscreenBtn').addEventListener('click', () => {
         const ifr = document.getElementById('gameIframe');
         if (ifr.requestFullscreen) {
@@ -769,7 +764,6 @@
         }
       });
 
-      // Random button now works using pickRandom()
       document.getElementById('randomBtn').addEventListener('click', pickRandom);
     });
   </script>
