@@ -44,6 +44,7 @@
       };
     })();
   </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora - Games</title>
@@ -84,14 +85,9 @@
       pointer-events: none;
     }
 
-   
     @keyframes shine {
-      0% {
-        background-position: -200%;
-      }
-      100% {
-        background-position: 200%;
-      }
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
     }
 
     .topbar {
@@ -292,7 +288,6 @@
       box-shadow: 0 0 8px var(--accent-glow);
     }
 
-
     .iframe-container {
       width: 100%;
       height: calc(100% - 120px);
@@ -368,7 +363,6 @@
       </div>
     </div>
 
-
     <div class="iframe-controls">
       <button id="fullscreenBtn">⛶ Fullscreen</button>
       <div id="iframeHeart" class="heart">♡</div>
@@ -399,14 +393,259 @@
       detectRetina: true
     });
 
+
     function getParameterByName(name) {
       const url = window.location.href;
-      name = name.replace(/[\\[\\]]/g, "\\$&");
+      name = name.replace(/[\[\]]/g, "\\$&");
       const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);
       if (!results || !results[2]) return null;
-      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+
+    const GAME_METADATA = {
+      "games/1v1.html": {
+        icon: "images/icons/1v1.png",
+        title: "1v1.lol"
+      },
+      "games/rl.html": {
+        icon: "images/icons/rl.webp",
+        title: "Rocket League"
+      },
+      "games/er1.html": {
+        icon: "images/icons/er1.webp",
+        title: "Escape Road 1"
+      },
+      "games/clescaperoad2.html": {
+        icon: "images/icons/er2.jpg",
+        title: "Escape Road 2"
+      },
+      "games/kong.html": {
+        icon: "images/icons/kong.png",
+        title: "Flying Kong"
+      },
+      "games/bitlife.html": {
+        icon: "images/icons/bitlife.png",
+        title: "BitLife Simulator"
+      },
+      "games/geometry.html": {
+        icon: "images/icons/geometry.svg.png",
+        title: "Geometry Dash"
+      },
+      "games/Shadow_Client.html": {
+        icon: "images/icons/craft.png",
+        title: "Minecraft EagleCraft"
+      },
+      "games/skibidi.html": {
+        icon: "images/icons/skibidi.avif",
+        title: "Skibidi Backrooms"
+      },
+      "games/clsandboxels.html": {
+        icon: "images/icons/boxels.webp",
+        title: "Boxels"
+      },
+      "games/slope.html": {
+        icon: "images/icons/slope.png",
+        title: "Slope"
+      },
+      "games/happy.html": {
+        icon: "images/icons/happy.jpeg",
+        title: "Happy Wheels"
+      },
+      "games/tiny.html": {
+        icon: "images/icons/tiny.avif",
+        title: "Tiny Fishing"
+      },
+      "games/rhit.html": {
+        icon: "images/icons/rhit.avif",
+        title: "Ragdoll Hit"
+      },
+      "games/ra.html": {
+        icon: "images/icons/ra.webp",
+        title: "Ragdoll Archers"
+      },
+      "games/bowmasters.html": {
+        icon: "images/icons/bowmasters.png",
+        title: "Bowmasters"
+      },
+      "games/bl.html": {
+        icon: "images/icons/bl.png",
+        title: "Basketball Legends"
+      },
+      "games/agar.html": {
+        icon: "images/icons/agar.jpg",
+        title: "Agar.io Lite"
+      },
+      "games/rope.html": {
+        icon: "images/icons/police.avif",
+        title: "Amazing Strange Rope Police"
+      },
+      "games/baldi.html": {
+        icon: "images/icons/baldi.jpg",
+        title: "Baldi’s Basics"
+      },
+      "games/drift.html": {
+        icon: "images/icons/drift.png",
+        title: "Drift Hunters"
+      },
+      "games/granny1.html": {
+        icon: "images/icons/granny1.jpg",
+        title: "Granny 1"
+      },
+      "games/granny2.html": {
+        icon: "images/icons/granny2.webp",
+        title: "Granny 2"
+      },
+      "games/fnf.html": {
+        icon: "images/icons/fnf.png",
+        title: "Friday Night Funkin'"
+      },
+      "games/mad.html": {
+        icon: "images/icons/drive-mad.png",
+        title: "Drive Mad"
+      },
+      "games/snowrider.html": {
+        icon: "images/icons/snow.png",
+        title: "Snow Rider 3D"
+      },
+      "games/revert.html": {
+        icon: "images/icons/revert.png",
+        title: "Sonic Revert"
+      },
+      "games/driftboss.html": {
+        icon: "images/icons/driftboss.avif",
+        title: "Drift Boss"
+      },
+      "games/blockblast.html": {
+        icon: "images/icons/blockblast.png",
+        title: "Block Blast"
+      },
+      "games/elasticface.html": {
+        icon: "images/icons/elasticface.webp",
+        title: "Elastic Face"
+      },
+      "games/shrek.html": {
+        icon: "images/icons/shrek.jpg",
+        title: "Five Nights at Shrek’s Hotel"
+      },
+      "games/cluster.html": {
+        icon: "images/icons/cluster.png",
+        title: "Cluster Rush"
+      },
+      "games/crossyroad.html": {
+        icon: "images/icons/crossy.avif",
+        title: "Crossy Road"
+      },
+      "games/10.html": {
+        icon: "images/icons/10.png",
+        title: "10 Minutes Till Dawn"
+      },
+      "games/infinitecraft.html": {
+        icon: "images/icons/infinitecraft.webp",
+        title: "Infinite Craft"
+      },
+      "games/badparent.html": {
+        icon: "images/icons/badparent.avif",
+        title: "Bad Parenting"
+      },
+      "games/guess.html": {
+        icon: "images/icons/guess.png",
+        title: "Guess Their Answer"
+      },
+      "games/bacon.html": {
+        icon: "images/icons/bacon.png",
+        title: "Bacon May Die"
+      },
+      "games/bottle.html": {
+        icon: "images/icons/bottle.png",
+        title: "Bottle Flip 3D"
+      },
+      "games/cup.html": {
+        icon: "images/icons/cup.png",
+        title: "A Small World Cup"
+      },
+      "games/cattle.html": {
+        icon: "images/icons/cattle.jpg",
+        title: "Crazy Cattle 3D"
+      },
+      "games/flood.html": {
+        icon: "images/icons/flood.webp",
+        title: "Flood Runner 4"
+      },
+      "games/post.html": {
+        icon: "images/icons/post.png",
+        title: "Blockpost"
+      },
+      "games/suika.html": {
+        icon: "images/icons/suika.avif",
+        title: "Suika Watermelon"
+      },
+      "games/wars.html": {
+        icon: "images/icons/wars.webp",
+        title: "Lego Star Wars"
+      },
+      "games/cn.html": {
+        icon: "images/icons/cn.webp",
+        title: "Cartoon Network Tennis"
+      },
+      "dta6/index.html": {
+        icon: "images/icons/dta6.avif",
+        title: "Dude Theft Wars (DTA6)"
+      },
+      "games/stickrpg.html": {
+        icon: "images/icons/stickrpg.webp",
+        title: "Stickman RPG"
+      },
+      "games/plant.html": {
+        icon: "images/icons/plant.jpg",
+        title: "Plants vs Zombies"
+      },
+      "games/ovo1.html": {
+        icon: "images/icons/ovo1.jpg",
+        title: "OVO 1"
+      },
+      "games/ovo2.html": {
+        icon: "images/icons/ovo2.jpg",
+        title: "OVO 2"
+      },
+      "games/ovo3.html": {
+        icon: "images/icons/ovo3.png",
+        title: "OVO 3"
+      },
+      "games/ahole.html": {
+        icon: "images/icons/ahole.jpg",
+        title: "Attack Hole"
+      },
+      "games/bison.html": {
+        icon: "images/icons/bison.jpg",
+        title: "Burrito Bison"
+      },
+      "games/cc.html": {
+        icon: "images/icons/cc.png",
+        title: "Capybara Clicker"
+      },
+      "games/folder.html": {
+        icon: "images/icons/folder.webp",
+        title: "Folder Dungeon"
+      },
+      "games/evilglitch.html": {
+        icon: "images/icons/evilglitch.jpg",
+        title: "Evil Glitch"
+      },
+      "games/hcr.html": {
+        icon: "images/icons/hcr.png",
+        title: "Hill Climb Racing"
+      },
+      "games/tanuki.html": {
+        icon: "images/icons/tanuki.jpg",
+        title: "Tanuki Sunset"
+      },
+      "games/woods.html": {
+        icon: "images/icons/woods.webp",
+        title: "Slide in the Woods"
+      }
+    };
+
 
     const FAVORITES_KEY = 'veloraFavorites';
     function getFavorites() {
@@ -418,7 +657,8 @@
     function isFavorited(gamePath) {
       return getFavorites().includes(gamePath);
     }
-    function toggleFavorite(gamePath, iconSrc = null) {
+
+    function toggleFavorite(gamePath) {
       let favs = getFavorites();
       if (favs.includes(gamePath)) {
         favs = favs.filter(g => g !== gamePath);
@@ -426,8 +666,8 @@
         favs.push(gamePath);
       }
       saveFavorites(favs);
-      updateIframeHeart();
       renderFavoritesBar();
+      updateIframeHeart();
     }
 
     function renderFavoritesBar() {
@@ -435,38 +675,32 @@
       container.innerHTML = '';
       const favs = getFavorites();
       favs.forEach(gamePath => {
-
-        const tile = Array.from(document.querySelectorAll('.game-item'))
-                          .find(el => el.getAttribute('data-game') === gamePath);
-        if (tile) {
-          const iconURL = tile.getAttribute('data-icon');
-          const img = document.createElement('img');
-          img.src = iconURL;
-          img.title = tile.getAttribute('data-title');
-          img.onclick = () => {
-            window.location.href = `iframe.html?game=${encodeURIComponent(gamePath)}`;
-          };
-          container.appendChild(img);
-        }
+        const meta = GAME_METADATA[gamePath];
+        if (!meta) return; 
+        const img = document.createElement('img');
+        img.src = meta.icon;
+        img.title = meta.title;
+        img.onclick = () => {
+          window.location.href = `iframe.html?game=${encodeURIComponent(gamePath)}`;
+        };
+        container.appendChild(img);
       });
     }
 
     function updateIframeHeart() {
       const hf = document.getElementById('iframeHeart');
       const gamePath = getParameterByName('game');
-      if (!gamePath) { hf.style.display = 'none'; return; }
-      hf.style.display = 'inline-block';
-      if (isFavorited(gamePath)) {
-        hf.textContent = '❤';
-      } else {
-        hf.textContent = '♡';
+      if (!gamePath) {
+        hf.style.display = 'none';
+        return;
       }
+      hf.style.display = 'inline-block';
+      hf.textContent = isFavorited(gamePath) ? '❤' : '♡';
     }
 
     function openFullscreenGame(path) {
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
-
 
     function pickRandom() {
       const allTiles = Array.from(document.querySelectorAll('.game-item'));
@@ -500,11 +734,27 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-
       const gamePath = getParameterByName('game');
+
       if (gamePath) {
         document.getElementById('gameIframe').src = gamePath;
+
+
+        const meta = GAME_METADATA[gamePath];
+        if (meta && meta.title) {
+          document.title = `${meta.title} - Velora`;
+        }
       }
+
+
+      document.getElementById('iframeHeart').addEventListener('click', () => {
+        if (!gamePath) return;
+        toggleFavorite(gamePath);
+      });
+
+
+      renderFavoritesBar();
+      updateIframeHeart();
 
 
       document.getElementById('fullscreenBtn').addEventListener('click', () => {
@@ -518,14 +768,7 @@
         }
       });
 
- 
-      document.getElementById('iframeHeart').addEventListener('click', () => {
-        if (!gamePath) return;
-        toggleFavorite(gamePath);
-      });
 
-      updateIframeHeart();
-      renderFavoritesBar();
       document.getElementById('randomBtn').addEventListener('click', pickRandom);
     });
   </script>
