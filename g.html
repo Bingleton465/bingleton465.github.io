@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script> 
+  <script>
     (function () {
       const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
       const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
@@ -54,9 +54,10 @@
       --bg-gradient-start: #14141f;
       --bg-gradient-end: #1f1f2f;
       --accent-color: #4a90e2;
+      --accent-glow: rgba(74, 144, 226, 0.6);
       --text-color: #e0e0e0;
       --card-bg: rgba(255, 255, 255, 0.05);
-      --card-hover: rgba(255, 255, 255, 0.1);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(20, 20, 30, 0.75);
       --border-radius: 12px;
       --transition-speed: 0.3s;
@@ -64,7 +65,11 @@
       --topbar-height: 64px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-color);
@@ -80,66 +85,87 @@
       z-index: 0;
       pointer-events: none;
     }
-   .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--topbar-height);
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-  z-index: 10;
-}
 
+
+    @keyframes shine {
+      0% {
+        background-position: -200%;
+      }
+      100% {
+        background-position: 200%;
+      }
+    }
+
+   
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
     .topbar img {
-  height: 70px;
-  position: absolute;
-  left: 54px;
-}
-.search-container {
-  flex: none;
-  margin: 0 auto;
-  width: 360px;
-  display: flex;
-  align-items: center;
-}
+      height: 70px;
+      position: absolute;
+      left: 54px;
+      transition: transform var(--transition-speed);
+    }
+    .topbar img:hover {
+      transform: rotate(-15deg) scale(1.05);
+    }
+    .search-container {
+      flex: none;
+      margin: 0 auto;
+      width: 360px;
+      display: flex;
+      align-items: center;
+    }
     .search-container input {
-  width: 100%;
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-color);
-  outline: none;
-  transition: transform var(--transition-speed), background var(--transition-speed);
-}
-
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      outline: none;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
     .search-container input:focus {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.2);
       transform: scale(1.03);
+      box-shadow: 0 0 8px var(--accent-glow);
     }
     .search-container button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 0 var(--border-radius) var(--border-radius) 0;
-  background: var(--accent-color);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform var(--transition-speed), background var(--transition-speed);
-}
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      background: var(--accent-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
     .search-container button:hover {
       background: #6cb3f0;
       transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
     }
+
+
     .sidebar {
       position: fixed;
-      top: var(--topbar-height); left: 0;
-      width: var(--sidebar-width); bottom: 0;
+      top: var(--topbar-height);
+      left: 0;
+      width: var(--sidebar-width);
+      bottom: 0;
       background: var(--glass-bg);
       backdrop-filter: blur(8px);
       padding: 16px;
@@ -148,27 +174,55 @@
       gap: 12px;
       overflow-y: auto;
       z-index: 9;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     }
     .sidebar a {
+      position: relative;
       padding: 10px 16px;
       color: var(--text-color);
       text-decoration: none;
       font-size: 14px;
       border-radius: var(--border-radius);
-      transition: background var(--transition-speed), transform var(--transition-speed);
+      overflow: hidden;
+      transition: color var(--transition-speed);
+    }
+    .sidebar a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+    .sidebar a:hover::before {
+      animation: shine 1s forwards;
     }
     .sidebar a:hover {
       background: var(--accent-color);
       color: #fff;
       transform: translateX(4px);
     }
+
+ 
     .main {
       position: absolute;
-      top: var(--topbar-height); left: var(--sidebar-width);
-      right: 0; bottom: 0;
+      top: var(--topbar-height);
+      left: var(--sidebar-width);
+      right: 0;
+      bottom: 0;
       padding: 24px;
       overflow-y: auto;
       z-index: 1;
+    }
+    #searchResultsMessage {
+      display: none;
+      margin-bottom: 18px;
+      font-size: 1.2em;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
     .game-grid {
       display: grid;
@@ -176,29 +230,76 @@
       gap: 20px;
     }
     .game-item {
+      position: relative;
       background: var(--card-bg);
       border: 2px solid transparent;
       border-radius: var(--border-radius);
       overflow: hidden;
       cursor: pointer;
-      transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed), background var(--transition-speed);
     }
+
     .game-item:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+      transform: translateY(-8px) scale(1.05);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.5),
+        0 0 12px var(--accent-glow),
+        0 0 24px var(--accent-glow);
       border-color: var(--accent-color);
+      background: var(--card-hover-bg);
     }
     .game-item img {
-      width: 100%; height: auto; display: block;
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(0.95);
+      transition: filter var(--transition-speed);
+    }
+    .game-item img:hover {
+      filter: brightness(1);
+    }
+    /* Title overlay on hover */
+    .game-item::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: transform var(--transition-speed), opacity var(--transition-speed);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .game-item:hover::after {
+      opacity: 1;
+      transform: translateY(0);
     }
     .game-item.hidden {
       display: none !important;
     }
+
     @media (max-width: 768px) {
-      .sidebar { width: 60px; padding: 8px; }
-      .sidebar a { font-size: 12px; padding: 8px; }
-      .topbar { padding: 0 16px; }
-      .search-container input { width: 200px; }
+      .sidebar {
+        width: 60px;
+        padding: 8px;
+      }
+      .sidebar a {
+        font-size: 12px;
+        padding: 8px;
+      }
+      .topbar {
+        padding: 0 16px;
+      }
+      .search-container input {
+        width: 200px;
+      }
     }
   </style>
 </head>
@@ -224,69 +325,69 @@
   </div>
 
   <div class="main">
-     <div id="searchResultsMessage" style="display:none; margin-bottom:18px; font-size:1.2em; color:#fff;"></div>
+    <div id="searchResultsMessage"></div>
     <div class="game-grid" id="gameGrid">
-         <!-- these are the games-->
-      <div class="game-item"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" title="1v1.lol" onclick="openFullscreenGame('games/1v1.html')"></div>
-      <div class="game-item"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
-      <div class="game-item"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
-      <div class="game-item"><img src="images/icons/er2.jpg" alt="Escape Road 2 action car endless" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
-      <div class="game-item"><img src="images/icons/kong.png" alt="Flying Kong arcade" onclick="openFullscreenGame('games/kong.html')"></div>
-      <div class="game-item"><img src="images/icons/bitlife.png" alt="BitLife Simulator" onclick="openFullscreenGame('games/bitlife.html')"></div>
-      <div class="game-item"><img src="images/icons/geometry.svg.png" alt="Geometry Dash action" onclick="openFullscreenGame('games/geometry.html')"></div>
-      <div class="game-item"><img src="images/icons/craft.png" alt="Minecraft eaglercraft action simulator" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
-      <div class="game-item"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms horror" onclick="openFullscreenGame('games/skibidi.html')"></div>
-      <div class="game-item"><img src="images/icons/boxels.webp" alt="Sandboxels simulator" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
-      <div class="game-item"><img src="images/icons/slope.png" alt="Slope arcade" onclick="openFullscreenGame('games/slope.html')"></div>
-      <div class="game-item"><img src="images/icons/happy.jpeg" alt="Happy Wheels action levels" onclick="openFullscreenGame('games/happy.html')"></div>
-      <div class="game-item"><img src="images/icons/tiny.avif" alt="Tiny Fishing simulator" onclick="openFullscreenGame('games/tiny.html')"></div>
-      <div class="game-item"><img src="images/icons/rhit.avif" alt="Ragdoll Hit arcade action" onclick="openFullscreenGame('games/rhit.html')"></div>
-      <div class="game-item"><img src="images/icons/ra.webp" alt="Ragdoll Archers arcade action" onclick="openFullscreenGame('games/ra.html')"></div>
-      <div class="game-item"><img src="images/icons/bowmasters.png" alt="Bowmasters shooter arcade" onclick="openFullscreenGame('games/bowmasters.html')"></div>
-      <div class="game-item"><img src="images/icons/bl.png" alt="Basketball Legends sports" onclick="openFullscreenGame('games/bl.html')"></div>
-      <div class="game-item"><img src="images/icons/agar.jpg" alt="Agar.io Lite arcade endless" onclick="openFullscreenGame('games/agar.html')"></div>
-      <div class="game-item"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police action simulator" onclick="openFullscreenGame('games/rope.html')"></div>
-      <div class="game-item"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics horror" onclick="openFullscreenGame('games/baldi.html')"></div>
-          <div class="game-item"><img src="images/icons/drift.png"    alt="Drift Hunters car"            onclick="openFullscreenGame('games/drift.html')"></div>
-    <div class="game-item"><img src="images/icons/granny1.jpg" alt="Granny 1 horror"                 onclick="openFullscreenGame('games/granny1.html')"></div>
-    <div class="game-item"><img src="images/icons/granny2.webp" alt="Granny 2 horror"                onclick="openFullscreenGame('games/granny2.html')"></div>
-    <div class="game-item"><img src="images/icons/fnf.png"      alt="Friday Night Funkin' levels action"     onclick="openFullscreenGame('games/fnf.html')"></div>
-    <div class="game-item"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car levels"               onclick="openFullscreenGame('games/mad.html')"></div>
-    <div class="game-item"><img src="images/icons/snow.png"     alt="Snow Rider 3D endless"            onclick="openFullscreenGame('games/snowrider.html')"></div>
-    <div class="game-item"><img src="images/icons/revert.png"   alt="Sonic Revert endless simuator"             onclick="openFullscreenGame('games/revert.html')"></div>
-    <div class="game-item"><img src="images/icons/driftboss.avif" alt="Drift Boss endless"             onclick="openFullscreenGame('games/driftboss.html')"></div>
-    <div class="game-item"><img src="images/icons/blockblast.png" alt="Block Blast endless puzzle"            onclick="openFullscreenGame('games/blockblast.html')"></div>
-    <div class="game-item"><img src="images/icons/elasticface.webp" alt="Elastic Face simulator"           onclick="openFullscreenGame('games/elasticface.html')"></div>
-    <div class="game-item"><img src="images/icons/shrek.jpg"    alt="Five Nights at Shrek’s Hotel horror" onclick="openFullscreenGame('games/shrek.html')"></div>
-    <div class="game-item"><img src="images/icons/cluster.png"  alt="Cluster Rush levels"             onclick="openFullscreenGame('games/cluster.html')"></div>
-    <div class="game-item"><img src="images/icons/crossy.avif" alt="Crossy Road endless"              onclick="openFullscreenGame('games/crossyroad.html')"></div>
-    <div class="game-item"><img src="images/icons/10.png"       alt="10 Minutes Till Dawn action"     onclick="openFullscreenGame('games/10.html')"></div>
-    <div class="game-item"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft endless"      onclick="openFullscreenGame('games/infinitecraft.html')"></div>
-    <div class="game-item"><img src="images/icons/badparent.avif" alt="Bad Parenting horror"            onclick="openFullscreenGame('games/badparent.html')"></div>
-    <div class="game-item"><img src="images/icons/guess.png"    alt="Guess Their Answer levels"       onclick="openFullscreenGame('games/guess.html')"></div>
-    <div class="game-item"><img src="images/icons/bacon.png"    alt="Bacon May Die endless"            onclick="openFullscreenGame('games/bacon.html')"></div>
-    <div class="game-item"><img src="images/icons/bottle.png"   alt="Bottle Flip 3D levels"           onclick="openFullscreenGame('games/bottle.html')"></div>
-    <div class="game-item"><img src="images/icons/cup.png"      alt="A Small World Cup levels endless sports"        onclick="openFullscreenGame('games/cup.html')"></div>
-    <div class="game-item"><img src="images/icons/cattle.jpg"   alt="Crazy Cattle 3D action sports"          onclick="openFullscreenGame('games/cattle.html')"></div>
-    <div class="game-item"><img src="images/icons/flood.webp"   alt="Flood Runner 4 action"          onclick="openFullscreenGame('games/flood.html')"></div>
-    <div class="game-item"><img src="images/icons/post.png"     alt="blockpost action shooter"                 onclick="openFullscreenGame('games/post.html')"></div>
-    <div class="game-item"><img src="images/icons/suika.avif"   alt="suika watermelon game endless"     onclick="openFullscreenGame('games/suika.html')"></div>
-    <div class="game-item"><img src="images/icons/wars.webp"    alt="lego star wars action"            onclick="openFullscreenGame('games/wars.html')"></div>
-    <div class="game-item"><img src="images/icons/cn.webp"      alt="cartoon network tennis sports endless"    onclick="openFullscreenGame('games/cn.html')"></div>
-    <div class="game-item"><img src="images/icons/dta6.avif"      alt="Dude theft wars dta6 gta6 car action"    onclick="openFullscreenGame('dta6/index.html')"></div>
-    <div class="game-item"><img src="images/icons/stickrpg.webp"      alt="stickman rpg simulator"    onclick="openFullscreenGame('games/stickrpg.html')"></div>
-    <div class="game-item"><img src="images/icons/plant.jpg"      alt="plants vs zombies levels"    onclick="openFullscreenGame('games/plant.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo1.jpg"      alt="OVO 1 action levels"    onclick="openFullscreenGame('games/ovo1.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo2.jpg"      alt="OVO 2 action levels"    onclick="openFullscreenGame('games/ovo2.html')"></div>
-   <div class="game-item"><img src="images/icons/ovo3.png"      alt="OVO 3 action levels"    onclick="openFullscreenGame('games/ovo3.html')"></div>
-   <div class="game-item"><img src="images/icons/ahole.jpg"      alt="attack hole levels"    onclick="openFullscreenGame('games/ahole.html')"></div>
-   <div class="game-item"><img src="images/icons/bison.jpg"      alt="burrito bison endless"    onclick="openFullscreenGame('games/bison.html')"></div>
-   <div class="game-item"><img src="images/icons/cc.png"      alt="capybara clicker endless"    onclick="openFullscreenGame('games/cc.html')"></div>
-   <div class="game-item"><img src="images/icons/folder.webp"      alt="folder dungeon puzzle"    onclick="openFullscreenGame('games/folder.html')"></div>
-   <div class="game-item"><img src="images/icons/evilglitch.jpg"      alt="evil glitch endless"    onclick="openFullscreenGame('games/evilglitch.html')"></div>
-   <div class="game-item"><img src="images/icons/hcr.png"      alt="hill climb racing endless"    onclick="openFullscreenGame('games/hcr.html')"></div>
-   <div class="game-item"><img src="images/icons/tanuki.jpg"      alt="tanuki sunset car action sport endless"    onclick="openFullscreenGame('games/tanuki.html')"></div>
-   <div class="game-item"><img src="images/icons/woods.webp"      alt="slide in the woods horror"    onclick="openFullscreenGame('games/woods.html')"></div>
+      <!-- these are the games -->
+      <div class="game-item" data-title="1v1.lol"><img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')"></div>
+      <div class="game-item" data-title="Rocket League"><img src="images/icons/rl.webp" alt="Rocket League sports action" onclick="openFullscreenGame('games/rl.html')"></div>
+      <div class="game-item" data-title="Escape Road 1"><img src="images/icons/er1.webp" alt="Escape Road 1 action car endless" onclick="openFullscreenGame('games/er1.html')"></div>
+      <div class="game-item" data-title="Escape Road 2"><img src="images/icons/er2.jpg" alt="Escape Road 2 action car endless" onclick="openFullscreenGame('games/clescaperoad2.html')"></div>
+      <div class="game-item" data-title="Flying Kong"><img src="images/icons/kong.png" alt="Flying Kong arcade" onclick="openFullscreenGame('games/kong.html')"></div>
+      <div class="game-item" data-title="BitLife Simulator"><img src="images/icons/bitlife.png" alt="BitLife Simulator" onclick="openFullscreenGame('games/bitlife.html')"></div>
+      <div class="game-item" data-title="Geometry Dash"><img src="images/icons/geometry.svg.png" alt="Geometry Dash action" onclick="openFullscreenGame('games/geometry.html')"></div>
+      <div class="game-item" data-title="Minecraft EaglerCraft"><img src="images/icons/craft.png" alt="Minecraft eaglercraft action simulator" onclick="openFullscreenGame('games/Shadow_Client.html')"></div>
+      <div class="game-item" data-title="Skibidi Backrooms"><img src="images/icons/skibidi.avif" alt="Skibidi Backrooms horror" onclick="openFullscreenGame('games/skibidi.html')"></div>
+      <div class="game-item" data-title="SandBoxels"><img src="images/icons/boxels.webp" alt="Sandboxels simulator" onclick="openFullscreenGame('games/clsandboxels.html')"></div>
+      <div class="game-item" data-title="Slope"><img src="images/icons/slope.png" alt="Slope arcade" onclick="openFullscreenGame('games/slope.html')"></div>
+      <div class="game-item" data-title="Happy Wheels"><img src="images/icons/happy.jpeg" alt="Happy Wheels action levels" onclick="openFullscreenGame('games/happy.html')"></div>
+      <div class="game-item" data-title="Tiny Fishing"><img src="images/icons/tiny.avif" alt="Tiny Fishing simulator" onclick="openFullscreenGame('games/tiny.html')"></div>
+      <div class="game-item" data-title="Ragdoll Hit"><img src="images/icons/rhit.avif" alt="Ragdoll Hit arcade action" onclick="openFullscreenGame('games/rhit.html')"></div>
+      <div class="game-item" data-title="Ragdoll Archers"><img src="images/icons/ra.webp" alt="Ragdoll Archers arcade action" onclick="openFullscreenGame('games/ra.html')"></div>
+      <div class="game-item" data-title="Bowmasters"><img src="images/icons/bowmasters.png" alt="Bowmasters shooter arcade" onclick="openFullscreenGame('games/bowmasters.html')"></div>
+      <div class="game-item" data-title="Basketball Legends"><img src="images/icons/bl.png" alt="Basketball Legends sports" onclick="openFullscreenGame('games/bl.html')"></div>
+      <div class="game-item" data-title="Agar.io Lite"><img src="images/icons/agar.jpg" alt="Agar.io Lite arcade endless" onclick="openFullscreenGame('games/agar.html')"></div>
+      <div class="game-item" data-title="Amazing Strange Rope Police"><img src="images/icons/police.avif" alt="Amazing Strange Rope Police action simulator" onclick="openFullscreenGame('games/rope.html')"></div>
+      <div class="game-item" data-title="Baldi’s Basics"><img src="images/icons/baldi.jpg" alt="Baldi’s Basics horror" onclick="openFullscreenGame('games/baldi.html')"></div>
+      <div class="game-item" data-title="Drift Hunters"><img src="images/icons/drift.png" alt="Drift Hunters car" onclick="openFullscreenGame('games/drift.html')"></div>
+      <div class="game-item" data-title="Granny 1"><img src="images/icons/granny1.jpg" alt="Granny 1 horror" onclick="openFullscreenGame('games/granny1.html')"></div>
+      <div class="game-item" data-title="Granny 2"><img src="images/icons/granny2.webp" alt="Granny 2 horror" onclick="openFullscreenGame('games/granny2.html')"></div>
+      <div class="game-item" data-title="Friday Night Funkin'"><img src="images/icons/fnf.png" alt="Friday Night Funkin' levels action" onclick="openFullscreenGame('games/fnf.html')"></div>
+      <div class="game-item" data-title="Drive Mad"><img src="images/icons/drive-mad.png" alt="Drive Mad puzzle car levels" onclick="openFullscreenGame('games/mad.html')"></div>
+      <div class="game-item" data-title="Snow Rider 3D"><img src="images/icons/snow.png" alt="Snow Rider 3D endless" onclick="openFullscreenGame('games/snowrider.html')"></div>
+      <div class="game-item" data-title="Sonic Revert"><img src="images/icons/revert.png" alt="Sonic Revert endless simuator" onclick="openFullscreenGame('games/revert.html')"></div>
+      <div class="game-item" data-title="Drift Boss"><img src="images/icons/driftboss.avif" alt="Drift Boss endless" onclick="openFullscreenGame('games/driftboss.html')"></div>
+      <div class="game-item" data-title="Block Blast"><img src="images/icons/blockblast.png" alt="Block Blast endless puzzle" onclick="openFullscreenGame('games/blockblast.html')"></div>
+      <div class="game-item" data-title="Elastic Face"><img src="images/icons/elasticface.webp" alt="Elastic Face simulator" onclick="openFullscreenGame('games/elasticface.html')"></div>
+      <div class="game-item" data-title="Five Nights at Shrek’s Hotel"><img src="images/icons/shrek.jpg" alt="Five Nights at Shrek’s Hotel horror" onclick="openFullscreenGame('games/shrek.html')"></div>
+      <div class="game-item" data-title="Cluster Rush"><img src="images/icons/cluster.png" alt="Cluster Rush levels" onclick="openFullscreenGame('games/cluster.html')"></div>
+      <div class="game-item" data-title="Crossy Road"><img src="images/icons/crossy.avif" alt="Crossy Road endless" onclick="openFullscreenGame('games/crossyroad.html')"></div>
+      <div class="game-item" data-title="10 Minutes Till Dawn"><img src="images/icons/10.png" alt="10 Minutes Till Dawn action" onclick="openFullscreenGame('games/10.html')"></div>
+      <div class="game-item" data-title="Infinite Craft"><img src="images/icons/infinitecraft.webp" alt="Infinite Craft endless" onclick="openFullscreenGame('games/infinitecraft.html')"></div>
+      <div class="game-item" data-title="Bad Parenting"><img src="images/icons/badparent.avif" alt="Bad Parenting horror" onclick="openFullscreenGame('games/badparent.html')"></div>
+      <div class="game-item" data-title="Guess Their Answer"><img src="images/icons/guess.png" alt="Guess Their Answer levels" onclick="openFullscreenGame('games/guess.html')"></div>
+      <div class="game-item" data-title="Bacon May Die"><img src="images/icons/bacon.png" alt="Bacon May Die endless" onclick="openFullscreenGame('games/bacon.html')"></div>
+      <div class="game-item" data-title="Bottle Flip 3D"><img src="images/icons/bottle.png" alt="Bottle Flip 3D levels" onclick="openFullscreenGame('games/bottle.html')"></div>
+      <div class="game-item" data-title="A Small World Cup"><img src="images/icons/cup.png" alt="A Small World Cup levels endless sports" onclick="openFullscreenGame('games/cup.html')"></div>
+      <div class="game-item" data-title="Crazy Cattle 3D"><img src="images/icons/cattle.jpg" alt="Crazy Cattle 3D action sports" onclick="openFullscreenGame('games/cattle.html')"></div>
+      <div class="game-item" data-title="Flood Runner 4"><img src="images/icons/flood.webp" alt="Flood Runner 4 action" onclick="openFullscreenGame('games/flood.html')"></div>
+      <div class="game-item" data-title="Blockpost"><img src="images/icons/post.png" alt="blockpost action shooter" onclick="openFullscreenGame('games/post.html')"></div>
+      <div class="game-item" data-title="Suika Watermelon"><img src="images/icons/suika.avif" alt="suika watermelon game endless" onclick="openFullscreenGame('games/suika.html')"></div>
+      <div class="game-item" data-title="Lego Star Wars"><img src="images/icons/wars.webp" alt="lego star wars action" onclick="openFullscreenGame('games/wars.html')"></div>
+      <div class="game-item" data-title="Cartoon Network Tennis"><img src="images/icons/cn.webp" alt="cartoon network tennis sports endless" onclick="openFullscreenGame('games/cn.html')"></div>
+      <div class="game-item" data-title="Dude Theft Wars (DTA6)"><img src="images/icons/dta6.avif" alt="Dude theft wars dta6 gta6 car action" onclick="openFullscreenGame('dta6/index.html')"></div>
+      <div class="game-item" data-title="Stickman RPG"><img src="images/icons/stickrpg.webp" alt="stickman rpg simulator" onclick="openFullscreenGame('games/stickrpg.html')"></div>
+      <div class="game-item" data-title="Plants vs Zombies"><img src="images/icons/plant.jpg" alt="plants vs zombies levels" onclick="openFullscreenGame('games/plant.html')"></div>
+      <div class="game-item" data-title="OVO 1"><img src="images/icons/ovo1.jpg" alt="OVO 1 action levels" onclick="openFullscreenGame('games/ovo1.html')"></div>
+      <div class="game-item" data-title="OVO 2"><img src="images/icons/ovo2.jpg" alt="OVO 2 action levels" onclick="openFullscreenGame('games/ovo2.html')"></div>
+      <div class="game-item" data-title="OVO 3"><img src="images/icons/ovo3.png" alt="OVO 3 action levels" onclick="openFullscreenGame('games/ovo3.html')"></div>
+      <div class="game-item" data-title="Attack Hole"><img src="images/icons/ahole.jpg" alt="attack hole levels" onclick="openFullscreenGame('games/ahole.html')"></div>
+      <div class="game-item" data-title="Burrito Bison"><img src="images/icons/bison.jpg" alt="burrito bison endless" onclick="openFullscreenGame('games/bison.html')"></div>
+      <div class="game-item" data-title="Capybara Clicker"><img src="images/icons/cc.png" alt="capybara clicker endless" onclick="openFullscreenGame('games/cc.html')"></div>
+      <div class="game-item" data-title="Folder Dungeon"><img src="images/icons/folder.webp" alt="folder dungeon puzzle" onclick="openFullscreenGame('games/folder.html')"></div>
+      <div class="game-item" data-title="Evil Glitch"><img src="images/icons/evilglitch.jpg" alt="evil glitch endless" onclick="openFullscreenGame('games/evilglitch.html')"></div>
+      <div class="game-item" data-title="Hill Climb Racing"><img src="images/icons/hcr.png" alt="hill climb racing endless" onclick="openFullscreenGame('games/hcr.html')"></div>
+      <div class="game-item" data-title="Tanuki Sunset"><img src="images/icons/tanuki.jpg" alt="tanuki sunset car action sport endless" onclick="openFullscreenGame('games/tanuki.html')"></div>
+      <div class="game-item" data-title="Slide in the Woods"><img src="images/icons/woods.webp" alt="slide in the woods horror" onclick="openFullscreenGame('games/woods.html')"></div>
     </div>
   </div>
 
@@ -294,28 +395,45 @@
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
-      particles: { number: { value: 80 }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: { min: 1, max: 3 } }, move: { enable: true, speed: 1, outModes: { default: "out" } } },
-      interactivity: { events: { onClick: { enable: true, mode: "push" } }, modes: { push: { quantity: 4 } } },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onClick: { enable: true, mode: "push" } },
+        modes: { push: { quantity: 4 } }
+      },
       detectRetina: true
     });
 
-  function searchGames() {
-  const input = document.getElementById("searchInput").value.trim().toLowerCase();
-  const messageDiv = document.getElementById("searchResultsMessage");
-  if (input) {
-    messageDiv.textContent = `Search results for '${input}'`;
-    messageDiv.style.display = "block";
-  } else {
-    messageDiv.textContent = "";
-    messageDiv.style.display = "none";
-  }
-  document.querySelectorAll(".game-item").forEach(item => {
-    const alt = item.querySelector("img").alt.toLowerCase();
-    item.style.display = alt.includes(input) ? "block" : "none";
-  });
-}
-    function filterGames(term) { document.getElementById("searchInput").value = term; searchGames(); }
-    function openFullscreenGame(path) { window.location.href = `iframe.html?game=${encodeURIComponent(path)}`; }
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
+      if (input) {
+        messageDiv.textContent = `🔍 Results for '${input}'`;
+        messageDiv.style.display = "block";
+      } else {
+        messageDiv.textContent = "";
+        messageDiv.style.display = "none";
+      }
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+    }
+
+    function filterGames(term) {
+      document.getElementById("searchInput").value = term;
+      searchGames();
+    }
+
+    function openFullscreenGame(path) {
+      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
+    }
   </script>
 </body>
 </html>
