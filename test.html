@@ -374,7 +374,7 @@
   </div>
 
   <script>
-    // Initialize the particle background
+    // Initialize tsParticles background
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -393,7 +393,7 @@
       detectRetina: true
     });
 
-    // Utility: grab a URL parameter by name
+    // Utility to get URL parameter
     function getParameterByName(name) {
       const url = window.location.href;
       name = name.replace(/[\[\]]/g, "\\$&");
@@ -403,7 +403,7 @@
       return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
-    // ── Metadata lookup for every game listed in g.html ──
+    // ── Metadata mapping copied from g.html ──
     const GAME_METADATA = {
       "games/1v1.html": {
         icon: "images/icons/1v1.png",
@@ -647,7 +647,7 @@
       }
     };
 
-    // ── LocalStorage-based favorites logic ──
+    // ── LocalStorage favorites logic ──
     const FAVORITES_KEY = 'veloraFavorites';
     function getFavorites() {
       return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -677,7 +677,7 @@
       const favs = getFavorites();
       favs.forEach(gamePath => {
         const meta = GAME_METADATA[gamePath];
-        if (!meta) return; // skip if metadata missing
+        if (!meta) return;
         const img = document.createElement('img');
         img.src = meta.icon;
         img.title = meta.title;
@@ -703,14 +703,12 @@
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
 
-    // pickRandom won't find any .game-item here—it's safe but effectively does nothing on this page
+    // ── pickRandom now chooses from the metadata keys ──
     function pickRandom() {
-      const allTiles = Array.from(document.querySelectorAll('.game-item'));
-      const visibleTiles = allTiles.filter(t => t.style.display !== 'none');
-      if (visibleTiles.length === 0) return;
-      const pick = visibleTiles[Math.floor(Math.random() * visibleTiles.length)];
-      const gamePath = pick.getAttribute('data-game');
-      openFullscreenGame(gamePath);
+      const keys = Object.keys(GAME_METADATA);
+      if (keys.length === 0) return;
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      openFullscreenGame(randomKey);
     }
 
     function searchGames() {
@@ -742,7 +740,7 @@
       if (gamePath) {
         document.getElementById('gameIframe').src = gamePath;
 
-        // Also set page title to "Game Title - Velora"
+        // Set page title to "Game Title - Velora"
         const meta = GAME_METADATA[gamePath];
         if (meta && meta.title) {
           document.title = `${meta.title} - Velora`;
@@ -755,11 +753,11 @@
         toggleFavorite(gamePath);
       });
 
-      // Initial rendering of favorites bar and heart state
+      // Initial render of favorites bar and heart state
       renderFavoritesBar();
       updateIframeHeart();
 
-      // Fullscreen button for iframe
+      // Fullscreen button
       document.getElementById('fullscreenBtn').addEventListener('click', () => {
         const ifr = document.getElementById('gameIframe');
         if (ifr.requestFullscreen) {
@@ -771,10 +769,9 @@
         }
       });
 
-      // Random button (no .game-item elements here, so this is effectively a no-op)
+      // Random button now works using pickRandom()
       document.getElementById('randomBtn').addEventListener('click', pickRandom);
     });
   </script>
 </body>
 </html>
-
