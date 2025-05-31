@@ -86,7 +86,6 @@
       pointer-events: none;
     }
 
-    /* ✨ Shimmer animation */
     @keyframes shine {
       0% {
         background-position: -200%;
@@ -96,7 +95,7 @@
       }
     }
 
-    /* Topbar */
+
     .topbar {
       position: fixed;
       top: 0;
@@ -159,7 +158,7 @@
       box-shadow: 0 0 8px var(--accent-glow);
     }
 
-    /* Sidebar */
+
     .sidebar {
       position: fixed;
       top: var(--topbar-height);
@@ -206,7 +205,6 @@
       transform: translateX(4px);
     }
 
-    /* Main Content */
     .main {
       position: absolute;
       top: var(--topbar-height);
@@ -225,7 +223,6 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
 
-    /* Actions Bar (Random + Favorites) */
     .actions-bar {
       display: flex;
       align-items: center;
@@ -330,7 +327,7 @@
       opacity: 1;
       transform: translateY(0);
     }
-    /* Heart (favorite) icon in top-right of each tile */
+
     .game-item .heart {
       position: absolute;
       top: 6px;
@@ -400,10 +397,9 @@
   </div>
 
   <div class="main">
-    <!-- Search Results Message -->
+
     <div id="searchResultsMessage"></div>
 
-    <!-- Actions Bar -->
     <div class="actions-bar">
       <button id="randomBtn">🎲 Random Game</button>
       <div class="favorites-bar">
@@ -412,13 +408,8 @@
       </div>
     </div>
 
-    <!-- Game Grid -->
     <div class="game-grid" id="gameGrid">
-      <!-- each .game-item needs:
-           - data-title="Game Name"
-           - data-game="relative/path/to/game.html"
-           - data-icon="images/icons/whatever.png" 
-      -->
+   
       <div class="game-item" data-title="1v1.lol" data-game="games/1v1.html" data-icon="images/icons/1v1.png">
         <div class="heart">♡</div>
         <img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')">
@@ -663,7 +654,7 @@
   </div>
 
   <script>
-    // Initialize tsParticles
+
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -682,7 +673,7 @@
       detectRetina: true
     });
 
-    // --- FAVORITES (localStorage) ---
+    // --- shows favirotes (localStorage) ---
     const FAVORITES_KEY = 'veloraFavorites'; 
     function getFavorites() {
       return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -738,7 +729,6 @@
       });
     }
 
-    // Attach click to each heart
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.game-item .heart').forEach(heart => {
         const parent = heart.closest('.game-item');
@@ -749,12 +739,12 @@
           toggleFavorite(gamePath, iconURL);
         });
       });
-      // Render initial state:
+
       updateAllHearts();
       renderFavoritesBar();
     });
 
-    // Random Game button
+ 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('randomBtn').addEventListener('click', () => {
         const allTiles = Array.from(document.querySelectorAll('.game-item'));
@@ -766,24 +756,23 @@
       });
     });
 
-    // Search & Filter
-    function searchGames() {
-      const input = document.getElementById("searchInput").value.trim().toLowerCase();
-      const messageDiv = document.getElementById("searchResultsMessage");
-      if (input) {
-        messageDiv.textContent = `🔍 Results for '${input}'`;
-        messageDiv.style.display = "block";
-      } else {
-        messageDiv.textContent = "";
-        messageDiv.style.display = "none";
-      }
-      document.querySelectorAll(".game-item").forEach(item => {
-        const alt = item.getAttribute('data-title').toLowerCase();
-        item.style.display = alt.includes(input) ? "block" : "none";
-      });
-      renderFavoritesBar(); // keep fav bar up to date if filter hides some
-    }
+   function searchGames() {
+  const input = document.getElementById("searchInput").value.trim().toLowerCase();
+  const messageDiv = document.getElementById("searchResultsMessage");
+  if (input) {
+    messageDiv.textContent = `🔍 Results for '${input}'`;
+    messageDiv.style.display = "block";
+  } else {
+    messageDiv.textContent = "";
+    messageDiv.style.display = "none";
+  }
+  document.querySelectorAll(".game-item").forEach(item => {
 
+    const alt = item.querySelector("img").alt.toLowerCase();
+    item.style.display = alt.includes(input) ? "block" : "none";
+  });
+  renderFavoritesBar();
+}
     function filterGames(term) {
       document.getElementById("searchInput").value = term;
       searchGames();
