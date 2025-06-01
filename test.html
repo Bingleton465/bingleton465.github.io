@@ -472,9 +472,15 @@
       location.reload();
     }
     document.getElementById('reset-settings-btn').addEventListener('click', () => {
-  document.getElementById('premadecloaks').value = 'defaultsettings';
-  setCloak();
-});
+      localStorage.removeItem('customTitle');
+      localStorage.removeItem('customFavicon');
+      setCookie('customTitle', '', -1);
+      setCookie('customFavicon', '', -1);
+      document.title = 'Velora';
+      document.getElementById('favicon').href = 'favicon.ico';
+      document.getElementById('title-input').value = '';
+      document.getElementById('favicon-input').value = '';
+    });
     window.addEventListener('storage', (e) => {
       if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
       if (e.key === 'customFavicon') document.getElementById('favicon').href = e.newValue || 'favicon.ico';
