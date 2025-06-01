@@ -60,11 +60,10 @@
       --card-hover-bg: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(20, 20, 30, 0.75);
       --border-radius: 12px;
-      --transition-speed: 0.3s; /* nfe */
+      --transition-speed: 0.3s;
       --sidebar-width: 220px;
       --topbar-height: 64px;
     }
-
     * {
       margin: 0;
       padding: 0;
@@ -85,17 +84,10 @@
       z-index: 0;
       pointer-events: none;
     }
-
     @keyframes shine {
-      0% {
-        background-position: -200%;
-      }
-      100% {
-        background-position: 200%;
-      }
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
     }
-
-
     .topbar {
       position: fixed;
       top: 0;
@@ -111,14 +103,14 @@
       z-index: 10;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    .topbar img {
+    .topbar img.logo {
       height: 70px;
       position: absolute;
       left: 54px;
       top: -3px;
       transition: transform var(--transition-speed);
     }
-    .topbar img:hover {
+    .topbar img.logo:hover {
       transform: rotate(-15deg) scale(1.05);
     }
     .search-container {
@@ -158,8 +150,19 @@
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 0 8px var(--accent-glow);
     }
-
-
+    .topbar .settings-icon {
+      height: 38px;
+      width: 38px;
+      position: absolute;
+      right: 32px;
+      top: 13px;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+      z-index: 11;
+    }
+    .topbar .settings-icon:hover {
+      transform: scale(1.12) rotate(20deg);
+    }
     .sidebar {
       position: fixed;
       top: var(--topbar-height);
@@ -205,7 +208,6 @@
       color: #fff;
       transform: translateX(4px);
     }
-
     .main {
       position: absolute;
       top: var(--topbar-height);
@@ -223,7 +225,6 @@
       color: #fff;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
-
     .actions-bar {
       display: flex;
       align-items: center;
@@ -271,7 +272,6 @@
     .actions-bar .favorites-bar img:hover {
       transform: scale(1.1);
     }
-
     .game-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -305,7 +305,6 @@
     .game-item img:hover {
       filter: brightness(1);
     }
-
     .game-item::after {
       content: attr(data-title);
       position: absolute;
@@ -328,7 +327,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-
     .game-item .heart {
       position: absolute;
       top: 6px;
@@ -345,11 +343,9 @@
       transform: scale(1.2);
       text-shadow: 0 0 6px rgba(255, 0, 0, 0.8);
     }
-
     .game-item.hidden {
       display: none !important;
     }
-
     @media (max-width: 768px) {
       .sidebar {
         width: 60px;
@@ -373,22 +369,27 @@
       .actions-bar .fav-icon {
         width: 100%;
       }
+      .topbar .settings-icon {
+        right: 8px;
+        top: 13px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="tsparticles"></div>
-
   <div class="topbar">
-   <a href="pico.html">
-    <img src="images/icons/velora.png" alt="Logo" style="cursor: pointer;">
-  </a>
+    <a href="pico.html">
+      <img src="images/icons/velora.png" alt="Logo" class="logo" style="cursor: pointer;">
+    </a>
     <div class="search-container">
       <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
       <button onclick="searchGames()">Go</button>
     </div>
+  <a href="settings.html">
+  <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
+</a>
   </div>
-
   <div class="sidebar">
     <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
     <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
@@ -398,11 +399,8 @@
     <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
     <a href="#" onclick="filterGames('car')" title="Car">🚗 - Car</a>
   </div>
-
   <div class="main">
-
     <div id="searchResultsMessage"></div>
-
     <div class="actions-bar">
       <button id="randomBtn">🎲 Random Game</button>
       <div class="favorites-bar">
@@ -410,10 +408,8 @@
         <div id="favoriteIcons"></div>
       </div>
     </div>
-
     <div class="game-grid" id="gameGrid">
-   
-      <div class="game-item" data-title="1v1.lol" data-game="games/1v1.html" data-icon="images/icons/1v1.png">
+     <div class="game-item" data-title="1v1.lol" data-game="games/1v1.html" data-icon="images/icons/1v1.png">
         <div class="heart">♡</div>
         <img src="images/icons/1v1.png" alt="1v1.lol action shooter" onclick="openFullscreenGame('games/1v1.html')">
       </div>
@@ -652,11 +648,9 @@
     
       </div><div class="game-item" data-title="Are We There Yet?" data-game="games/yet.html" data-icon="images/icons/yet.png"><div class="heart">♡</div><img src="images/icons/yet.png" alt="are we there yet? car" onclick="openFullscreenGame('games/yet.html')">
 
-        
+    </div>
   </div>
-
   <script>
-
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -674,8 +668,6 @@
       },
       detectRetina: true
     });
-
-    // --- shows favirotes (localStorage) ---
     const FAVORITES_KEY = 'veloraFavorites'; 
     function getFavorites() {
       return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
@@ -689,23 +681,19 @@
     function toggleFavorite(gamePath, iconSrc) {
       let favs = getFavorites();
       if (favs.includes(gamePath)) {
-        // remove
         favs = favs.filter(g => g !== gamePath);
       } else {
-        // add
         favs.push(gamePath);
       }
       saveFavorites(favs);
       renderFavoritesBar();
       updateAllHearts();
     }
-
     function renderFavoritesBar() {
       const container = document.getElementById('favoriteIcons');
       container.innerHTML = ''; 
       const favs = getFavorites();
       favs.forEach(gamePath => {
-        // find its thumbnail src from grid
         const tile = Array.from(document.querySelectorAll('.game-item'))
                           .find(el => el.getAttribute('data-game') === gamePath);
         if (tile) {
@@ -718,7 +706,6 @@
         }
       });
     }
-
     function updateAllHearts() {
       document.querySelectorAll('.game-item').forEach(item => {
         const gamePath = item.getAttribute('data-game');
@@ -730,7 +717,6 @@
         }
       });
     }
-
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.game-item .heart').forEach(heart => {
         const parent = heart.closest('.game-item');
@@ -741,12 +727,9 @@
           toggleFavorite(gamePath, iconURL);
         });
       });
-
       updateAllHearts();
       renderFavoritesBar();
     });
-
- 
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('randomBtn').addEventListener('click', () => {
         const allTiles = Array.from(document.querySelectorAll('.game-item'));
@@ -757,29 +740,26 @@
         openFullscreenGame(gamePath);
       });
     });
-
-   function searchGames() {
-  const input = document.getElementById("searchInput").value.trim().toLowerCase();
-  const messageDiv = document.getElementById("searchResultsMessage");
-  if (input) {
-    messageDiv.textContent = `🔍 Results for '${input}'`;
-    messageDiv.style.display = "block";
-  } else {
-    messageDiv.textContent = "";
-    messageDiv.style.display = "none";
-  }
-  document.querySelectorAll(".game-item").forEach(item => {
-
-    const alt = item.querySelector("img").alt.toLowerCase();
-    item.style.display = alt.includes(input) ? "block" : "none";
-  });
-  renderFavoritesBar();
-}
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
+      if (input) {
+        messageDiv.textContent = `🔍 Results for '${input}'`;
+        messageDiv.style.display = "block";
+      } else {
+        messageDiv.textContent = "";
+        messageDiv.style.display = "none";
+      }
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+      renderFavoritesBar();
+    }
     function filterGames(term) {
       document.getElementById("searchInput").value = term;
       searchGames();
     }
-
     function openFullscreenGame(path) {
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
