@@ -1,85 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
+      }
+
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Velora – ⚙️</title>
-  <link id="favicon" rel="icon" href="images/icons/google.ico" type="image/ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings - Velora</title>
+  <link id="favicon" rel="icon" href="images/icons/logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
-    html, body {
+    :root {
+      --bg-gradient-start: #14141f;
+      --bg-gradient-end: #1f1f2f;
+      --accent-color: #4a90e2;
+      --accent-glow: rgba(74, 144, 226, 0.6);
+      --text-color: #e0e0e0;
+      --glass-bg: rgba(20, 20, 30, 0.75);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --topbar-height: 64px;
+    }
+    * {
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
-      background: #0a0a0a;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: #fff;
+      box-sizing: border-box;
     }
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
     }
-    .top-bar {
+    #tsparticles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
+    }
+    .topbar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      height: 60px;
-      background: #111;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 30px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-      z-index: 1000;
+      justify-content: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    .title {
+    .topbar img.logo {
+      height: 70px;
+      position: absolute;
+      left: 54px;
+      top: -3px;
+      transition: transform var(--transition-speed);
+    }
+    .topbar img.logo:hover {
+      transform: rotate(-15deg) scale(1.05);
+    }
+    .search-container {
+      flex: none;
+      margin: 0 auto;
+      width: 360px;
       display: flex;
       align-items: center;
-      font-size: 22px;
-      font-weight: bold;
     }
-    .title img {
-      height: 40px;
-      margin-right: 10px;
+    .search-container input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      outline: none;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
     }
-    .buttons {
-      display: flex;
-      gap: 10px;
+    .search-container input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.03);
+      box-shadow: 0 0 8px var(--accent-glow);
     }
-    .button {
-      font-size: 15px;
-      padding: 8px 18px;
-      border: 2px solid #fff;
-      border-radius: 6px;
-      background: transparent;
+    .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      background: var(--accent-color);
       color: #fff;
+      font-weight: 600;
       cursor: pointer;
-      position: relative;
-      transition: all 0.3s ease;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
     }
-    .button::after {
-      content: '';
+    .search-container button:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .topbar .settings-icon {
+      height: 38px;
+      width: 38px;
+      position: absolute;
+      right: 32px;
+      top: 13px;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+      z-index: 11;
+    }
+    .topbar .settings-icon:hover {
+      transform: scale(1.12) rotate(20deg);
+    }
+    .sidebar {
+      position: fixed;
+      top: var(--topbar-height);
+      left: 0;
+      width: var(--sidebar-width);
+      bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      z-index: 9;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .sidebar a {
+      position: relative;
+      padding: 10px 16px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: color var(--transition-speed);
+    }
+    .sidebar a::before {
+      content: "";
       position: absolute;
       top: 0;
-      left: 0;
-      width: 0%;
+      left: -150%;
+      width: 300%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: width 0.4s;
-      border-radius: 6px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: none;
     }
-    .button:hover::after {
-      width: 100%;
+    .sidebar a:hover::before {
+      animation: shine 1s forwards;
     }
-    .button:hover {
-      color: #000;
-      background: #fff;
+    .sidebar a:hover {
+      background: var(--accent-color);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .main {
+      position: absolute;
+      top: var(--topbar-height);
+      left: var(--sidebar-width);
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 1;
     }
     .settings-container {
       max-width: 600px;
-      margin: 100px auto 50px;
+      margin: 40px auto 50px;
       background: #1a1a1a;
       padding: 30px;
       border-radius: 10px;
@@ -118,65 +258,135 @@
       align-self: flex-start;
       margin-top: 10px;
     }
-    .discord-link {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
+    .button {
+      font-size: 15px;
+      padding: 8px 18px;
+      border: 2px solid #fff;
+      border-radius: 6px;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
     }
-    .discord-logo {
-      height: 40px;
+    .button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: width 0.4s;
+      border-radius: 6px;
+    }
+    .button:hover::after {
+      width: 100%;
+    }
+    .button:hover {
+      color: #000;
+      background: #fff;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+        padding: 8px;
+      }
+      .sidebar a {
+        font-size: 12px;
+        padding: 8px;
+      }
+      .topbar {
+        padding: 0 16px;
+      }
+      .main {
+        padding: 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
+  <div id="tsparticles"></div>
+  <div class="topbar">
+    <a href="pico.html">
+      <img src="images/icons/velora.png" alt="Logo" class="logo" style="cursor: pointer;">
+    </a>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search games..." disabled style="opacity:0.5;cursor:not-allowed;">
+      <button disabled style="opacity:0.5;cursor:not-allowed;">Go</button>
     </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
-    </div>
+    <a href="settings.html">
+      <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
+    </a>
   </div>
-  <div class="settings-container">
-    <h2>Settings</h2>
-    <div class="setting-item">
-      <label for="title-input">Change Tab Title</label>
-      <input type="text" id="title-input" placeholder="Enter new title">
-    </div>
-    <div class="setting-item">
-      <label for="favicon-input">Change Favicon</label>
-      <input type="file" id="favicon-input" accept="image/x-icon, image/png">
-    </div>
-    <div class="setting-item">
-      <label for="premadecloaks">Select Tab Cloak (Work In Progress)</label>
-      <select id="premadecloaks">
-        <option value="defaultsettings">Default Settings</option>
-        <option value="search">Google</option>
-        <option value="drive">Google Drive</option>
-        <option value="classroom">Google Classroom</option>
-        <option value="gmail">Gmail</option>
-        <option value="word">Microsoft Word</option>
-        <option value="powerpoint">Microsoft PowerPoint</option>
-        <option value="youtube">YouTube</option>
-        <option value="calendar">Google Calendar</option>
-        <option value="meets">Google Meet</option>
-        <option value="canvas">Canvas</option>
-        <option value="zoom">Zoom</option>
-        <option value="khan">Khan Academy</option>
-        <option value="fakesearch">Google Search</option>
-      </select>
-      <button class="button" id="cloak-btn">Set Cloak</button>
-    </div>
-    <div class="setting-item">
-      <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
-    </div>
-    <div class="setting-item">
-      <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
+  <div class="sidebar">
+    <a href="g.html" title="Back to All Games">🔙 - Back</a>
+    <a href="g.html" title="Show All">🎈 - All</a>
+    <a href="g.html" title="Action">🎮 - Action</a>
+    <a href="g.html" title="Shooter">🔫 - Shooters</a>
+    <a href="g.html" title="Sports">🏈 - Sports</a>
+    <a href="g.html" title="Puzzle">🧩 - Puzzle</a>
+    <a href="g.html" title="Horror">👻 - Horror</a>
+    <a href="g.html" title="Car">🚗 - Car</a>
+  </div>
+  <div class="main">
+    <div class="settings-container">
+      <h2>Settings</h2>
+      <div class="setting-item">
+        <label for="title-input">Change Tab Title</label>
+        <input type="text" id="title-input" placeholder="Enter new title">
+      </div>
+      <div class="setting-item">
+        <label for="favicon-input">Change Favicon</label>
+        <input type="file" id="favicon-input" accept="image/x-icon, image/png">
+      </div>
+      <div class="setting-item">
+        <label for="premadecloaks">Select Tab Cloak (Work In Progress)</label>
+        <select id="premadecloaks">
+          <option value="defaultsettings">Default Settings</option>
+          <option value="search">Google</option>
+          <option value="drive">Google Drive</option>
+          <option value="classroom">Google Classroom</option>
+          <option value="gmail">Gmail</option>
+          <option value="word">Microsoft Word</option>
+          <option value="powerpoint">Microsoft PowerPoint</option>
+          <option value="youtube">YouTube</option>
+          <option value="calendar">Google Calendar</option>
+          <option value="meets">Google Meet</option>
+          <option value="canvas">Canvas</option>
+          <option value="zoom">Zoom</option>
+          <option value="khan">Khan Academy</option>
+          <option value="fakesearch">Google Search</option>
+        </select>
+        <button class="button" id="cloak-btn">Set Cloak</button>
+      </div>
+      <div class="setting-item">
+        <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
+      </div>
+      <div class="setting-item">
+        <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
+      </div>
     </div>
   </div>
   <script>
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onClick: { enable: true, mode: "push" } },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
+    });
+
     function setCookie(name, value, days = 30) {
       const expires = new Date(Date.now() + days * 864e5).toUTCString();
       document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; expires=' + expires;
@@ -219,8 +429,15 @@
     document.getElementById('cloak-btn').addEventListener('click', setCloak);
     function setCloak() {
       const cloak = document.getElementById('premadecloaks').value;
+      if (cloak === "defaultsettings") {
+        localStorage.removeItem('customTitle');
+        localStorage.removeItem('customFavicon');
+        document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        location.reload();
+        return;
+      }
       const titles = {
-        defaultsettings: 'Velora - ⚙️',
         search: 'Google',
         drive: 'My Drive - Google Drive',
         classroom: 'Google Classroom',
@@ -236,7 +453,6 @@
         fakesearch: 'calculator - Google Search'
       };
       const favicons = {
-        defaultsettings: '/images/icons/logo.png',
         search: '/images/icons/google.ico',
         drive: '/images/icons/google-drive-ico.ico',
         classroom: '/images/icons/google-classroom.ico',
@@ -264,12 +480,9 @@
     document.getElementById('reset-settings-btn').addEventListener('click', () => {
       localStorage.removeItem('customTitle');
       localStorage.removeItem('customFavicon');
-      setCookie('customTitle', '', -1);
-      setCookie('customFavicon', '', -1);
-      document.title = 'Velora';
-      document.getElementById('favicon').href = 'favicon.ico';
-      document.getElementById('title-input').value = '';
-      document.getElementById('favicon-input').value = '';
+      document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      location.reload();
     });
     window.addEventListener('storage', (e) => {
       if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
