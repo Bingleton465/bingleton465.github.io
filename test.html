@@ -46,7 +46,7 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora – ⚙️</title>
+  <title>Velora</title>
   <link id="favicon" rel="icon" href="images/icons/logo.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
@@ -429,8 +429,15 @@
     document.getElementById('cloak-btn').addEventListener('click', setCloak);
     function setCloak() {
       const cloak = document.getElementById('premadecloaks').value;
+      if (cloak === "defaultsettings") {
+        localStorage.removeItem('customTitle');
+        localStorage.removeItem('customFavicon');
+        document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        location.reload();
+        return;
+      }
       const titles = {
-        defaultsettings: 'Velora - ⚙️',
         search: 'Google',
         drive: 'My Drive - Google Drive',
         classroom: 'Google Classroom',
@@ -446,7 +453,6 @@
         fakesearch: 'calculator - Google Search'
       };
       const favicons = {
-        defaultsettings: '/images/icons/logo.png',
         search: '/images/icons/google.ico',
         drive: '/images/icons/google-drive-ico.ico',
         classroom: '/images/icons/google-classroom.ico',
@@ -472,9 +478,12 @@
       location.reload();
     }
     document.getElementById('reset-settings-btn').addEventListener('click', () => {
-  document.getElementById('premadecloaks').value = 'defaultsettings';
-  setCloak();
-});
+      localStorage.removeItem('customTitle');
+      localStorage.removeItem('customFavicon');
+      document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      location.reload();
+    });
     window.addEventListener('storage', (e) => {
       if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
       if (e.key === 'customFavicon') document.getElementById('favicon').href = e.newValue || 'favicon.ico';
