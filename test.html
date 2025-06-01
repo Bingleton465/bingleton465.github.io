@@ -1,247 +1,528 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
+      }
+
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Velora - Free Online Games</title>
-  <link rel="icon" type="image/png" href="images/icons/logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
-<style>
-  :root {
-    --bg-gradient-start: #14141f;
-    --bg-gradient-end: #1d2749;
-    --accent-color: #4a90e2;
-    --accent-gradient: linear-gradient(90deg, #4a90e2 0%, #6c63ff 100%);
-    --text-color: #e6eaff;
-    --glass-bg: rgba(30, 34, 55, 0.83);
-    --glass-border: rgba(120, 190, 255, 0.13);
-    --border-radius: 30px;
-    --topbar-height: 100px;
-    --shadow: 0 8px 40px #1a225622, 0 1.5px 8px #0002;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Inter', sans-serif;
-    color: var(--text-color);
-    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-    min-height: 100vh;
-    overflow: hidden;
-    position: relative;
-  }
-  #tsparticles {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .topbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: var(--topbar-height);
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px) saturate(120%);
-    display: flex;
-    align-items: center;
-    z-index: 10;
-    box-shadow: var(--shadow);
-    border-bottom: 2px solid var(--glass-border);
-  }
-  .topbar img {
-    height: 80px;
-    margin-left: 56px;
-    filter: drop-shadow(0 2px 16px #6c63ff66);
-    border-radius: 20px;
-    background: rgba(255,255,255,0.04);
-    padding: 6px;
-  }
-  .center-content {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-  }
-  .welcome-box {
-    background: var(--glass-bg);
-    box-shadow: 0 8px 64px 0 #0008, 0 1.5px 8px #4a90e233;
-    border-radius: var(--border-radius);
-    padding: 64px 56px 56px 56px;
-    border: 2.5px solid var(--glass-border);
-    text-align: center;
-    margin-top: calc(var(--topbar-height) + 38px);
-    max-width: 90vw;
-    min-width: 380px;
-    transition: box-shadow 0.2s;
-    backdrop-filter: blur(24px) saturate(140%);
-  }
-  .welcome-box:hover {
-    box-shadow: 0 16px 96px 0 #000c, 0 2.5px 16px #4a90e255;
-  }
-  .rainbow-text {
-    font-size: 3.5em;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffea, #ffff00, #ff6600, #ff00cc 90%);
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: rainbow-anim 4s linear infinite;
-    display: block;
-    margin-bottom: 0.18em;
-    letter-spacing: 0.10em;
-    filter: drop-shadow(0 0 22px #fff9);
-    text-shadow: 0 2px 16px #0005;
-  }
-  @keyframes rainbow-anim {
-    0% {background-position:0% 50%;}
-    100% {background-position:100% 50%;}
-  }
-  .typewriter {
-    font-size: 2.6em;
-    color: #fff;
-    font-family: 'Inter', monospace;
-    font-weight: 900;
-    letter-spacing: 0.17em;
-    border-right: 0.08em solid #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    text-shadow: 0 0 28px #00ffea, 0 0 42px #6c63ff;
-    filter: blur(0.5px);
-    min-height: 1.5em;
-    margin-bottom: 0.5em;
-  }
-  .get-started-btn {
-    display: inline-block;
-    margin-top: 68px;
-    padding: 26px 82px;
-    font-size: 1.8em;
-    font-weight: 800;
-    border: none;
-    border-radius: var(--border-radius);
-    background: var(--accent-gradient);
-    background-size: 200% 200%;
-    color: #fff;
-    letter-spacing: 0.12em;
-    cursor: pointer;
-    box-shadow: 0 6px 28px #4a90e277, 0 2px 12px #0003;
-    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    text-shadow: 0 2px 8px #0008;
-    outline: none;
-  }
-  .get-started-btn:hover,
-  .get-started-btn:focus {
-    background-position: right;
-    background: linear-gradient(90deg, #6c63ff, #4a90e2 100%);
-    transform: translateY(-5px) scale(1.06);
-    box-shadow: 0 16px 40px #4a90e288, 0 4px 16px #0005;
-  }
-  @media (max-width: 900px) {
-    .topbar img { height: 56px; margin-left: 18px; }
-    .welcome-box { padding: 38px 8vw 34px 8vw; min-width: unset;}
-    .rainbow-text { font-size: 2.1em; }
-    .typewriter { font-size: 1.22em; }
-    .get-started-btn { font-size: 1.05em; padding: 16px 32px; margin-top: 32px; }
-    :root { --topbar-height: 64px; }
-  }
-  @media (max-width: 550px) {
-    .topbar img { height: 38px; margin-left: 8px; }
-    .welcome-box { padding: 16px 4vw 18px 4vw; min-width: unset;}
-    .rainbow-text { font-size: 1.1em; }
-    .typewriter { font-size: 0.9em; }
-    .get-started-btn { font-size: 0.85em; padding: 12px 16px; margin-top: 18px; }
-    :root { --topbar-height: 50px; }
-  }
-</style>
-  // Particle background
-  tsParticles.load("tsparticles", {
-    fpsLimit: 60,
-    background: { color: "transparent" },
-    particles: {
-      number: { value: 80 },
-      color: { value: "#ffffff" },
-      shape: { type: "circle" },
-      opacity: { value: 0.5 },
-      size: { value: { min: 1, max: 3 } },
-      move: { enable: true, speed: 1, outMode: "bounce" }
-    },
-    interactivity: {
-      events: { onClick: { enable: true, mode: "push" } },
-      modes: { push: { quantity: 4 } }
-    },
-    detectRetina: true
-  });
-
-  // Dynamic typewriter and rainbow text
-  document.addEventListener("DOMContentLoaded", function () {
-    const possibleWords = [
-      "freedom", "aesthetic", "modern", "beautiful", "privacy", "exploration",
-      "creativity", "games", "fun", "adventure", "innovation", "mystery", "velora",
-      "community", "connection", "surprises", "imagination", "challenge", "discovery"
-    ];
-    let lastIdx = -1;
-    let rainbowText = document.getElementById("rainbowText");
-    let typewriterEl = document.getElementById("typewriter");
-
-    function capitalize(str) {
-      if (!str) return "";
-      return str.charAt(0).toUpperCase() + str.slice(1);
+  <style>
+    :root {
+      --bg-gradient-start: #14141f;
+      --bg-gradient-end: #1f1f2f;
+      --accent-color: #4a90e2;
+      --accent-glow: rgba(74, 144, 226, 0.6);
+      --text-color: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(20, 20, 30, 0.75);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --topbar-height: 64px;
     }
-
-    function nextWord() {
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * possibleWords.length);
-      } while (idx === lastIdx && possibleWords.length > 1);
-      lastIdx = idx;
-      return capitalize(possibleWords[idx]);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
-    function typeAndUntype(word, cb) {
-      const prefix = "Welcome to ";
-      let i = 0;
-      let typingSpeed = 120;   
-      let untypingSpeed = 70; 
-
-      function type() {
-        if (i <= word.length) {
-          rainbowText.textContent = prefix;
-          typewriterEl.textContent = word.substring(0, i);
-          i++;
-          setTimeout(type, typingSpeed);
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    #tsparticles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { background-position: -200%; }
+      100% { background-position: 200%; }
+    }
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .topbar img.logo {
+      height: 70px;
+      position: absolute;
+      left: 54px;
+      top: -3px;
+      transition: transform var(--transition-speed);
+    }
+    .topbar img.logo:hover {
+      transform: rotate(-15deg) scale(1.05);
+    }
+    .search-container {
+      flex: none;
+      margin: 0 auto;
+      width: 360px;
+      display: flex;
+      align-items: center;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      outline: none;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .search-container input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.03);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .search-container button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+      background: var(--accent-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .search-container button:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .topbar .settings-icon {
+      height: 38px;
+      width: 38px;
+      position: absolute;
+      right: 32px;
+      top: 13px;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+      z-index: 11;
+    }
+    .topbar .settings-icon:hover {
+      transform: scale(1.12) rotate(20deg);
+    }
+    .sidebar {
+      position: fixed;
+      top: var(--topbar-height);
+      left: 0;
+      width: var(--sidebar-width);
+      bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      z-index: 9;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .sidebar a {
+      position: relative;
+      padding: 10px 16px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: color var(--transition-speed);
+    }
+    .sidebar a::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 300%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: skewX(-20deg);
+      transition: none;
+    }
+    .sidebar a:hover::before {
+      animation: shine 1s forwards;
+    }
+    .sidebar a:hover {
+      background: var(--accent-color);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .main {
+      position: absolute;
+      top: var(--topbar-height);
+      left: var(--sidebar-width);
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 1;
+    }
+    #searchResultsMessage {
+      display: none;
+      margin-bottom: 18px;
+      font-size: 1.2em;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    .actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .actions-bar button,
+    .actions-bar .fav-icon {
+      background: var(--accent-color);
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .actions-bar button:hover,
+    .actions-bar .fav-icon:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .actions-bar .favorites-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .actions-bar .favorites-bar span {
+      font-size: 14px;
+      margin-right: 6px;
+    }
+    .actions-bar .favorites-bar img {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius);
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+    }
+    .actions-bar .favorites-bar img:hover {
+      transform: scale(1.1);
+    }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+    .game-item {
+      position: relative;
+      background: var(--card-bg);
+      border: 2px solid transparent;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed), background var(--transition-speed);
+    }
+    .game-item:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow:
+        0 8px 16px rgba(0,0,0,0.5),
+        0 0 12px var(--accent-glow),
+        0 0 24px var(--accent-glow);
+      border-color: var(--accent-color);
+      background: var(--card-hover-bg);
+    }
+    .game-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: brightness(0.95);
+      transition: filter var(--transition-speed);
+    }
+    .game-item img:hover {
+      filter: brightness(1);
+    }
+    .game-item::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: transform var(--transition-speed), opacity var(--transition-speed);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    .game-item:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .game-item .heart {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 22px;
+      color: rgba(255, 0, 0, 0.8);
+      cursor: pointer;
+      opacity: 0.9;
+      user-select: none;
+      transition: transform var(--transition-speed), text-shadow var(--transition-speed);
+      z-index: 2;
+    }
+    .game-item .heart:hover {
+      transform: scale(1.2);
+      text-shadow: 0 0 6px rgba(255, 0, 0, 0.8);
+    }
+    .game-item.hidden {
+      display: none !important;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 60px;
+        padding: 8px;
+      }
+      .sidebar a {
+        font-size: 12px;
+        padding: 8px;
+      }
+      .topbar {
+        padding: 0 16px;
+      }
+      .search-container input {
+        width: 200px;
+      }
+      .actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .actions-bar button,
+      .actions-bar .fav-icon {
+        width: 100%;
+      }
+      .topbar .settings-icon {
+        right: 8px;
+        top: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles"></div>
+  <div class="topbar">
+    <a href="pico.html">
+      <img src="images/icons/velora.png" alt="Logo" class="logo" style="cursor: pointer;">
+    </a>
+    <div class="search-container">
+      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
+      <button onclick="searchGames()">Go</button>
+    </div>
+    <img src="images/icons.settings.png" alt="Settings" class="settings-icon">
+  </div>
+  <div class="sidebar">
+    <a href="#" onclick="filterGames('')" title="Show All">🎈 - All Games</a>
+    <a href="#" onclick="filterGames('action')" title="Action">🎮 - Action</a>
+    <a href="#" onclick="filterGames('shooter')" title="Shooter">🔫 - Shooters</a>
+    <a href="#" onclick="filterGames('sports')" title="Sports">🏈 - Sports</a>
+    <a href="#" onclick="filterGames('puzzle')" title="Puzzle">🧩 - Puzzle</a>
+    <a href="#" onclick="filterGames('horror')" title="Horror">👻 - Horror</a>
+    <a href="#" onclick="filterGames('car')" title="Car">🚗 - Car</a>
+  </div>
+  <div class="main">
+    <div id="searchResultsMessage"></div>
+    <div class="actions-bar">
+      <button id="randomBtn">🎲 Random Game</button>
+      <div class="favorites-bar">
+        <span>❤️ Favorites:</span>
+        <div id="favoriteIcons"></div>
+      </div>
+    </div>
+    <div class="game-grid" id="gameGrid">
+      <!-- Game tiles here -->
+    </div>
+  </div>
+  <script>
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onClick: { enable: true, mode: "push" } },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
+    });
+    const FAVORITES_KEY = 'veloraFavorites'; 
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+    }
+    function saveFavorites(arr) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+    }
+    function isFavorited(gamePath) {
+      return getFavorites().includes(gamePath);
+    }
+    function toggleFavorite(gamePath, iconSrc) {
+      let favs = getFavorites();
+      if (favs.includes(gamePath)) {
+        favs = favs.filter(g => g !== gamePath);
+      } else {
+        favs.push(gamePath);
+      }
+      saveFavorites(favs);
+      renderFavoritesBar();
+      updateAllHearts();
+    }
+    function renderFavoritesBar() {
+      const container = document.getElementById('favoriteIcons');
+      container.innerHTML = ''; 
+      const favs = getFavorites();
+      favs.forEach(gamePath => {
+        const tile = Array.from(document.querySelectorAll('.game-item'))
+                          .find(el => el.getAttribute('data-game') === gamePath);
+        if (tile) {
+          const iconURL = tile.getAttribute('data-icon');
+          const img = document.createElement('img');
+          img.src = iconURL;
+          img.title = tile.getAttribute('data-title');
+          img.onclick = () => openFullscreenGame(gamePath);
+          container.appendChild(img);
+        }
+      });
+    }
+    function updateAllHearts() {
+      document.querySelectorAll('.game-item').forEach(item => {
+        const gamePath = item.getAttribute('data-game');
+        const heartEl = item.querySelector('.heart');
+        if (isFavorited(gamePath)) {
+          heartEl.textContent = '❤';
         } else {
-          setTimeout(untype, 1200);
+          heartEl.textContent = '♡';
         }
-      }
-
-      function untype() {
-        if (i > 0) {
-          i--;
-          rainbowText.textContent = prefix;
-          typewriterEl.textContent = word.substring(0, i);
-          setTimeout(untype, untypingSpeed);
-        } else if (cb) {
-          setTimeout(cb, 400);
-        }
-      }
-      type();
+      });
     }
-
-    function loop() {
-      let word = nextWord();
-      typeAndUntype(word, loop);
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.game-item .heart').forEach(heart => {
+        const parent = heart.closest('.game-item');
+        const gamePath = parent.getAttribute('data-game');
+        const iconURL = parent.getAttribute('data-icon');
+        heart.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleFavorite(gamePath, iconURL);
+        });
+      });
+      updateAllHearts();
+      renderFavoritesBar();
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('randomBtn').addEventListener('click', () => {
+        const allTiles = Array.from(document.querySelectorAll('.game-item'));
+        const visibleTiles = allTiles.filter(t => t.style.display !== 'none');
+        if (visibleTiles.length === 0) return;
+        const pick = visibleTiles[Math.floor(Math.random() * visibleTiles.length)];
+        const gamePath = pick.getAttribute('data-game');
+        openFullscreenGame(gamePath);
+      });
+    });
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
+      if (input) {
+        messageDiv.textContent = `🔍 Results for '${input}'`;
+        messageDiv.style.display = "block";
+      } else {
+        messageDiv.textContent = "";
+        messageDiv.style.display = "none";
+      }
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.querySelector("img").alt.toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+      renderFavoritesBar();
     }
-
-    rainbowText.textContent = "Welcome to";
-    typewriterEl.textContent = "";
-    loop();
-  });
-</script>
+    function filterGames(term) {
+      document.getElementById("searchInput").value = term;
+      searchGames();
+    }
+    function openFullscreenGame(path) {
+      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
+    }
+  </script>
 </body>
 </html>
