@@ -3,189 +3,222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora - 404</title>
+  <title>404 Not Found - Velora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg-gradient-start: #14141f;
+      --bg-gradient-end: #1f1f2f;
+      --accent-color: #4a90e2;
+      --accent-glow: rgba(74, 144, 226, 0.6);
+      --text-color: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
+      --glass-bg: rgba(20, 20, 30, 0.75);
+      --border-radius: 12px;
+      --transition-speed: 0.3s;
+      --sidebar-width: 220px;
+      --topbar-height: 64px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      height: 100vh;
       overflow: hidden;
-      background: black;
-      width: 100%;
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .top-bar {
-      position: absolute;
-      top: 30px;
-      left: 0;
-      width: 90%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-    }
-    .top-bar .title img {
-      height: 40px;
-    }
-    .top-bar .buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .top-bar .button {
-      font-size: 18px;
-      padding: 10px 20px;
-      border: 2px solid white;
-      border-radius: 5px;
-      background: transparent;
-      color: white;
-      font-family: Arial, sans-serif;
-      cursor: pointer;
       position: relative;
-      overflow: hidden;
     }
-    .top-bar .button::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.3);
-      transition: left 0.5s;
-      z-index: 1;
-    }
-    .top-bar .button:hover::after {
-      left: 100%;
-    }
-    .top-bar .button:hover {
-      background: white;
-      color: black;
-    }
-    .message-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 1;
+    #tsparticles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
       pointer-events: none;
     }
-    .message {
-      color: white;
-      font-size: 6em;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    .topbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      gap: 24px;
+    }
+    .topbar .logo { height: 70px; cursor: pointer; flex-shrink: 0; }
+    .topbar .settings-link { margin-left: auto; }
+    .topbar .settings-icon { height: 38px; width: 38px; cursor: pointer; }
+    .sidebar {
+      position: fixed;
+      top: var(--topbar-height); left: 0;
+      width: var(--sidebar-width); bottom: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+      overflow-y: auto; z-index: 9;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+    .sidebar a {
+      padding: 10px 16px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 14px;
+      border-radius: var(--border-radius);
+      transition: color var(--transition-speed);
+      display: block;
+    }
+    .sidebar a:hover {
+      background: var(--accent-color);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .main {
+      position: absolute;
+      top: var(--topbar-height);
+      left: var(--sidebar-width);
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .main h1 {
+      font-size: 4rem;
+      margin-bottom: 24px;
+      color: var(--accent-color);
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+    .main p {
+      font-size: 1.5rem;
+      margin-bottom: 32px;
+      color: var(--text-color);
+    }
+    .featured-games {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    .game-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background var(--transition-speed), transform var(--transition-speed);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      width: 150px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .game-card:hover {
+      background: var(--card-hover-bg);
+      transform: translateY(-4px) scale(1.04);
+    }
+    .game-card img {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      background: #fff2;
+    }
+    .game-card .game-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
     }
   </style>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+      setFavicon(favicon);
+    })();
+  </script>
 </head>
 <body>
-  <canvas id="constellationCanvas"></canvas>
-
-  <div class="top-bar">
-    <div class="title">
-      <img src="Cool Text - Velora 481208342656598.png" alt="Velora">
-    </div>
-    <div class="buttons">
-      <button class="button" onclick="window.location.href='index.html'">Home</button>
-      <button class="button" onclick="window.location.href='g.html'">Games</button>
-      <button class="button" onclick="window.location.href='settings.html'">Settings</button>
+  <div id="tsparticles"></div>
+  <div class="topbar">
+    <img src="images/icons/velora.png" alt="Logo" class="logo" onclick="window.location.href='g.html'">
+    <div class="settings-link">
+      <a href="settings.html">
+        <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
+      </a>
     </div>
   </div>
-
-  <div class="message-container">
-    <div class="message">404 Not Found</div>
+  <div class="sidebar">
+    <a href="g.html" title="Show All">🏠 - Return to Games</a>
   </div>
-
+  <div class="main">
+    <h1>404</h1>
+    <p>
+      Oops! The page you're looking for doesn't exist.<br>
+      But don't worry, check out these featured games!
+    </p>
+    <div class="featured-games">
+      <div class="game-card" onclick="openFullscreenGame('games/tanuki.html')">
+        <img src="images/icons/tanuki.jpg" alt="Tanuki Sunset icon">
+        <div class="game-title">Tanuki Sunset</div>
+      </div>
+      <div class="game-card" onclick="openFullscreenGame('games/Shadow_Client.html')">
+        <img src="images/icons/craft.png" alt="EAGLEcraft icon">
+        <div class="game-title">EAGLEcraft</div>
+      </div>
+      <div class="game-card" onclick="openFullscreenGame('games/badparent.html')">
+        <img src="images/icons/badparent.avif" alt="Bad Parenting icon">
+        <div class="game-title">Bad Parenting</div>
+      </div>
+    </div>
+  </div>
   <script>
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Star {
-      constructor(x, y, r) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.burst();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      burst() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-    }
-
-    const stars = [];
-    const MAX_STARS = 80;
-    for (let i = 0; i < MAX_STARS; i++) {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      const r = Math.random() * 2 + 1;
-      stars.push(new Star(x, y, r));
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(star => {
-        star.update();
-        star.draw();
-      });
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const a = stars[i];
-          const b = stars[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    tsParticles.load("tsparticles", {
+      fpsLimit: 60,
+      background: { color: "transparent" },
+      particles: {
+        number: { value: 80 },
+        color: { value: "#ffffff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: { min: 1, max: 3 } },
+        move: { enable: true, speed: 1, outModes: { default: "out" } }
+      },
+      interactivity: {
+        events: { onClick: { enable: true, mode: "push" } },
+        modes: { push: { quantity: 4 } }
+      },
+      detectRetina: true
     });
+
+
+    function openFullscreenGame(path) {
+      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
+    }
   </script>
 </body>
 </html>
