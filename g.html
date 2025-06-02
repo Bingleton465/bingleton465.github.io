@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
+ <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+</script> <script>
     (function () {
       const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
       const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
