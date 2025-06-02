@@ -1,134 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>102: ERROR</title>
+  <title>Velora - Mobile Unsupported</title>
+  <link rel="icon" type="image/png" href="images/icons/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       height: 100%;
-      background: black;
-      color: white;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #14141f, #1f1f2f);
+      color: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+    }
+    .container {
+      background: rgba(20,20,30,0.85);
+      border-radius: 16px;
+      padding: 48px 38px;
+      max-width: 98vw;
+      box-shadow: 0 4px 48px #0005;
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      align-items: center;
     }
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
+    .container img {
+      height: 56px;
+      margin-bottom: 12px;
     }
-    .error {
-      position: relative;
-      z-index: 10;
-      font-size: 48px;
-      margin-bottom: 10px;
+    .main-title {
+      font-size: 2.2em;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2em;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #ff00cc, #3333ff, #00ffea, #ffff00, #ff6600, #ff00cc 90%);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbow-anim 4s linear infinite;
     }
-    .message {
-      position: relative;
-      z-index: 10;
-      font-size: 24px;
+    @keyframes rainbow-anim {
+      0% {background-position: 0% 50%;}
+      100% {background-position: 100% 50%;}
+    }
+    .subtitle {
+      font-size: 1.15em;
+      color: #a9b0c2;
+      margin-bottom: 1.4em;
+      font-weight: 400;
+    }
+    .desktop-btn {
+      display: inline-block;
+      margin-top: 12px;
+      background: #6cb3f0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 32px;
+      font-size: 1.08em;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+      box-shadow: 0 2px 16px #0008;
+    }
+    .desktop-btn:hover {
+      background: #3a92dc;
     }
   </style>
 </head>
 <body>
-
-  <canvas id="constellationCanvas"></canvas>
-  <div class="error">error: 102</div>
-  <div class="message">switch to desktop to run velora</div>
-
-  <script>
-    const canvas = document.getElementById('constellationCanvas');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    const MAX_STARS = 80;
-    const LINE_DIST = 120;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    class Star {
-      constructor() {
-        this.reset();
-        this.age = 0;
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.r = Math.random() * 1.5 + 0.5;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.timeToBurst = Math.random() * 1000 + 3000;
-        this.age = 0;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.age++;
-        if (this.age > this.timeToBurst) this.reset();
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-      }
-    }
-
-    function connectStars() {
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < LINE_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function initStars() {
-      stars = [];
-      for (let i = 0; i < MAX_STARS; i++) {
-        stars.push(new Star());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => {
-        s.update();
-        s.draw();
-      });
-      connectStars();
-      requestAnimationFrame(animate);
-    }
-
-    // initialize
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      initStars();
-    });
-
-    resizeCanvas();
-    initStars();
-    animate();
-  </script>
-
+  <div class="container">
+    <img src="images/icons/velora.png" alt="Velora Logo" />
+    <div class="main-title">error: 102</div>
+    <div class="subtitle">Switch to desktop to run Velora</div>
+    <a class="desktop-btn" href="index.html">Go to Homepage</a>
+  </div>
 </body>
 </html>
-
