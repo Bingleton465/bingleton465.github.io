@@ -44,10 +44,10 @@
       };
     })();
   </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora</title>
-  <link id="favicon" rel="icon" href="images/icons/logo.png" type="image/png">
+  <title>Velora - Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
@@ -63,6 +63,7 @@
       --sidebar-width: 220px;
       --topbar-height: 64px;
     }
+
     * {
       margin: 0;
       padding: 0;
@@ -83,11 +84,14 @@
       z-index: 0;
       pointer-events: none;
     }
+
     @keyframes shine {
       0% { background-position: -200%; }
       100% { background-position: 200%; }
     }
+
     .topbar {
+      position: relative; /* FIX: Ensure .topbar is relative for correct icon positioning */
       position: fixed;
       top: 0;
       left: 0;
@@ -102,16 +106,35 @@
       z-index: 10;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    .topbar img.logo {
+    .topbar img {
       height: 70px;
       position: absolute;
       left: 54px;
       top: -3px;
       transition: transform var(--transition-speed);
     }
-    .topbar img.logo:hover {
+    .topbar img:hover {
       transform: rotate(-15deg) scale(1.05);
     }
+    .topbar .settings-icon {
+      height: 38px;
+      width: 38px;
+      position: absolute;
+      right: 32px;
+      top: 13px;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+      z-index: 11;
+    }
+    .topbar .settings-icon:hover {
+      transform: scale(1.12) rotate(20deg);
+    }
+@media (max-width: 768px) {
+  .topbar .settings-icon {
+    right: 8px;
+    top: 13px;
+  }
+}
     .search-container {
       flex: none;
       margin: 0 auto;
@@ -149,19 +172,7 @@
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 0 8px var(--accent-glow);
     }
-    .topbar .settings-icon {
-      height: 38px;
-      width: 38px;
-      position: absolute;
-      right: 32px;
-      top: 13px;
-      cursor: pointer;
-      transition: transform var(--transition-speed);
-      z-index: 11;
-    }
-    .topbar .settings-icon:hover {
-      transform: scale(1.12) rotate(20deg);
-    }
+
     .sidebar {
       position: fixed;
       top: var(--topbar-height);
@@ -207,6 +218,7 @@
       color: #fff;
       transform: translateX(4px);
     }
+
     .main {
       position: absolute;
       top: var(--topbar-height);
@@ -217,76 +229,101 @@
       overflow-y: auto;
       z-index: 1;
     }
-    .settings-container {
-      max-width: 600px;
-      margin: 40px auto 50px;
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+    #searchResultsMessage {
+      display: none;
+      margin-bottom: 18px;
+      font-size: 1.2em;
+      color: #fff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
-    .settings-container h2 {
-      margin-bottom: 20px;
-      font-size: 28px;
-      text-align: center;
-      border-bottom: 2px solid #444;
-      padding-bottom: 10px;
-    }
-    .setting-item {
+
+    .actions-bar {
       display: flex;
-      flex-direction: column;
-      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .setting-item label {
-      margin-bottom: 8px;
-      font-size: 16px;
-      color: #ccc;
-    }
-    input[type="text"], input[type="file"], select {
-      padding: 10px;
-      border-radius: 6px;
+    .actions-bar button,
+    .actions-bar .fav-icon {
+      background: var(--accent-color);
       border: none;
-      font-size: 15px;
-      background: #2a2a2a;
       color: #fff;
-      outline: none;
-    }
-    select {
-      appearance: none;
-    }
-    .setting-item .button {
-      align-self: flex-start;
-      margin-top: 10px;
-    }
-    .button {
-      font-size: 15px;
-      padding: 8px 18px;
-      border: 2px solid #fff;
-      border-radius: 6px;
-      background: transparent;
-      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: var(--border-radius);
       cursor: pointer;
-      position: relative;
-      transition: all 0.3s ease;
+      transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
     }
-    .button::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: width 0.4s;
-      border-radius: 6px;
+    .actions-bar button:hover,
+    .actions-bar .fav-icon:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
     }
-    .button:hover::after {
+    .actions-bar .favorites-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .actions-bar .favorites-bar span {
+      font-size: 14px;
+      margin-right: 6px;
+    }
+    .actions-bar .favorites-bar img {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius);
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+    }
+    .actions-bar .favorites-bar img:hover {
+      transform: scale(1.1);
+    }
+
+    .iframe-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .iframe-controls button,
+    .iframe-controls .heart {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .iframe-controls button:hover,
+    .iframe-controls .heart:hover {
+      background: #6cb3f0;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .iframe-container {
       width: 100%;
+      height: calc(100% - 120px);
+      background: #111;
+      border: 2px solid var(--accent-color);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      position: relative;
     }
-    .button:hover {
-      color: #000;
-      background: #fff;
+    .iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
+
     @media (max-width: 768px) {
       .sidebar {
         width: 60px;
@@ -299,75 +336,69 @@
       .topbar {
         padding: 0 16px;
       }
-      .main {
-        padding: 8px;
+      .search-container input {
+        width: 200px;
+      }
+      .actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .actions-bar button,
+      .actions-bar .fav-icon {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
   <div id="tsparticles"></div>
+
   <div class="topbar">
-    <a href="pico.html">
-      <img src="images/icons/velora.png" alt="Logo" class="logo" style="cursor: pointer;">
-    </a>
+   <a href="pico.html">
+    <img src="images/icons/velora.png" alt="Logo" style="cursor: pointer;">
+  </a>
     <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search games..." disabled style="opacity:0.5;cursor:not-allowed;">
-      <button disabled style="opacity:0.5;cursor:not-allowed;">Go</button>
+      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
+      <button onclick="searchGames()">Go</button>
     </div>
     <a href="settings.html">
-      <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
-    </a>
+  <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
+</a>
   </div>
-  <div class="sidebar">
-    <a href="g.html" title="Back to All Games">🔙 - Back</a>
-    <a href="g.html" title="Show All">🎈 - All</a>
-    <a href="g.html" title="Action">🎮 - Action</a>
-    <a href="g.html" title="Shooter">🔫 - Shooters</a>
-    <a href="g.html" title="Sports">🏈 - Sports</a>
-    <a href="g.html" title="Puzzle">🧩 - Puzzle</a>
-    <a href="g.html" title="Horror">👻 - Horror</a>
-    <a href="g.html" title="Car">🚗 - Car</a>
-  </div>
+
+<div class="sidebar">
+  <a href="g.html" title="Back to All Games">🔙 - Back</a>
+  <a href="g.html" title="Show All">🎈 - All</a>
+  <a href="g.html" title="Action">🎮 - Action</a>
+  <a href="g.html" title="Shooter">🔫 - Shooters</a>
+  <a href="g.html" title="Sports">🏈 - Sports</a>
+  <a href="g.html" title="Puzzle">🧩 - Puzzle</a>
+  <a href="g.html" title="Horror">👻 - Horror</a>
+  <a href="g.html" title="Car">🚗 - Car</a>
+</div>
+
   <div class="main">
-    <div class="settings-container">
-      <h2>Settings</h2>
-      <div class="setting-item">
-        <label for="title-input">Change Tab Title</label>
-        <input type="text" id="title-input" placeholder="Enter new title">
-      </div>
-      <div class="setting-item">
-        <label for="favicon-input">Change Favicon</label>
-        <input type="file" id="favicon-input" accept="image/x-icon, image/png">
-      </div>
-      <div class="setting-item">
-        <label for="premadecloaks">Select Tab Cloak (Work In Progress)</label>
-        <select id="premadecloaks">
-          <option value="defaultsettings">Default Settings</option>
-          <option value="search">Google</option>
-          <option value="drive">Google Drive</option>
-          <option value="classroom">Google Classroom</option>
-          <option value="gmail">Gmail</option>
-          <option value="word">Microsoft Word</option>
-          <option value="powerpoint">Microsoft PowerPoint</option>
-          <option value="youtube">YouTube</option>
-          <option value="calendar">Google Calendar</option>
-          <option value="meets">Google Meet</option>
-          <option value="canvas">Canvas</option>
-          <option value="zoom">Zoom</option>
-          <option value="khan">Khan Academy</option>
-          <option value="fakesearch">Google Search</option>
-        </select>
-        <button class="button" id="cloak-btn">Set Cloak</button>
-      </div>
-      <div class="setting-item">
-        <button class="button" id="cloaker" onclick="aboutBlank()">Set to about:blank (Click Twice)</button>
-      </div>
-      <div class="setting-item">
-        <button class="button" id="reset-settings-btn">Reset Favicon and Title</button>
+
+    <div id="searchResultsMessage"></div>
+
+    <div class="actions-bar">
+      <button id="randomBtn">🎲 Random Game</button>
+      <div class="favorites-bar">
+        <span>❤️ Favorites:</span>
+        <div id="favoriteIcons"></div>
       </div>
     </div>
+
+    <div class="iframe-controls">
+      <button id="fullscreenBtn">⛶ Fullscreen</button>
+      <div id="iframeHeart" class="heart">♡</div>
+    </div>
+
+    <div class="iframe-container">
+      <iframe id="gameIframe" src="" allowfullscreen></iframe>
+    </div>
   </div>
+
   <script>
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
@@ -387,137 +418,383 @@
       detectRetina: true
     });
 
-    function setCookie(name, value, days = 30) {
-      const expires = new Date(Date.now() + days * 864e5).toUTCString();
-      document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; expires=' + expires;
+
+    function getParameterByName(name) {
+      const url = window.location.href;
+      name = name.replace(/[\[\]]/g, "\\$&");
+      const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+      if (!results || !results[2]) return null;
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    function getCookie(name) {
-      return document.cookie.split('; ').reduce((r, v) => {
-        const parts = v.split('=');
-        return parts[0] === name ? decodeURIComponent(parts[1]) : r
-      }, '');
+
+    //  metadata mapping copied from g.html 
+    const GAME_METADATA = {
+      "games/1v1.html": {
+        icon: "images/icons/1v1.png",
+        title: "1v1.lol"
+      },
+      "games/rl.html": {
+        icon: "images/icons/rl.webp",
+        title: "Rocket League"
+      },
+      "games/er1.html": {
+        icon: "images/icons/er1.webp",
+        title: "Escape Road 1"
+      },
+      "games/clescaperoad2.html": {
+        icon: "images/icons/er2.jpg",
+        title: "Escape Road 2"
+      },
+      "games/kong.html": {
+        icon: "images/icons/kong.png",
+        title: "Flying Kong"
+      },
+      "games/bitlife.html": {
+        icon: "images/icons/bitlife.png",
+        title: "BitLife Simulator"
+      },
+      "games/geometry.html": {
+        icon: "images/icons/geometry.svg.png",
+        title: "Geometry Dash"
+      },
+      "games/Shadow_Client.html": {
+        icon: "images/icons/craft.png",
+        title: "Minecraft EagleCraft"
+      },
+      "games/skibidi.html": {
+        icon: "images/icons/skibidi.avif",
+        title: "Skibidi Backrooms"
+      },
+      "games/clsandboxels.html": {
+        icon: "images/icons/boxels.webp",
+        title: "Boxels"
+      },
+      "games/slope.html": {
+        icon: "images/icons/slope.png",
+        title: "Slope"
+      },
+      "games/happy.html": {
+        icon: "images/icons/happy.jpeg",
+        title: "Happy Wheels"
+      },
+      "games/tiny.html": {
+        icon: "images/icons/tiny.avif",
+        title: "Tiny Fishing"
+      },
+      "games/rhit.html": {
+        icon: "images/icons/rhit.avif",
+        title: "Ragdoll Hit"
+      },
+      "games/ra.html": {
+        icon: "images/icons/ra.webp",
+        title: "Ragdoll Archers"
+      },
+      "games/bowmasters.html": {
+        icon: "images/icons/bowmasters.png",
+        title: "Bowmasters"
+      },
+      "games/bl.html": {
+        icon: "images/icons/bl.png",
+        title: "Basketball Legends"
+      },
+      "games/agar.html": {
+        icon: "images/icons/agar.jpg",
+        title: "Agar.io Lite"
+      },
+      "games/rope.html": {
+        icon: "images/icons/police.avif",
+        title: "Amazing Strange Rope Police"
+      },
+      "games/baldi.html": {
+        icon: "images/icons/baldi.jpg",
+        title: "Baldi’s Basics"
+      },
+      "games/drift.html": {
+        icon: "images/icons/drift.png",
+        title: "Drift Hunters"
+      },
+      "games/granny1.html": {
+        icon: "images/icons/granny1.jpg",
+        title: "Granny 1"
+      },
+      "games/granny2.html": {
+        icon: "images/icons/granny2.webp",
+        title: "Granny 2"
+      },
+      "games/fnf.html": {
+        icon: "images/icons/fnf.png",
+        title: "Friday Night Funkin'"
+      },
+      "games/mad.html": {
+        icon: "images/icons/drive-mad.png",
+        title: "Drive Mad"
+      },
+      "games/snowrider.html": {
+        icon: "images/icons/snow.png",
+        title: "Snow Rider 3D"
+      },
+      "games/revert.html": {
+        icon: "images/icons/revert.png",
+        title: "Sonic Revert"
+      },
+      "games/driftboss.html": {
+        icon: "images/icons/driftboss.avif",
+        title: "Drift Boss"
+      },
+      "games/blockblast.html": {
+        icon: "images/icons/blockblast.png",
+        title: "Block Blast"
+      },
+      "games/elasticface.html": {
+        icon: "images/icons/elasticface.webp",
+        title: "Elastic Face"
+      },
+      "games/shrek.html": {
+        icon: "images/icons/shrek.jpg",
+        title: "Five Nights at Shrek’s Hotel"
+      },
+      "games/cluster.html": {
+        icon: "images/icons/cluster.png",
+        title: "Cluster Rush"
+      },
+      "games/crossyroad.html": {
+        icon: "images/icons/crossy.avif",
+        title: "Crossy Road"
+      },
+      "games/10.html": {
+        icon: "images/icons/10.png",
+        title: "10 Minutes Till Dawn"
+      },
+      "games/infinitecraft.html": {
+        icon: "images/icons/infinitecraft.webp",
+        title: "Infinite Craft"
+      },
+      "games/badparent.html": {
+        icon: "images/icons/badparent.avif",
+        title: "Bad Parenting"
+      },
+      "games/guess.html": {
+        icon: "images/icons/guess.png",
+        title: "Guess Their Answer"
+      },
+      "games/bacon.html": {
+        icon: "images/icons/bacon.png",
+        title: "Bacon May Die"
+      },
+      "games/bottle.html": {
+        icon: "images/icons/bottle.png",
+        title: "Bottle Flip 3D"
+      },
+      "games/cup.html": {
+        icon: "images/icons/cup.png",
+        title: "A Small World Cup"
+      },
+      "games/cattle.html": {
+        icon: "images/icons/cattle.jpg",
+        title: "Crazy Cattle 3D"
+      },
+      "games/flood.html": {
+        icon: "images/icons/flood.webp",
+        title: "Flood Runner 4"
+      },
+      "games/post.html": {
+        icon: "images/icons/post.png",
+        title: "Blockpost"
+      },
+      "games/suika.html": {
+        icon: "images/icons/suika.avif",
+        title: "Suika Watermelon"
+      },
+      "games/wars.html": {
+        icon: "images/icons/wars.webp",
+        title: "Lego Star Wars"
+      },
+      "games/cn.html": {
+        icon: "images/icons/cn.webp",
+        title: "Cartoon Network Tennis"
+      },
+      "dta6/index.html": {
+        icon: "images/icons/dta6.avif",
+        title: "Dude Theft Wars (DTA6)"
+      },
+      "games/stickrpg.html": {
+        icon: "images/icons/stickrpg.webp",
+        title: "Stickman RPG"
+      },
+      "games/plant.html": {
+        icon: "images/icons/plant.jpg",
+        title: "Plants vs Zombies"
+      },
+      "games/ovo1.html": {
+        icon: "images/icons/ovo1.jpg",
+        title: "OVO 1"
+      },
+      "games/ovo2.html": {
+        icon: "images/icons/ovo2.jpg",
+        title: "OVO 2"
+      },
+      "games/ovo3.html": {
+        icon: "images/icons/ovo3.png",
+        title: "OVO 3"
+      },
+      "games/ahole.html": {
+        icon: "images/icons/ahole.jpg",
+        title: "Attack Hole"
+      },
+      "games/bison.html": {
+        icon: "images/icons/bison.jpg",
+        title: "Burrito Bison"
+      },
+      "games/cc.html": {
+        icon: "images/icons/cc.png",
+        title: "Capybara Clicker"
+      },
+      "games/folder.html": {
+        icon: "images/icons/folder.webp",
+        title: "Folder Dungeon"
+      },
+      "games/evilglitch.html": {
+        icon: "images/icons/evilglitch.jpg",
+        title: "Evil Glitch"
+      },
+      "games/hcr.html": {
+        icon: "images/icons/hcr.png",
+        title: "Hill Climb Racing"
+      },
+      "games/tanuki.html": {
+        icon: "images/icons/tanuki.jpg",
+        title: "Tanuki Sunset"
+      },
+      "games/woods.html": {
+        icon: "images/icons/woods.webp",
+        title: "Slide in the Woods"
+      },
+       "games/yet.html": {
+        icon: "images/icons/yet",
+        title: "Are We There Yet?"
+      }
+    };
+
+    const FAVORITES_KEY = 'veloraFavorites';
+    function getFavorites() {
+      return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
     }
-    window.addEventListener('DOMContentLoaded', () => {
-      let title = localStorage.getItem('customTitle') || getCookie('customTitle');
-      let icon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-      if (title) {
-        document.title = title;
-        document.getElementById('title-input').value = title;
+    function saveFavorites(arr) {
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
+    }
+    function isFavorited(gamePath) {
+      return getFavorites().includes(gamePath);
+    }
+
+    function toggleFavorite(gamePath) {
+      let favs = getFavorites();
+      if (favs.includes(gamePath)) {
+        favs = favs.filter(g => g !== gamePath);
+      } else {
+        favs.push(gamePath);
       }
-      if (icon) {
-        document.getElementById('favicon').href = icon;
-      }
-    });
-    const titleInput = document.getElementById('title-input');
-    titleInput.addEventListener('input', () => {
-      const val = titleInput.value;
-      document.title = val;
-      localStorage.setItem('customTitle', val);
-      setCookie('customTitle', val);
-    });
-    document.getElementById('favicon-input').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const url = reader.result;
-        document.getElementById('favicon').href = url;
-        localStorage.setItem('customFavicon', url);
-        setCookie('customFavicon', url);
-      };
-      if (file) reader.readAsDataURL(file);
-    });
-    document.getElementById('cloak-btn').addEventListener('click', setCloak);
-    function setCloak() {
-      const cloak = document.getElementById('premadecloaks').value;
-      if (cloak === "defaultsettings") {
-        localStorage.removeItem('customTitle');
-        localStorage.removeItem('customFavicon');
-        document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-        location.reload();
+      saveFavorites(favs);
+      renderFavoritesBar();
+      updateIframeHeart();
+    }
+
+    function renderFavoritesBar() {
+      const container = document.getElementById('favoriteIcons');
+      container.innerHTML = '';
+      const favs = getFavorites();
+      favs.forEach(gamePath => {
+        const meta = GAME_METADATA[gamePath];
+        if (!meta) return;
+        const img = document.createElement('img');
+        img.src = meta.icon;
+        img.title = meta.title;
+        img.onclick = () => {
+          window.location.href = `iframe.html?game=${encodeURIComponent(gamePath)}`;
+        };
+        container.appendChild(img);
+      });
+    }
+
+    function updateIframeHeart() {
+      const hf = document.getElementById('iframeHeart');
+      const gamePath = getParameterByName('game');
+      if (!gamePath) {
+        hf.style.display = 'none';
         return;
       }
-      const titles = {
-        search: 'Google',
-        drive: 'My Drive - Google Drive',
-        classroom: 'Google Classroom',
-        gmail: 'Gmail',
-        word: 'Document.docx',
-        powerpoint: 'Presentation.pptx',
-        youtube: 'YouTube',
-        calendar: 'Google Calendar',
-        meets: 'Google Meet',
-        canvas: 'Canvas',
-        zoom: 'Zoom',
-        khan: 'Khan Academy',
-        fakesearch: 'calculator - Google Search'
-      };
-      const favicons = {
-        search: '/images/icons/google.ico',
-        drive: '/images/icons/google-drive-ico.ico',
-        classroom: '/images/icons/google-classroom.ico',
-        gmail: '/images/icons/gmail.ico',
-        word: '/images/icons/word.ico',
-        powerpoint: '/images/icons/powerpoint.ico',
-        youtube: '/images/icons/youtube.ico',
-        calendar: '/images/icons/google-calender.ico',
-        meets: '/images/icons/google-meet.ico',
-        canvas: '/images/icons/canvas.ico',
-        zoom: '/images/icons/zoom.ico',
-        khan: '/images/icons/khan-academy.ico',
-        fakesearch: '/images/icons/google.ico'
-      };
-      const newTitle = titles[cloak];
-      const newIcon = favicons[cloak];
-      document.title = newTitle;
-      document.getElementById('favicon').href = newIcon;
-      localStorage.setItem('customTitle', newTitle);
-      localStorage.setItem('customFavicon', newIcon);
-      setCookie('customTitle', newTitle);
-      setCookie('customFavicon', newIcon);
-      location.reload();
+      hf.style.display = 'inline-block';
+      hf.textContent = isFavorited(gamePath) ? '❤' : '♡';
     }
-    document.getElementById('reset-settings-btn').addEventListener('click', () => {
-      localStorage.removeItem('customTitle');
-      localStorage.removeItem('customFavicon');
-      document.cookie = "customTitle=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      document.cookie = "customFavicon=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-      location.reload();
-    });
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'customTitle') document.title = e.newValue || 'Velora';
-      if (e.key === 'customFavicon') document.getElementById('favicon').href = e.newValue || 'favicon.ico';
-    });
-    function aboutBlank() {
-      const url = window.location.href;
-      let win;
-      document.querySelector('#cloaker').onclick = function () {
-        if (win) {
-          win.focus();
-        } else {
-          win = window.open();
-          win.document.body.style.margin = '0';
-          win.document.title = document.title;
-          const fav = document.querySelector('link[rel="icon"]');
-          if (fav) {
-            const link = win.document.createElement('link');
-            link.rel = 'icon';
-            link.href = fav.href;
-            win.document.head.appendChild(link);
-          }
-          const iframe = win.document.createElement('iframe');
-          iframe.style.border = 'none'; iframe.style.width = '100%'; iframe.style.height = '100%'; iframe.src = url;
-          win.document.body.appendChild(iframe);
-          window.location.replace('https://ixl.com');
-          const iv = setInterval(() => {
-            if (win.closed) {
-              clearInterval(iv);
-              win = null;
-            }
-          }, 500);
+
+    function openFullscreenGame(path) {
+      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
+    }
+
+
+    function pickRandom() {
+      const keys = Object.keys(GAME_METADATA);
+      if (keys.length === 0) return;
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      openFullscreenGame(randomKey);
+    }
+
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
+      if (input) {
+        messageDiv.textContent = `🔍 Results for '${input}'`;
+        messageDiv.style.display = "block";
+      } else {
+        messageDiv.textContent = "";
+        messageDiv.style.display = "none";
+      }
+      document.querySelectorAll(".game-item").forEach(item => {
+        const alt = item.getAttribute('data-title').toLowerCase();
+        item.style.display = alt.includes(input) ? "block" : "none";
+      });
+      renderFavoritesBar();
+    }
+
+    function filterGames(term) {
+      document.getElementById("searchInput").value = term;
+      searchGames();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const gamePath = getParameterByName('game');
+
+      if (gamePath) {
+        document.getElementById('gameIframe').src = gamePath;
+
+
+        const meta = GAME_METADATA[gamePath];
+        if (meta && meta.title) {
+          document.title = `${meta.title} - Velora`;
         }
-      };
-    }
+      }
+
+      document.getElementById('iframeHeart').addEventListener('click', () => {
+        if (!gamePath) return;
+        toggleFavorite(gamePath);
+      });
+
+      renderFavoritesBar();
+      updateIframeHeart();
+
+      document.getElementById('fullscreenBtn').addEventListener('click', () => {
+        const ifr = document.getElementById('gameIframe');
+        if (ifr.requestFullscreen) {
+          ifr.requestFullscreen();
+        } else if (ifr.webkitRequestFullscreen) {
+          ifr.webkitRequestFullscreen();
+        } else if (ifr.msRequestFullscreen) {
+          ifr.msRequestFullscreen();
+        }
+      });
+
+      document.getElementById('randomBtn').addEventListener('click', pickRandom);
+    });
   </script>
 </body>
 </html>
