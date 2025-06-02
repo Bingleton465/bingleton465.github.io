@@ -44,9 +44,10 @@
       };
     })();
   </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Velora - Games</title>
+  <title>Pico - Velora</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
   <style>
@@ -56,12 +57,15 @@
       --accent-color: #4a90e2;
       --accent-glow: rgba(74, 144, 226, 0.6);
       --text-color: #e0e0e0;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
       --glass-bg: rgba(20, 20, 30, 0.75);
       --border-radius: 12px;
       --transition-speed: 0.3s;
       --sidebar-width: 220px;
       --topbar-height: 64px;
     }
+
     * {
       margin: 0;
       padding: 0;
@@ -77,19 +81,20 @@
     }
     #tsparticles {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
       pointer-events: none;
     }
+
     @keyframes shine {
       0% { background-position: -200%; }
       100% { background-position: 200%; }
     }
+
     .topbar {
       position: fixed;
+      position: relative; /* <-- Important fix */
       top: 0;
       left: 0;
       width: 100%;
@@ -103,21 +108,21 @@
       z-index: 10;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
-    .topbar img.logo {
+    .topbar img {
       height: 70px;
       position: absolute;
       left: 54px;
-      top: -3px;
       transition: transform var(--transition-speed);
+      cursor: pointer;
     }
-    .topbar img.logo:hover {
+    .topbar img:hover {
       transform: rotate(-15deg) scale(1.05);
     }
     .topbar .settings-icon {
       height: 38px;
       width: 38px;
       position: absolute;
-      right: 32px;
+      right: 8px; /* <-- Move icon to right edge */
       top: 13px;
       cursor: pointer;
       transition: transform var(--transition-speed);
@@ -169,6 +174,7 @@
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 0 8px var(--accent-glow);
     }
+
     .sidebar {
       position: fixed;
       top: var(--topbar-height);
@@ -214,6 +220,7 @@
       color: #fff;
       transform: translateX(4px);
     }
+
     .main {
       position: absolute;
       top: var(--topbar-height);
@@ -224,97 +231,27 @@
       overflow-y: auto;
       z-index: 1;
     }
-    #searchResultsMessage {
-      display: none;
-      margin-bottom: 18px;
-      font-size: 1.2em;
-      color: #fff;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+
+
+    .main h1 {
+      font-size: 2rem;
+      margin-bottom: 16px;
     }
-    .actions-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-      gap: 12px;
+    .main p {
+      line-height: 1.6;
+      margin-bottom: 24px;
     }
-    .actions-bar button,
-    .actions-bar .fav-icon {
-      background: var(--accent-color);
-      border: none;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 8px 12px;
+    .logo-section {
+      margin-bottom: 32px;
+    }
+    .logo-section img {
+      max-width: 200px;
+      display: block;
+      margin-top: 8px;
       border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
-    .actions-bar button:hover,
-    .actions-bar .fav-icon:hover {
-      background: #6cb3f0;
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 0 8px var(--accent-glow);
-    }
-    .actions-bar .favorites-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .actions-bar .favorites-bar span {
-      font-size: 14px;
-      margin-right: 6px;
-    }
-    .actions-bar .favorites-bar img {
-      width: 32px;
-      height: 32px;
-      border-radius: var(--border-radius);
-      object-fit: cover;
-      cursor: pointer;
-      transition: transform var(--transition-speed);
-    }
-    .actions-bar .favorites-bar img:hover {
-      transform: scale(1.1);
-    }
-    .iframe-controls {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .iframe-controls button,
-    .iframe-controls .heart {
-      background: var(--accent-color);
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      font-size: 14px;
-      font-weight: 600;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
-    }
-    .iframe-controls button:hover,
-    .iframe-controls .heart:hover {
-      background: #6cb3f0;
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 0 8px var(--accent-glow);
-    }
-    .iframe-container {
-      width: 100%;
-      height: calc(100% - 120px);
-      background: #111;
-      border: 2px solid var(--accent-color);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      position: relative;
-    }
-    .iframe-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+
     @media (max-width: 768px) {
       .sidebar {
         width: 60px;
@@ -330,58 +267,52 @@
       .search-container input {
         width: 200px;
       }
-      .actions-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .actions-bar button,
-      .actions-bar .fav-icon {
-        width: 100%;
-      }
     }
   </style>
 </head>
 <body>
+
   <div id="tsparticles"></div>
+
   <div class="topbar">
-    <a href="pico.html">
-      <img src="images/icons/velora.png" alt="Logo" class="logo" style="cursor: pointer;">
-    </a>
+    <img src="images/icons/velora.png" alt="Logo" style="cursor: pointer;" onclick="window.location.href='g.html'">
     <div class="search-container">
-      <input type="text" id="searchInput" onkeyup="searchGames()" placeholder="Search games...">
-      <button onclick="searchGames()">Go</button>
+      <input type="text" placeholder="Search..." disabled>
+      <button disabled>Go</button>
     </div>
     <a href="settings.html">
       <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
     </a>
   </div>
+
   <div class="sidebar">
-    <a href="g.html" title="Back to All Games">🡙 - Back</a>
-    <a href="g.html" title="Show All">🎈 - All</a>
-    <a href="g.html" title="Action">🎮 - Action</a>
-    <a href="g.html" title="Shooter">🔫 - Shooters</a>
-    <a href="g.html" title="Sports">🏈 - Sports</a>
-    <a href="g.html" title="Puzzle">🧩 - Puzzle</a>
-    <a href="g.html" title="Horror">👻 - Horror</a>
-    <a href="g.html" title="Car">🚗 - Car</a>
+    <a href="g.html" title="Show All">🏠 - Return to Games</a>
   </div>
+
   <div class="main">
-    <div id="searchResultsMessage"></div>
-    <div class="actions-bar">
-      <button id="randomBtn">🎲 Random Game</button>
-      <div class="favorites-bar">
-        <span>❤️ Favorites:</span>
-        <div id="favoriteIcons"></div>
+    <h1>🔥 Pico – Your Pixel Pal!</h1>
+    <p>
+     Pico is the energetic, fearless mascot of Velora,
+      always ready to dive into action and lead you to the best games online! With his pixel shades and nonstop attitude, 
+      Pico represents everything we love about gaming: fun, freedom, and a little bit of chaos. Whether you’re exploring new 
+      titles or grinding your favorites, Pico’s got your back.
+    </p>
+
+    <div class="logo-section">
+      <div>
+        <strong>Original logo:</strong>
       </div>
+      <img src="images/icons/oglogo.png" alt="Pico Original Logo">
     </div>
-    <div class="iframe-controls">
-      <button id="fullscreenBtn">⛶ Fullscreen</button>
-      <div id="iframeHeart" class="heart">♡</div>
-    </div>
-    <div class="iframe-container">
-      <iframe id="gameIframe" src="" allowfullscreen></iframe>
+
+    <div class="logo-section">
+      <div>
+        <strong>Current logo:</strong>
+      </div>
+      <img src="images/icons/app.png" alt="Pico Current Logo">
     </div>
   </div>
+
   <script>
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
@@ -400,182 +331,10 @@
       },
       detectRetina: true
     });
-
-    function getParameterByName(name) {
-      const url = window.location.href;
-      name = name.replace(/[\[\]]/g, "\\$&");
-      const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-      if (!results || !results[2]) return null;
-      return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-
-    const GAME_METADATA = {
-      "games/1v1.html": { icon: "images/icons/1v1.png", title: "1v1.lol" },
-      "games/rl.html": { icon: "images/icons/rl.webp", title: "Rocket League" },
-      "games/er1.html": { icon: "images/icons/er1.webp", title: "Escape Road 1" },
-      "games/clescaperoad2.html": { icon: "images/icons/er2.jpg", title: "Escape Road 2" },
-      "games/kong.html": { icon: "images/icons/kong.png", title: "Flying Kong" },
-      "games/bitlife.html": { icon: "images/icons/bitlife.png", title: "BitLife Simulator" },
-      "games/geometry.html": { icon: "images/icons/geometry.svg.png", title: "Geometry Dash" },
-      "games/Shadow_Client.html": { icon: "images/icons/craft.png", title: "Minecraft EagleCraft" },
-      "games/skibidi.html": { icon: "images/icons/skibidi.avif", title: "Skibidi Backrooms" },
-      "games/clsandboxels.html": { icon: "images/icons/boxels.webp", title: "Boxels" },
-      "games/slope.html": { icon: "images/icons/slope.png", title: "Slope" },
-      "games/happy.html": { icon: "images/icons/happy.jpeg", title: "Happy Wheels" },
-      "games/tiny.html": { icon: "images/icons/tiny.avif", title: "Tiny Fishing" },
-      "games/rhit.html": { icon: "images/icons/rhit.avif", title: "Ragdoll Hit" },
-      "games/ra.html": { icon: "images/icons/ra.webp", title: "Ragdoll Archers" },
-      "games/bowmasters.html": { icon: "images/icons/bowmasters.png", title: "Bowmasters" },
-      "games/bl.html": { icon: "images/icons/bl.png", title: "Basketball Legends" },
-      "games/agar.html": { icon: "images/icons/agar.jpg", title: "Agar.io Lite" },
-      "games/rope.html": { icon: "images/icons/police.avif", title: "Amazing Strange Rope Police" },
-      "games/baldi.html": { icon: "images/icons/baldi.jpg", title: "Baldi’s Basics" },
-      "games/drift.html": { icon: "images/icons/drift.png", title: "Drift Hunters" },
-      "games/granny1.html": { icon: "images/icons/granny1.jpg", title: "Granny 1" },
-      "games/granny2.html": { icon: "images/icons/granny2.webp", title: "Granny 2" },
-      "games/fnf.html": { icon: "images/icons/fnf.png", title: "Friday Night Funkin'" },
-      "games/mad.html": { icon: "images/icons/drive-mad.png", title: "Drive Mad" },
-      "games/snowrider.html": { icon: "images/icons/snow.png", title: "Snow Rider 3D" },
-      "games/revert.html": { icon: "images/icons/revert.png", title: "Sonic Revert" },
-      "games/driftboss.html": { icon: "images/icons/driftboss.avif", title: "Drift Boss" },
-      "games/blockblast.html": { icon: "images/icons/blockblast.png", title: "Block Blast" },
-      "games/elasticface.html": { icon: "images/icons/elasticface.webp", title: "Elastic Face" },
-      "games/shrek.html": { icon: "images/icons/shrek.jpg", title: "Five Nights at Shrek’s Hotel" },
-      "games/cluster.html": { icon: "images/icons/cluster.png", title: "Cluster Rush" },
-      "games/crossyroad.html": { icon: "images/icons/crossy.avif", title: "Crossy Road" },
-      "games/10.html": { icon: "images/icons/10.png", title: "10 Minutes Till Dawn" },
-      "games/infinitecraft.html": { icon: "images/icons/infinitecraft.webp", title: "Infinite Craft" },
-      "games/badparent.html": { icon: "images/icons/badparent.avif", title: "Bad Parenting" },
-      "games/guess.html": { icon: "images/icons/guess.png", title: "Guess Their Answer" },
-      "games/bacon.html": { icon: "images/icons/bacon.png", title: "Bacon May Die" },
-      "games/bottle.html": { icon: "images/icons/bottle.png", title: "Bottle Flip 3D" },
-      "games/cup.html": { icon: "images/icons/cup.png", title: "A Small World Cup" },
-      "games/cattle.html": { icon: "images/icons/cattle.jpg", title: "Crazy Cattle 3D" },
-      "games/flood.html": { icon: "images/icons/flood.webp", title: "Flood Runner 4" },
-      "games/post.html": { icon: "images/icons/post.png", title: "Blockpost" },
-      "games/suika.html": { icon: "images/icons/suika.avif", title: "Suika Watermelon" },
-      "games/wars.html": { icon: "images/icons/wars.webp", title: "Lego Star Wars" },
-      "games/cn.html": { icon: "images/icons/cn.webp", title: "Cartoon Network Tennis" },
-      "dta6/index.html": { icon: "images/icons/dta6.avif", title: "Dude Theft Wars (DTA6)" },
-      "games/stickrpg.html": { icon: "images/icons/stickrpg.webp", title: "Stickman RPG" },
-      "games/plant.html": { icon: "images/icons/plant.jpg", title: "Plants vs Zombies" },
-      "games/ovo1.html": { icon: "images/icons/ovo1.jpg", title: "OVO 1" },
-      "games/ovo2.html": { icon: "images/icons/ovo2.jpg", title: "OVO 2" },
-      "games/ovo3.html": { icon: "images/icons/ovo3.png", title: "OVO 3" },
-      "games/ahole.html": { icon: "images/icons/ahole.jpg", title: "Attack Hole" },
-      "games/bison.html": { icon: "images/icons/bison.jpg", title: "Burrito Bison" },
-      "games/cc.html": { icon: "images/icons/cc.png", title: "Capybara Clicker" },
-      "games/folder.html": { icon: "images/icons/folder.webp", title: "Folder Dungeon" },
-      "games/evilglitch.html": { icon: "images/icons/evilglitch.jpg", title: "Evil Glitch" },
-      "games/hcr.html": { icon: "images/icons/hcr.png", title: "Hill Climb Racing" },
-      "games/tanuki.html": { icon: "images/icons/tanuki.jpg", title: "Tanuki Sunset" },
-      "games/woods.html": { icon: "images/icons/woods.webp", title: "Slide in the Woods" },
-      "games/yet.html": { icon: "images/icons/yet", title: "Are We There Yet?" }
-    };
-    const FAVORITES_KEY = 'veloraFavorites';
-    function getFavorites() {
-      return JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
-    }
-    function saveFavorites(arr) {
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(arr));
-    }
-    function isFavorited(gamePath) {
-      return getFavorites().includes(gamePath);
-    }
-    function toggleFavorite(gamePath) {
-      let favs = getFavorites();
-      if (favs.includes(gamePath)) {
-        favs = favs.filter(g => g !== gamePath);
-      } else {
-        favs.push(gamePath);
-      }
-      saveFavorites(favs);
-      renderFavoritesBar();
-      updateIframeHeart();
-    }
-    function renderFavoritesBar() {
-      const container = document.getElementById('favoriteIcons');
-      container.innerHTML = '';
-      const favs = getFavorites();
-      favs.forEach(gamePath => {
-        const meta = GAME_METADATA[gamePath];
-        if (!meta) return;
-        const img = document.createElement('img');
-        img.src = meta.icon;
-        img.title = meta.title;
-        img.onclick = () => {
-          window.location.href = `iframe.html?game=${encodeURIComponent(gamePath)}`;
-        };
-        container.appendChild(img);
-      });
-    }
-    function updateIframeHeart() {
-      const hf = document.getElementById('iframeHeart');
-      const gamePath = getParameterByName('game');
-      if (!gamePath) {
-        hf.style.display = 'none';
-        return;
-      }
-      hf.style.display = 'inline-block';
-      hf.textContent = isFavorited(gamePath) ? '❤' : '♡';
-    }
-    function openFullscreenGame(path) {
-      window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
-    }
-    function pickRandom() {
-      const keys = Object.keys(GAME_METADATA);
-      if (keys.length === 0) return;
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      openFullscreenGame(randomKey);
-    }
-    function searchGames() {
-      const input = document.getElementById("searchInput").value.trim().toLowerCase();
-      const messageDiv = document.getElementById("searchResultsMessage");
-      if (input) {
-        messageDiv.textContent = `🔍 Results for '${input}'`;
-        messageDiv.style.display = "block";
-      } else {
-        messageDiv.textContent = "";
-        messageDiv.style.display = "none";
-      }
-      document.querySelectorAll(".game-item").forEach(item => {
-        const alt = item.getAttribute('data-title').toLowerCase();
-        item.style.display = alt.includes(input) ? "block" : "none";
-      });
-      renderFavoritesBar();
-    }
     function filterGames(term) {
-      document.getElementById("searchInput").value = term;
-      searchGames();
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-      const gamePath = getParameterByName('game');
-      if (gamePath) {
-        document.getElementById('gameIframe').src = gamePath;
-        const meta = GAME_METADATA[gamePath];
-        if (meta && meta.title) {
-          document.title = `${meta.title} - Velora`;
-        }
-      }
-      document.getElementById('iframeHeart').addEventListener('click', () => {
-        if (!gamePath) return;
-        toggleFavorite(gamePath);
-      });
-      renderFavoritesBar();
-      updateIframeHeart();
-      document.getElementById('fullscreenBtn').addEventListener('click', () => {
-        const ifr = document.getElementById('gameIframe');
-        if (ifr.requestFullscreen) {
-          ifr.requestFullscreen();
-        } else if (ifr.webkitRequestFullscreen) {
-          ifr.webkitRequestFullscreen();
-        } else if (ifr.msRequestFullscreen) {
-          ifr.msRequestFullscreen();
-        }
-      });
-      document.getElementById('randomBtn').addEventListener('click', pickRandom);
-    });
+      const inputEl = document.querySelector(".search-container input");
+      inputEl.value = term;
+    }   // theres no point in having this function, but i might have this in the future.
   </script>
 </body>
 </html>
