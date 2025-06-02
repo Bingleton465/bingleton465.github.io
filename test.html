@@ -1,51 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-    (function () {
-      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
-      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
-      const defaultFavicon = 'images/icons/logo.png';
-
-      if (savedTitle) document.title = savedTitle;
-      const favicon = savedFavicon || defaultFavicon;
-      setFavicon(favicon);
-      if (!savedFavicon) {
-        localStorage.setItem('customFavicon', favicon);
-        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
-      }
-
-      function setFavicon(url) {
-        let link = document.querySelector('link[rel="icon"]');
-        if (!link) {
-          link = document.createElement('link');
-          link.rel = 'icon';
-          document.head.appendChild(link);
-        }
-        link.href = url;
-      }
-
-      function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-      }
-
-      window.setCustomCloak = function(title, faviconURL) {
-        if (title) {
-          document.title = title;
-          localStorage.setItem('customTitle', title);
-          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
-        }
-        if (faviconURL) {
-          setFavicon(faviconURL);
-          localStorage.setItem('customFavicon', faviconURL);
-          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
-        }
-      };
-    })();
-  </script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pico - Velora</title>
@@ -66,12 +21,7 @@
       --sidebar-width: 220px;
       --topbar-height: 64px;
     }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text-color);
@@ -87,65 +37,41 @@
       z-index: 0;
       pointer-events: none;
     }
-
     @keyframes shine {
       0% { background-position: -200%; }
       100% { background-position: 200%; }
     }
-
     .topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
-  background: rgba(20, 20, 30, 0.75);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  z-index: 10;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-  gap: 24px;
-}
-.topbar .logo {
-  height: 70px;
-  cursor: pointer;
-}
-.topbar .search-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.topbar .settings-link {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-}
-.topbar .settings-icon {
-  height: 38px;
-  width: 38px;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-.topbar .settings-icon:hover {
-  transform: scale(1.12) rotate(20deg);
-}
-    @media (max-width: 768px) {
-      .topbar .settings-icon {
-        height: 32px;
-        width: 32px;
-      }
-      .topbar {
-        padding: 0 16px;
-      }
-      .search-container input {
-        width: 200px;
-      }
-    }
-    .search-container input {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: var(--topbar-height);
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      gap: 24px;
+    }
+    .topbar .logo {
+      height: 70px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .topbar .search-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 0;
+    }
+    .topbar .search-container input {
+      width: 100%;
+      min-width: 120px;
+      max-width: 320px;
       padding: 8px 12px;
       border: none;
       border-radius: var(--border-radius) 0 0 var(--border-radius);
@@ -154,12 +80,12 @@
       outline: none;
       transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
     }
-    .search-container input:focus {
+    .topbar .search-container input:focus {
       background: rgba(255, 255, 255, 0.2);
       transform: scale(1.03);
       box-shadow: 0 0 8px var(--accent-glow);
     }
-    .search-container button {
+    .topbar .search-container button {
       padding: 8px 12px;
       border: none;
       border-radius: 0 var(--border-radius) var(--border-radius) 0;
@@ -169,10 +95,44 @@
       cursor: pointer;
       transition: transform var(--transition-speed), background var(--transition-speed), box-shadow var(--transition-speed);
     }
-    .search-container button:hover {
+    .topbar .search-container button:hover {
       background: #6cb3f0;
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .topbar .settings-link {
+      display: flex;
+      align-items: center;
+      margin-left: auto;
+      flex-shrink: 0;
+      height: 100%;
+    }
+    .topbar .settings-icon {
+      height: 38px;
+      width: 38px;
+      cursor: pointer;
+      transition: transform var(--transition-speed);
+    }
+    .topbar .settings-icon:hover {
+      transform: scale(1.12) rotate(20deg);
+    }
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 0 8px;
+        gap: 8px;
+      }
+      .topbar .logo {
+        height: 44px;
+      }
+      .topbar .search-container input {
+        min-width: 40px;
+        max-width: 120px;
+        font-size: 14px;
+      }
+      .topbar .settings-icon {
+        height: 32px;
+        width: 32px;
+      }
     }
     .sidebar {
       position: fixed;
@@ -261,29 +221,65 @@
       }
     }
   </style>
+  <script>
+    (function () {
+      const savedTitle = localStorage.getItem('customTitle') || getCookie('customTitle');
+      const savedFavicon = localStorage.getItem('customFavicon') || getCookie('customFavicon');
+      const defaultFavicon = 'images/icons/logo.png';
+      if (savedTitle) document.title = savedTitle;
+      const favicon = savedFavicon || defaultFavicon;
+      setFavicon(favicon);
+      if (!savedFavicon) {
+        localStorage.setItem('customFavicon', favicon);
+        document.cookie = `customFavicon=${encodeURIComponent(favicon)}; path=/`;
+      }
+      function setFavicon(url) {
+        let link = document.querySelector('link[rel="icon"]');
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = url;
+      }
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+      }
+      window.setCustomCloak = function(title, faviconURL) {
+        if (title) {
+          document.title = title;
+          localStorage.setItem('customTitle', title);
+          document.cookie = `customTitle=${encodeURIComponent(title)}; path=/`;
+        }
+        if (faviconURL) {
+          setFavicon(faviconURL);
+          localStorage.setItem('customFavicon', faviconURL);
+          document.cookie = `customFavicon=${encodeURIComponent(faviconURL)}; path=/`;
+        }
+      };
+    })();
+  </script>
 </head>
 <body>
-
   <div id="tsparticles"></div>
-<div class="topbar">
-  <img src="images/icons/velora.png" alt="Logo" class="logo" onclick="window.location.href='g.html'">
-  <div class="search-container">
-    <input type="text" placeholder="Search..." disabled>
-    <button disabled>Go</button>
+  <div class="topbar">
+    <img src="images/icons/velora.png" alt="Logo" class="logo" onclick="window.location.href='g.html'">
+    <div class="search-container">
+      <input type="text" placeholder="Search..." disabled>
+      <button disabled>Go</button>
+    </div>
+    <a href="settings.html" class="settings-link">
+      <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
+    </a>
   </div>
-  <a href="settings.html" class="settings-link">
-    <img src="images/icons/settings.png" alt="Settings" class="settings-icon">
-  </a>
-</div>
- 
   <div class="sidebar">
     <a href="g.html" title="Show All">🏠 - Return to Games</a>
   </div>
-
   <div class="main">
     <h1>🔥 Pico – Your Pixel Pal!</h1>
     <p>
-     Pico is the energetic, fearless mascot of Velora,
+      Pico is the energetic, fearless mascot of Velora,
       always ready to dive into action and lead you to the best games online! With his pixel shades and nonstop attitude, 
       Pico represents everything we love about gaming: fun, freedom, and a little bit of chaos. Whether you’re exploring new 
       titles or grinding your favorites, Pico’s got your back.
@@ -301,7 +297,6 @@
       <img src="images/icons/app.png" alt="Pico Current Logo">
     </div>
   </div>
-
   <script>
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
@@ -320,10 +315,6 @@
       },
       detectRetina: true
     });
-    function filterGames(term) {
-      const inputEl = document.querySelector(".search-container input");
-      inputEl.value = term;
-    }
   </script>
 </body>
 </html>
