@@ -199,6 +199,17 @@
       <p>Don't worry, meanwhile, you can play our own game! (it sucks)</p>
     </div>
   </div>
+  <button id="reconnect">Reconnect</button>
+<p id="status"></p>
+
+<script>
+document.getElementById('reconnect').addEventListener('click', function() {
+  if (navigator.onLine) {
+    window.location.href = 'g.html';
+  } else {
+    document.getElementById('status').textContent = 'Still offline. Please check your connection and try again.';
+  }
+});
   <script>
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
@@ -251,7 +262,7 @@
         });
       }
     }
-    function drawDino() { /* ... your unchanged drawDino code ... */ ctx.save(); ctx.translate(DINO_X, dino.y);
+    function drawDino() {  ctx.save(); ctx.translate(DINO_X, dino.y);
       ctx.save();ctx.fillStyle = "#3fc34e";ctx.beginPath();ctx.moveTo(3,32);ctx.lineTo(-15,20);ctx.lineTo(9,30);ctx.closePath();ctx.fill();ctx.restore();
       ctx.save();ctx.fillStyle = "#55db67";ctx.beginPath();ctx.moveTo(5,8);ctx.lineTo(32,8);ctx.quadraticCurveTo(40,19,33,29);ctx.lineTo(12,35);ctx.quadraticCurveTo(2,32,5,8);ctx.closePath();ctx.fill();ctx.restore();
       ctx.save();ctx.fillStyle = "#a9efb7";ctx.beginPath();ctx.ellipse(18,27,8,11,-0.32,0,2*Math.PI);ctx.fill();ctx.restore();
@@ -466,6 +477,19 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     gameLoop();
-  </script>
+   </script>
+  <script>
+document.getElementById('reconnect').addEventListener('click', function() {
+  if (navigator.onLine) {
+    window.location.href = 'g.html';
+  } else {
+    document.getElementById('status').textContent = 'Still offline. Please check your connection and try again.';
+  }
+});
+window.addEventListener('online', function() {
+  window.location.href = 'g.html';
+});
+</script>
+
 </body>
 </html>
