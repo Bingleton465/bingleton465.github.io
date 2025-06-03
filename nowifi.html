@@ -168,7 +168,6 @@
       transform: scale(1.07);
       box-shadow: 0 0 18px var(--accent-glow), 0 2px 16px var(--accent-glow);
     }  
-    
     @media (max-width: 768px) {
       .sidebar { width: 60px; padding: 8px; }
       .sidebar a { font-size: 12px; padding: 8px; }
@@ -178,27 +177,26 @@
       .fullscreen-btn { font-size: 16px; padding: 8px 18px; }
     }
     #reconnect {
-  display: block;
-  margin: 40px auto 0 auto;
-  background: var(--accent-color);
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 12px 36px;
-  border-radius: 30px;
-  box-shadow: 0 2px 16px var(--accent-glow);
-  cursor: pointer;
-  outline: none;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  z-index: 2;
-}
-#reconnect:hover {
-  background: #6cb3f0;
-  transform: scale(1.07);
-  box-shadow: 0 0 18px var(--accent-glow), 0 2px 16px var(--accent-glow);
-}
- 
+      display: block;
+      margin: 24px auto 0 auto;
+      background: var(--accent-color);
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 12px 36px;
+      border-radius: 30px;
+      box-shadow: 0 2px 16px var(--accent-glow);
+      cursor: pointer;
+      outline: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      z-index: 2;
+    }
+    #reconnect:hover {
+      background: #6cb3f0;
+      transform: scale(1.07);
+      box-shadow: 0 0 18px var(--accent-glow), 0 2px 16px var(--accent-glow);
+    }
   </style>
 </head>
 <body>
@@ -221,19 +219,17 @@
       <h1>No internet connection detected</h1>
       <p>Don't worry, meanwhile, you can play our own game! (it sucks)</p>
     </div>
+    <button id="reconnect">Reconnect</button>
+    <p id="status"></p>
   </div>
-  <button id="reconnect">Reconnect</button>
-<p id="status"></p>
-
-<script>
-document.getElementById('reconnect').addEventListener('click', function() {
-  if (navigator.onLine) {
-    window.location.href = 'g.html';
-  } else {
-    document.getElementById('status').textContent = 'Still offline. Please check your connection and try again.';
-  }
-});
   <script>
+    document.getElementById('reconnect').addEventListener('click', function() {
+      if (navigator.onLine) {
+        window.location.href = 'g.html';
+      } else {
+        document.getElementById('status').textContent = 'Still offline. Please check your connection and try again.';
+      }
+    });
     tsParticles.load("tsparticles", {
       fpsLimit: 60,
       background: { color: "transparent" },
@@ -307,10 +303,10 @@ document.getElementById('reconnect').addEventListener('click', function() {
       }
       ctx.restore();
     }
-    function drawCactus(x, y, w, h) {ctx.save();ctx.strokeStyle = "#12803e";ctx.lineWidth = 2.3;ctx.fillStyle = "#43c943";ctx.beginPath();ctx.moveTo(x+w/2,y+h);ctx.lineTo(x+w/2,y+6);ctx.stroke();ctx.beginPath();ctx.arc(x+w/2,y+h/2,w/3,Math.PI,2*Math.PI,true);ctx.lineTo(x+w/2+w/3,y+h);ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(x+w/2-5,y+h/2+5);ctx.lineTo(x+3,y+h/2-7);ctx.stroke();ctx.beginPath();ctx.arc(x+3,y+h/2-8,3,Math.PI,2*Math.PI,true);ctx.lineTo(x+w/2-5,y+h/2+5);ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(x+w/2+5,y+h/2-3);ctx.lineTo(x+w-3,y+h/2-10);ctx.stroke();ctx.beginPath();ctx.arc(x+w-3,y+h/2-11,3,Math.PI,2*Math.PI,true);ctx.lineTo(x+w/2+5,y+h/2-3);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeStyle="#fff";ctx.lineWidth=1;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(x+w/2,y+6+i*8);ctx.lineTo(x+w/2+3,y+8+i*8);ctx.stroke();}ctx.restore();}
-    function drawBird(x, y, w, h, flap) {ctx.save();ctx.fillStyle="#4898e8";ctx.beginPath();ctx.ellipse(x+w/2,y+h/2,w/2.2,h/2.1,0,0,2*Math.PI);ctx.fill();ctx.save();ctx.translate(x+w/2,y+h/2);ctx.rotate(flap?Math.PI/10:-Math.PI/10);ctx.fillStyle="#a7d0f9";ctx.beginPath();ctx.ellipse(0,0,w/2.5,h/2.5,0,0,Math.PI,true);ctx.fill();ctx.restore();ctx.fillStyle="#ffe066";ctx.beginPath();ctx.moveTo(x+w-7,y+h/2+2);ctx.lineTo(x+w+5,y+h/2-2);ctx.lineTo(x+w-7,y+h/2+8);ctx.closePath();ctx.fill();ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(x+w-15,y+h/2,2.6,0,2*Math.PI);ctx.fill();ctx.fillStyle="#222";ctx.beginPath();ctx.arc(x+w-14,y+h/2,1,0,2*Math.PI);ctx.fill();ctx.restore();}
-    function drawCloud(x, y, w, h) {ctx.save();ctx.globalAlpha = 0.6;ctx.fillStyle = "#fff";ctx.beginPath();ctx.ellipse(x+w*0.22,y+h*0.55,w*0.19,h*0.23,0,0,2*Math.PI);ctx.ellipse(x+w*0.52,y+h*0.4,w*0.27,h*0.28,0,0,2*Math.PI);ctx.ellipse(x+w*0.77,y+h*0.58,w*0.17,h*0.23,0,0,2*Math.PI);ctx.ellipse(x+w*0.37,y+h*0.7,w*0.25,h*0.2,0,0,2*Math.PI);ctx.ellipse(x+w*0.65,y+h*0.75,w*0.22,h*0.2,0,0,2*Math.PI);ctx.fill();ctx.globalAlpha = 1.0;ctx.restore();}
-    function drawGround() {ctx.save();ctx.strokeStyle="#b0cfa2";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,GROUND_Y+4);for(let i=0;i<=canvas.width;i+=16){ctx.lineTo(i,GROUND_Y+4+(i%32===0?3:-2));}ctx.stroke();ctx.restore();for(let i=0;i<canvas.width;i+=18){ctx.save();ctx.strokeStyle="#7bdb7b";ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(i,GROUND_Y+4);ctx.lineTo(i+2,GROUND_Y-2);ctx.moveTo(i+6,GROUND_Y+4);ctx.lineTo(i+4,GROUND_Y-1);ctx.stroke();ctx.restore();}}
+    function drawCactus(x, y, w, h) {ctx.save();ctx.strokeStyle = "#12803e";ctx.lineWidth = 2.3;ctx.fillStyle = "#43c943";ctx.beginPath();ctx.moveTo(x+w/2,y+h);ctx.lineTo(x+w/2,y+6);ctx.stroke();ctx.beginPath();ctx.arc(x+w/2,y+h-12,7,0,Math.PI*2);ctx.fill();ctx.restore();}
+    function drawBird(x, y, w, h, flap) {ctx.save();ctx.fillStyle="#4898e8";ctx.beginPath();ctx.ellipse(x+w/2,y+h/2,w/2.2,h/2.1,0,0,2*Math.PI);ctx.fill();ctx.save();ctx.translate(x+w/2,y+h/2);ctx.rotate((flap?-1:1)*0.4);ctx.fillStyle="#fff";ctx.beginPath();ctx.ellipse(0,-h/2.5,w/2.7,h/6,0,0,2*Math.PI);ctx.fill();ctx.restore();ctx.restore();}
+    function drawCloud(x, y, w, h) {ctx.save();ctx.globalAlpha = 0.6;ctx.fillStyle = "#fff";ctx.beginPath();ctx.ellipse(x+w*0.22,y+h*0.55,w*0.19,h*0.23,0,0,2*Math.PI);ctx.ellipse(x+w*0.52,y+h*0.4,w*0.23,h*0.28,0,0,2*Math.PI);ctx.ellipse(x+w*0.74,y+h*0.5,w*0.21,h*0.19,0,0,2*Math.PI);ctx.fill();ctx.restore();}
+    function drawGround() {ctx.save();ctx.strokeStyle="#b0cfa2";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(0,GROUND_Y+4);for(let i=0;i<=canvas.width;i+=16){ctx.lineTo(i,GROUND_Y+4+(i%32===0?3:-2));}ctx.stroke();ctx.restore();}
     function drawScore() {
       ctx.fillStyle = "#444";
       ctx.font = "20px monospace";
@@ -432,7 +428,7 @@ document.getElementById('reconnect').addEventListener('click', function() {
       render();
       requestAnimationFrame(gameLoop);
     }
-   
+    
     function startGame() {
       reset();
       playing = true;
@@ -500,19 +496,10 @@ document.getElementById('reconnect').addEventListener('click', function() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     gameLoop();
-   </script>
-  <script>
-document.getElementById('reconnect').addEventListener('click', function() {
-  if (navigator.onLine) {
-    window.location.href = 'g.html';
-  } else {
-    document.getElementById('status').textContent = 'Still offline. Please check your connection and try again.';
-  }
-});
-window.addEventListener('online', function() {
-  window.location.href = 'g.html';
-});
-</script>
 
+    window.addEventListener('online', function() {
+      window.location.href = 'g.html';
+    });
+  </script>
 </body>
 </html>
