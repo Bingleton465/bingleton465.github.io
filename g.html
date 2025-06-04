@@ -746,7 +746,12 @@ if ('serviceWorker' in navigator) {
     });
     function searchGames() {
       const input = document.getElementById("searchInput").value.trim().toLowerCase();
-      const messageDiv = document.getElementById("searchResultsMessage");
+     const input = document.getElementById("searchInput").value.trim().toLowerCase();
+  if (input.includes("judah sucks")) {
+    window.location.href = "correct.html";
+    return;
+  }
+     const messageDiv = document.getElementById("searchResultsMessage");
       if (input) {
         messageDiv.textContent = `🔍 Results for '${input}'`;
         messageDiv.style.display = "block";
