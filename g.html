@@ -744,14 +744,9 @@ if ('serviceWorker' in navigator) {
         openFullscreenGame(gamePath);
       });
     });
-  function searchGames() {
-  const input = document.getElementById("searchInput").value.trim().toLowerCase();
-
-  if (input.includes("judah sucks")) {
-    window.location.href = "correct.html";
-    return;
-  }
-     const messageDiv = document.getElementById("searchResultsMessage");
+    function searchGames() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const messageDiv = document.getElementById("searchResultsMessage");
       if (input) {
         messageDiv.textContent = `🔍 Results for '${input}'`;
         messageDiv.style.display = "block";
@@ -772,8 +767,6 @@ if ('serviceWorker' in navigator) {
     function openFullscreenGame(path) {
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
-  }
-</script>
   </script>
 </body>
 </html>
