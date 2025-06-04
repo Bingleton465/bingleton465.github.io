@@ -767,6 +767,13 @@ if ('serviceWorker' in navigator) {
     function openFullscreenGame(path) {
       window.location.href = `iframe.html?game=${encodeURIComponent(path)}`;
     }
+  function checkSearch() {
+    const query = document.getElementById("search").value.toLowerCase();
+    if (query.includes("judah sucks")) {
+      window.location.href = "correct.html";
+    }
+  }
+</script>
   </script>
 </body>
 </html>
